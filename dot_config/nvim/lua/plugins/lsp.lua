@@ -35,6 +35,7 @@ return {
 
       keyMapper("K", vim.lsp.buf.hover)
       keyMapper("gd", vim.lsp.buf.definition)
+      keyMapper("gr", vim.lsp.buf.references)
       keyMapper("<leader>ca", vim.lsp.buf.code_action)
     end,
   },
