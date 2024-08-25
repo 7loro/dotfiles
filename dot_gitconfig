@@ -1,0 +1,54 @@
+[user]
+  name = Casper
+  email = nowfeel88@gmail.com
+
+[core]
+  editor = nvim
+  autocrlf = input
+  quotepath = false
+  pager = delta
+
+[color]
+  ui = auto
+
+[alias]
+  co = checkout
+  ca = commit --amend
+  s = status
+  l = log -m --graph --all --topo-order --date=format-local:'%Y-%m-%d %H:%M:%S' --pretty=format:'%C(red)%h%Creset %C(black bold)%ad%Creset%C(auto)%d %s %C(bold blue)<%an>%Creset %C(yellow)%d'
+  prev = reset --hard HEAD^
+  head = reset --hard HEAD
+  df = diff
+  cp = cherry-pick
+  pr  = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+  cpm = "!f() { git cp `git rev-parse $1^1`..`git rev-parse $1^2`;git cp -m 1 $1 --keep-redundant-commits; }; f"
+
+[pull]
+  ff = only
+
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+
+[credential]
+  helper = store
+
+[init]
+	defaultBranch = main
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  side-by-side = true
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default
+

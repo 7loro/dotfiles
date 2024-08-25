@@ -1,0 +1,20 @@
+syntax on " Syntax Highlighting
+set relativenumber
+set number " show line numbers
+set hlsearch " highlight search
+set cursorline " highligh current cursor line
+set ignorecase " ignore case on search
+set showmatch " show the matchecd bracket
+
+" tab and indent
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+set autoindent
+set smartindent
+
+set clipboard=unnamed " use OS clipboard
+
+set timeoutlen=1000
+set ttimeoutlen=5
