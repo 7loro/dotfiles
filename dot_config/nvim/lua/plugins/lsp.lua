@@ -19,7 +19,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "tsserver", "html", "cssls" },
+        ensure_installed = { "lua_ls", "tsserver", "bashls", "pylsp", "html", "cssls" },
       })
     end,
   },
@@ -30,12 +30,15 @@ return {
 
       lspconfig.lua_ls.setup({})
       lspconfig.tsserver.setup({})
+      lspconfig.bashls.setup({})
+      lspconfig.pylsp.setup({})
       lspconfig.html.setup({})
       lspconfig.cssls.setup({})
 
       keyMapper("K", vim.lsp.buf.hover)
       keyMapper("gd", vim.lsp.buf.definition)
       keyMapper("gr", vim.lsp.buf.references)
+      keyMapper("rn", vim.lsp.buf.rename)
       keyMapper("<leader>ca", vim.lsp.buf.code_action)
     end,
   },

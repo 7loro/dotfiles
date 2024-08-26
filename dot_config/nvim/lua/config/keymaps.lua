@@ -3,9 +3,6 @@
 -- Add any additional keymaps here
 local mapKey = require("utils.keyMapper").mapKey
 
--- Neotree toggle
-mapKey("<leader>e", ":Neotree toggle<CR>")
-
 -- pane navigation
 mapKey("<C-h>", "<C-w>h") -- Left
 mapKey("<C-j>", "<C-w>j") -- Down
