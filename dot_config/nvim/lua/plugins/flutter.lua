@@ -58,7 +58,7 @@ return {
         dev_log = {
           -- toggle it when you run without DAP
           enabled = true,
-          open_cmd = "vsplit",
+          open_cmd = "10new", -- tabedit, 30vnew, edit, split, vsplit, new, enew
         },
       })
     end,
