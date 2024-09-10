@@ -1,0 +1,20 @@
+/*인라인 필드의 키에 굵은 글씨 제거 및 색상 기본값으로 변경*/
+
+span.dataview.inline-field-key {
+  font-weight: normal;
+  color: inherit;
+}
+
+/*인라인 필드의 값에 밑줄 제거*/
+
+span.dataview.inline-field-value {
+  text-decoration: none;
+  text-decoration-line: none;
+}
+
+/*인라인 필드의 값의 a 태그에 밑줄 제거*/
+
+span.dataview.inline-field-value a {
+  text-decoration: none;
+  text-decoration-line: none;
+}
