@@ -31,4 +31,15 @@ config.color_scheme = "Gruvbox Dark (Gogh)"
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 10
 
+local act = wezterm.action
+
+config.keys = {
+	{ key = "u", mods = "CTRL", action = act.ScrollByPage(-1) },
+	{ key = "d", mods = "CTRL", action = act.ScrollByPage(1) },
+	{ key = "u", mods = "CTRL|SHIFT", action = act.ScrollByLine(-1) },
+	{ key = "d", mods = "CTRL|SHIFT", action = act.ScrollByLine(1) },
+}
+config.scrollback_lines = 100000
+config.enable_scroll_bar = true
+
 return config
