@@ -189,8 +189,10 @@ export BAT_THEME=gruvbox-dark
 
 # ---- Eza (better ls) -----
 
-alias ls="eza --icons=always"
-#
+alias l="ls"
+alias ls="eza --icons=always -a"
+alias la="eza -l --icons=always --git -a"
+
 # ---- TheFuck -----
 
 # thefuck alias
@@ -201,3 +203,16 @@ eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
 
 alias cd="z"
+
+# ---- Yazi ----
+function yy() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+# ---- Lazygit ----
+alias lg="lazygit"

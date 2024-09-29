@@ -1,4 +1,4 @@
-local keyMapper = require("utils.keyMapper").mapKey
+-- local keyMapper = require("utils.keyMapper").mapKey
 
 return {
   {
@@ -35,11 +35,11 @@ return {
       lspconfig.html.setup({})
       lspconfig.cssls.setup({})
 
-      keyMapper("K", vim.lsp.buf.hover)
-      keyMapper("gd", vim.lsp.buf.definition)
-      keyMapper("gr", vim.lsp.buf.references)
-      keyMapper("rn", vim.lsp.buf.rename)
-      keyMapper("<leader>ca", vim.lsp.buf.code_action)
+      -- keyMapper("K", vim.lsp.buf.hover)
+      -- keyMapper("gd", vim.lsp.buf.definition)
+      -- keyMapper("gr", vim.lsp.buf.references)
+      -- keyMapper("rn", vim.lsp.buf.rename)
+      -- keyMapper("<leader>ca", vim.lsp.buf.code_action)
     end,
   },
   {
