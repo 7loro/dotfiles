@@ -28,6 +28,7 @@ return {
       })
       require("telescope").load_extension("ui-select")
       require("telescope").load_extension("flutter")
+      vim.keymap.set("n", "<leader>fl", '<cmd>lua require("telescope").extensions.flutter.commands()<cr>')
     end,
   },
 }

@@ -121,7 +121,7 @@ export BREW_PATH="/opt/homebrew/bin"
 export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
 export ADB_PATH="$HOME/Library/Android/sdk/platform-tools"
 export JENV_PATH="$HOME/.jenv/bin"
-export PATH=$PATH:$BREW_PATH:$JENV_PATH:$ADB_PATH:$HOME/flutter/bin
+export PATH=$PATH:$BREW_PATH:$JENV_PATH:$ADB_PATH:$HOME/fvm/default/bin
 
 eval "$(jenv init -)"
 
@@ -216,3 +216,9 @@ function yy() {
 
 # ---- Lazygit ----
 alias lg="lazygit"
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/casper/.dart-cli-completion/zsh-config.zsh ]] && . /Users/casper/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
