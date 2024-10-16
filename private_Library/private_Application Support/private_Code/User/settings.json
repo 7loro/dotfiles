@@ -1,0 +1,61 @@
+{
+  "editor.accessibilitySupport": "off",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.autoSave": "afterDelay",
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "terminal.integrated.profiles.osx": {
+    "rosetta": {
+      "args": [
+        "-x86_64",
+        "zsh",
+        "-l"
+      ],
+      "overrideName": true,
+      "path": "arch"
+    }
+  },
+  "window.zoomLevel": 2,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "dart.previewFlutterUiGuides": true,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [
+      80
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  },
+  "vim.smartRelativeLine": true,
+  "editor.lineNumbers": "relative",
+  "editor.multiCursorModifier": "ctrlCmd",
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "editor.minimap.enabled": false,
+  "editor.fontSize": 14,
+  "editor.fontFamily": "D2CodingLigature Nerd Font",
+  "dart.devToolsPort": 10999,
+  "security.workspace.trust.untrustedFiles": "open",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "extensions.ignoreRecommendations": true,
+  "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
+  "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim-vscode/init.lua",
+  "debug.console.fontFamily": "D2CodingLigature Nerd Font",
+  "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
+  "terminal.integrated.fontSize": 14,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications"
+}
