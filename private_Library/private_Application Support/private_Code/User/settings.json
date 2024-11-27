@@ -57,5 +57,142 @@
   "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
   "terminal.integrated.fontSize": 14,
   "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "modifications"
+  "editor.formatOnSaveMode": "modifications",
+  "zenMode.centerLayout": false, 
+  "zenMode.hideLineNumbers": false,
+  "chat.editor.fontFamily": "D2CodingLigature Nerd Font",
+  "github.copilot.chat.localeOverride": "ko",
+  "github.copilot.chat.reviewSelection.instructions": [
+    {
+      "text": "Use Korean for answer.",
+      "type": "text"
+    },
+    {
+      "text": "간결하게 대답하고, 전문성 있게 대답해.",
+      "type": "text"
+    }
+  ],
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "text": "Use Korean for answer.",
+      "type": "text"
+    },
+    {
+      "text": "간결하게 대답하고, 전문성 있게 대답해.",
+      "type": "text"
+    }
+  ],
+  "vim.leader": " ",
+  "vim.normalModeKeyBindings": [
+    // [ e 나 ] e 로 에러 이동
+    {
+      "before": [ "[", "e" ],
+      "commands": [
+        "editor.action.marker.prev"
+      ]
+    },
+    {
+      "before": [ "]", "e" ],
+      "commands": [
+        "editor.action.marker.next"
+      ]
+    },
+    // [ f 나 ] f 로 열려있는 탭 이동
+    {
+      "before": [ "[", "f" ],
+      "commands": [
+        "workbench.action.previousEditor"
+      ]
+    },
+    {
+      "before": [ "]", "f" ],
+      "commands": [
+        "workbench.action.nextEditor"
+      ]
+    },
+    // g r 로 레퍼런스 찾기
+    {
+      "before": [ "g", "r" ],
+      "commands": [
+        "editor.action.referenceSearch.trigger"
+      ]
+    },
+    // c a 로 code action (quick fix)
+    {
+      "before": [ "c", "a" ],
+      "commands": [
+        "editor.action.codeAction"
+      ]
+    },
+    // f f 로 파일 찾기
+    {
+      "before": [ "f", "f" ],
+      "commands": [
+        "workbench.action.quickOpen"
+      ]
+    },
+    // f r 로 최근 파일 찾기
+    {
+      "before": [ "f", "r" ],
+      "commands": [
+        "workbench.action.showAllEditorsByMostRecentlyUsed"
+      ]
+    },
+    // f s 로 symbol 찾기
+    {
+      "before": [ "f", "s" ],
+      "commands": [
+        "workbench.action.showAllSymbols"
+      ]
+    },
+    // r r 로 코드 실행
+    {
+      "before": [ "r", "r" ],
+      "commands": [
+        "workbench.action.debug.start"
+      ],
+      "when": "debuggersAvailable && debugState == 'inactive'"
+    },
+    // c h 로 code hierarchy
+    {
+      "before": [ "c", "h" ],
+      "commands": [
+        "references-view.showCallHierarchy"
+      ]
+    },
+    // y c 로 file path 복사
+    {
+      "before": [ "y", "c" ],
+      "commands": [
+        "copyFilePath"
+      ]
+    },
+    // r n 으로 rename symbol
+    {
+      "before": [ "r", "n" ],
+      "commands": [
+        "editor.action.rename"
+      ]
+    },
+    // harpoon
+    {
+      "before": ["<leader>", "a"],
+      "commands": ["vscode-harpoon.addEditor"]
+    },
+    {
+      "before": ["<leader>", "e"],
+      "commands": ["vscode-harpoon.editEditors"]
+    },
+    {
+      "before": ["<leader>", "p", "e"],
+      "commands": ["vscode-harpoon.editorQuickPick"]
+    },
+    {
+      "before": ["<leader>", "1"],
+      "commands": ["vscode-harpoon.gotoEditor1"]
+    }
+  ],
+  "workbench.colorTheme": "Tokyo Night Gogh",
+  "workbench.iconTheme": "material-icon-theme",
+  "zenMode.showTabs": "single"
 }
