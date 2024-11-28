@@ -24,7 +24,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 50
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -58,6 +58,11 @@ outer.left =       10
 outer.bottom =     10
 outer.top =        10
 outer.right =      10
+
+[workspace-to-monitor-force-assignment]
+1 = 1                            # 가장 왼쪽 모니터
+2 = 2                            # 가운데 모니터
+3 = 3                            # 오른쪽 모니터
 
 # 'main' binding mode declaration
 # see: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -151,6 +156,7 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
+alt-shift-enter = 'mode apps'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -166,6 +172,18 @@ alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
+
+[mode.apps.binding]
+alt-t = ['exec-and-forget open -a /Applications/WezTerm.app', 'mode main']
+alt-f = ['exec-and-forget open -a /System/Library/CoreServices/Finder.app', 'mode main']
+alt-n = ['exec-and-forget open -a /Applications/Obsidian.app', 'mode main']
+alt-b = ['exec-and-forget open -a /Applications/Arc.app', 'mode main']
+
+# Make all windows floating default
+
+[[on-window-detected]]
+check-further-callbacks = true
+run = 'layout floating'
 
 # Event listeners
 
@@ -188,7 +206,7 @@ if.app-id = 'com.tinyspec.slackmacgap'
 run = 'move-node-to-workspace C'
 
 ## Browsers
-
+ 
 [[on-window-detected]]
 if.app-id = 'com.apple.Safari'
 run = 'move-node-to-workspace B'
@@ -204,6 +222,11 @@ run = 'move-node-to-workspace B'
 [[on-window-detected]]
 if.app-id = 'com.mozilla.firefox'
 run = 'move-node-to-workspace B'
+
+## Youtube music PWA
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome.app.cinhimbnkkaeohfgghhklpknlkffjgod'
+run = 'move-node-to-workspace 3'
 
 ## Development
 
