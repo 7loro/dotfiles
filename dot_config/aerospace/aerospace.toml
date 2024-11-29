@@ -174,7 +174,7 @@ alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
 [mode.apps.binding]
-alt-t = ['exec-and-forget open -a /Applications/WezTerm.app', 'mode main']
+alt-t = ['exec-and-forget open -a /Applications/Warp.app', 'mode main']
 alt-f = ['exec-and-forget open -a /System/Library/CoreServices/Finder.app', 'mode main']
 alt-n = ['exec-and-forget open -a /Applications/Obsidian.app', 'mode main']
 alt-b = ['exec-and-forget open -a /Applications/Arc.app', 'mode main']
