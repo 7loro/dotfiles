@@ -86,4 +86,9 @@
         "key": "alt+cmd+b",
         "command": "-workbench.action.toggleAuxiliaryBar"
     },
+    // Option + Shift + F1 : Reveal fines in file explorer view
+    {
+        "key": "shift+alt+f1",
+        "command": "revealInExplorer"
+    },
 ]

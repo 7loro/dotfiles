@@ -112,42 +112,42 @@
     },
     // g r 로 레퍼런스 찾기
     {
-      "before": [ "g", "r" ],
+      "before": [ "<leader>", "g", "r" ],
       "commands": [
         "editor.action.referenceSearch.trigger"
       ]
     },
     // c a 로 code action (quick fix)
     {
-      "before": [ "c", "a" ],
+      "before": [ "<leader>", "c", "a" ],
       "commands": [
         "editor.action.codeAction"
       ]
     },
     // f f 로 파일 찾기
     {
-      "before": [ "f", "f" ],
+      "before": [ "<leader>", "f", "f" ],
       "commands": [
         "workbench.action.quickOpen"
       ]
     },
     // f r 로 최근 파일 찾기
     {
-      "before": [ "f", "r" ],
+      "before": [ "<leader>", "f", "r" ],
       "commands": [
         "workbench.action.showAllEditorsByMostRecentlyUsed"
       ]
     },
     // f s 로 symbol 찾기
     {
-      "before": [ "f", "s" ],
+      "before": [ "<leader>", "f", "s" ],
       "commands": [
         "workbench.action.showAllSymbols"
       ]
     },
     // r r 로 코드 실행
     {
-      "before": [ "r", "r" ],
+      "before": [ "<leader>", "r", "r" ],
       "commands": [
         "workbench.action.debug.start"
       ],
@@ -155,23 +155,30 @@
     },
     // c h 로 code hierarchy
     {
-      "before": [ "c", "h" ],
+      "before": [ "<leader>", "c", "h" ],
       "commands": [
         "references-view.showCallHierarchy"
       ]
     },
-    // y c 로 file path 복사
+    // y p 로 file path 복사
     {
-      "before": [ "y", "c" ],
+      "before": [ "y", "p" ],
       "commands": [
         "copyFilePath"
       ]
     },
     // r n 으로 rename symbol
     {
-      "before": [ "r", "n" ],
+      "before": [ "<leader>", "r", "n" ],
       "commands": [
         "editor.action.rename"
+      ]
+    },
+    // K 로 hover
+    {
+      "before": [ "K" ],
+      "commands": [
+        "editor.action.showHover"
       ]
     },
     // harpoon
@@ -194,5 +201,6 @@
   ],
   "workbench.colorTheme": "Tokyo Night Gogh",
   "workbench.iconTheme": "material-icon-theme",
-  "zenMode.showTabs": "single"
+  "zenMode.showTabs": "single",
+  "editor.formatOnPaste": true
 }
