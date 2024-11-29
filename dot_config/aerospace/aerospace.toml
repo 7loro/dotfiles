@@ -181,9 +181,9 @@ alt-b = ['exec-and-forget open -a /Applications/Arc.app', 'mode main']
 
 # Make all windows floating default
 
-[[on-window-detected]]
-check-further-callbacks = true
-run = 'layout floating'
+# [[on-window-detected]]
+# check-further-callbacks = true
+# run = 'layout floating'
 
 # Event listeners
 
@@ -265,4 +265,10 @@ run = 'move-node-to-workspace N'
 
 [[on-window-detected]]
 if.app-id = 'com.kakao.KakaoTalkMac'
+run = 'layout floating'
+
+# Finder open float
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'finder'
 run = 'layout floating'
