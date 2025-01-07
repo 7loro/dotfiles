@@ -1,0 +1,13 @@
+# https://ghostty.org/docs/config
+# reload 는 cmd+shift+,
+# 단축키 조합 시 사용할 수 있는 커맨드 https://github.com/ghostty-org/ghostty/blob/d6e76858164d52cff460fedc61ddf2e560912d71/src/input/key.zig#L255
+foreground = ffffff
+
+font-family = "D2Coding ligature"
+font-size = 20
+
+theme = "Github Dark"
+
+background-opacity = 0.8
+background-blur-radius = 5
+unfocused-split-opacity = 0.8
