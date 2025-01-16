@@ -192,10 +192,6 @@ alt-b = ['exec-and-forget open -a /Applications/Arc.app', 'mode main']
 if.app-id = 'com.github.wez.wezterm'
 run = 'move-node-to-workspace T'
 
-[[on-window-detected]]
-if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace T'
-
 ## Chat apps
 
 [[on-window-detected]]
@@ -281,4 +277,8 @@ run = 'layout floating'
 # Contents hub float
 [[on-window-detected]]
 if.app-name-regex-substring = 'com.piccoma.contentshub'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
 run = 'layout floating'
