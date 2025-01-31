@@ -388,10 +388,28 @@ require('lazy').setup({
         mode = '',
         desc = '[F]ormat buffer',
       },
+      {
+        '<leader>tf', -- 새로운 단축키 추가
+        function()
+          -- format_on_save 상태 토글
+          vim.g.format_on_save = not vim.g.format_on_save
+          if vim.g.format_on_save then
+            print '✅ Autoformat ON'
+          else
+            print '❌ Autoformat OFF'
+          end
+        end,
+        mode = '',
+        desc = '[T]oggle [F]ormat on save',
+      },
     },
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
+        -- 저장 시 자동 포맷이 비활성화되어 있으면 실행하지 않음
+        if not vim.g.format_on_save then
+          return
+        end
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.

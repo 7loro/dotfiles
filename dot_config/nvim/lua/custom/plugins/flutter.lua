@@ -30,6 +30,7 @@ return {
             renamefileswithclasses = 'prompt',
             updateimportsonrename = true,
             enablesnippets = true,
+            lineLength = 150,
           },
         },
         debugger = {
