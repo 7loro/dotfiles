@@ -18,7 +18,7 @@ return {
         'stylua',   -- lua formatter
         'eslint_d', -- ts/js linter
         'shfmt',
-        'ruff', -- python
+        'ruff',     -- python
       },
       -- auto-install configured formatters & linters (with null-ls)
       automatic_installation = true,
@@ -26,7 +26,9 @@ return {
 
     local sources = {
       diagnostics.checkmake,
-      formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
+      formatting.prettier.with {
+        filetypes = { 'html', 'json', 'yaml', 'markdown', 'javascript', 'typescript' }
+      },
       formatting.stylua,
       formatting.shfmt.with { args = { '-i', '4' } },
       formatting.terraform_fmt,
@@ -64,8 +66,13 @@ return {
           else
             print('❌ Autoformat OFF')
           end
-        end
+        end,
+        {
+          desc = 'Toggle autoformat on save'
+        }
       )
     }
+
+    vim.keymap.set('n', '<leader>gf', vim.lsp.buf.format, { desc = "Formatting" })
   end,
 }
