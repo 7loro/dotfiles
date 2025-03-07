@@ -7,7 +7,7 @@ return {
   },
   config = function()
     local null_ls = require 'null-ls'
-    local formatting = null_ls.builtins.formatting   -- to setup formatters
+    local formatting = null_ls.builtins.formatting -- to setup formatters
     local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
     -- list of formatters & linters for mason to install
@@ -15,10 +15,10 @@ return {
       ensure_installed = {
         'checkmake',
         'prettier', -- ts/js formatter
-        'stylua',   -- lua formatter
+        'stylua', -- lua formatter
         'eslint_d', -- ts/js linter
         'shfmt',
-        'ruff',     -- python
+        'ruff', -- python
       },
       -- auto-install configured formatters & linters (with null-ls)
       automatic_installation = true,
@@ -27,14 +27,16 @@ return {
     local sources = {
       diagnostics.checkmake,
       formatting.prettier.with {
-        filetypes = { 'html', 'json', 'yaml', 'markdown', 'javascript', 'typescript' }
+        filetypes = { 'html', 'json', 'yaml', 'markdown', 'javascript', 'typescript' },
       },
       formatting.stylua,
       formatting.shfmt.with { args = { '-i', '4' } },
       formatting.terraform_fmt,
       require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
       require 'none-ls.formatting.ruff_format',
-      formatting.dart_format,
+      formatting.dart_format.with {
+        extra_args = { '--line-length', '150' },
+      },
     }
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
@@ -58,21 +60,18 @@ return {
       end,
       -- 단축키 설정
       -- Autoformat toggle functionality outside null_ls.setup
-      vim.keymap.set('n', '<leader>tf',
-        function()
-          vim.g.format_on_save = not vim.g.format_on_save
-          if vim.g.format_on_save then
-            print('✅ Autoformat ON')
-          else
-            print('❌ Autoformat OFF')
-          end
-        end,
-        {
-          desc = 'Toggle autoformat on save'
-        }
-      )
+      vim.keymap.set('n', '<leader>tf', function()
+        vim.g.format_on_save = not vim.g.format_on_save
+        if vim.g.format_on_save then
+          print '✅ Autoformat ON'
+        else
+          print '❌ Autoformat OFF'
+        end
+      end, {
+        desc = 'Toggle autoformat on save',
+      }),
     }
 
-    vim.keymap.set('n', '<leader>gf', vim.lsp.buf.format, { desc = "Formatting" })
+    vim.keymap.set('n', '<leader>gf', vim.lsp.buf.format, { desc = 'Formatting' })
   end,
 }
