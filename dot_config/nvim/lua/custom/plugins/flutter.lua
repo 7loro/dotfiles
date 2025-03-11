@@ -74,4 +74,8 @@ return {
     end,
     ft = 'dart',
   },
+  {
+    'tiagofumo/dart-vim-flutter-layout',
+    ft = 'dart',
+  },
 }
