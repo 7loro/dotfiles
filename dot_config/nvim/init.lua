@@ -127,6 +127,10 @@ vim.keymap.set('n', '<leader>Lr', ':FlutterLspRestart <CR>', {})
 vim.keymap.set('n', '<leader>Fd', ':FlutterDevTools <CR>', {})
 vim.keymap.set('n', '<leader>Fl', ':FlutterLogToggle <CR>', {})
 
+-- Quick fix navigation
+vim.keymap.set('n', ']q', ':cnext <CR>', { desc = 'Next quickfix' })
+vim.keymap.set('n', '[q', ':cprev <CR>', { desc = 'Prev quickfix' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -356,6 +360,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>Fc', "<cmd>lua require('telescope').extensions.flutter.commands()<cr>", { desc = 'Flutter [c]ommands' })
+      vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -638,7 +643,7 @@ require('lazy').setup({
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'dart' } },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
