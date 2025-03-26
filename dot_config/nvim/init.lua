@@ -83,6 +83,10 @@ vim.opt.tabstop = 2
 
 vim.opt.shiftwidth = 2
 
+-- 입력 언어 자동 전환
+vim.g.im_select_get_im_cmd = "['im-select']"
+vim.g.im_select_default = "org.youknowone.inputmethod.Gureum.system"
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
