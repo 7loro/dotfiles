@@ -177,6 +177,7 @@ require('which-key').add {
   },
 }
 
+-- Full config https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
 return {
   "yetone/avante.nvim",
   event = "VeryLazy",
@@ -184,7 +185,7 @@ return {
   opts = {
     -- add any opts here
     -- for example
-    provider = "openai",
+    provider = "gemini",
     openai = {
       endpoint = "https://api.openai.com/v1",
       model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -192,6 +193,9 @@ return {
       temperature = 0,
       max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
       --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+    },
+    gemini = {
+      model = "gemini-2.5-pro-exp-03-25",
     },
     web_search_engine = {
       provider = "brave",
