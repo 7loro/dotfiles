@@ -127,6 +127,7 @@ alt-b = 'workspace B' # Browsers
 alt-c = 'workspace C' # Chat apps
 alt-d = 'workspace D' # Development
 alt-n = 'workspace N' # Notes
+alt-m = 'workspace M' # Notes
 alt-p = 'workspace P' # Productivity
 alt-t = 'workspace T' # Terminal
 
@@ -243,7 +244,7 @@ run = 'move-node-to-workspace D'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail'
-run = 'move-node-to-workspace P'
+run = 'move-node-to-workspace M'
 
 [[on-window-detected]]
 if.app-id = 'com.cron.electron'
@@ -282,3 +283,20 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.DanPristupov.Fork'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Preview'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.linguee.DeepLCopyTranslator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.piccoma.contentshub'
+run = 'layout floating'
+
