@@ -185,7 +185,7 @@ return {
   opts = {
     -- add any opts here
     -- for example
-    provider = "gemini",
+    provider = "copilot",
     openai = {
       endpoint = "https://api.openai.com/v1",
       model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -196,6 +196,9 @@ return {
     },
     gemini = {
       model = "gemini-2.5-pro-exp-03-25",
+    },
+    copilot = {
+      model = "claude-3.7-sonnet",
     },
     web_search_engine = {
       provider = "brave",
