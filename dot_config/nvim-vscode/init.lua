@@ -49,7 +49,7 @@ keymap({ "n", "v" }, "<leader>cn", "<cmd>lua require('vscode').action('notificat
 -- 파일 검색 (퀵 오픈)
 keymap({ "n", "v" }, "<leader>sf", "<cmd>lua require('vscode').action('workbench.action.quickOpen')<CR>")
 -- 문제점 보기
-keymap({ "n", "v" }, "<leader>sd", "<cmd>lua require('vscode').action('workbench.actions.view.problems')<CR>")
+keymap({ "n", "v" }, "<leader>sq", "<cmd>lua require('vscode').action('workbench.actions.view.problems')<CR>")
 -- 심볼로 이동
 keymap({ "n" }, "<leader>ss", "<cmd>lua require('vscode').action('workbench.action.gotoSymbol')<CR>")
 -- 모든 심볼 보기
@@ -77,7 +77,7 @@ keymap({ "n" }, "<leader>fd", "<cmd>lua require('vscode').action('editor.action.
 -- 선택 영역 포맷팅
 keymap({ "v" }, "<leader>fd", "<cmd>lua require('vscode').action('editor.action.formatSelection')<CR>")
 -- 참조 보기
-keymap({ "n" }, "<leader>gr", "<cmd>lua require('vscode').action('references-view.findReferences')<CR>")
+keymap({ "n" }, "gr", "<cmd>lua require('vscode').action('references-view.findReferences')<CR>")
 -- 이름 변경
 keymap({ "n" }, "<leader>rn", "<cmd>lua require('vscode').action('editor.action.rename')<CR>")
 -- revert
