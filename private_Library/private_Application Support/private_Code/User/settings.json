@@ -19,15 +19,15 @@
   },
   "window.zoomLevel": 2,
   "editor.unicodeHighlight.nonBasicASCII": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
-  },
+  // "editor.codeActionsOnSave": {
+    // "source.fixAll": "explicit"
+  // },
   "dart.previewFlutterUiGuides": true,
   "[dart]": {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "editor.formatOnType": true,
     "editor.rulers": [
-      80
+      150
     ],
     "editor.selectionHighlight": false,
     "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -56,7 +56,6 @@
   "debug.console.fontFamily": "D2CodingLigature Nerd Font",
   "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
   "terminal.integrated.fontSize": 14,
-  "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "modifications",
   "zenMode.centerLayout": false, 
   "zenMode.hideLineNumbers": false,
@@ -82,125 +81,32 @@
       "type": "text"
     }
   ],
-  "vim.leader": " ",
-  "vim.normalModeKeyBindings": [
-    // [ e 나 ] e 로 에러 이동
-    {
-      "before": [ "[", "e" ],
-      "commands": [
-        "editor.action.marker.prev"
-      ]
-    },
-    {
-      "before": [ "]", "e" ],
-      "commands": [
-        "editor.action.marker.next"
-      ]
-    },
-    // [ f 나 ] f 로 열려있는 탭 이동
-    {
-      "before": [ "[", "f" ],
-      "commands": [
-        "workbench.action.previousEditor"
-      ]
-    },
-    {
-      "before": [ "]", "f" ],
-      "commands": [
-        "workbench.action.nextEditor"
-      ]
-    },
-    // g r 로 레퍼런스 찾기
-    {
-      "before": [ "<leader>", "g", "r" ],
-      "commands": [
-        "editor.action.referenceSearch.trigger"
-      ]
-    },
-    // c a 로 code action (quick fix)
-    {
-      "before": [ "<leader>", "c", "a" ],
-      "commands": [
-        "editor.action.codeAction"
-      ]
-    },
-    // f f 로 파일 찾기
-    {
-      "before": [ "<leader>", "f", "f" ],
-      "commands": [
-        "workbench.action.quickOpen"
-      ]
-    },
-    // f r 로 최근 파일 찾기
-    {
-      "before": [ "<leader>", "f", "r" ],
-      "commands": [
-        "workbench.action.showAllEditorsByMostRecentlyUsed"
-      ]
-    },
-    // f s 로 symbol 찾기
-    {
-      "before": [ "<leader>", "f", "s" ],
-      "commands": [
-        "workbench.action.showAllSymbols"
-      ]
-    },
-    // r r 로 코드 실행
-    {
-      "before": [ "<leader>", "r", "r" ],
-      "commands": [
-        "workbench.action.debug.start"
-      ],
-      "when": "debuggersAvailable && debugState == 'inactive'"
-    },
-    // c h 로 code hierarchy
-    {
-      "before": [ "<leader>", "c", "h" ],
-      "commands": [
-        "references-view.showCallHierarchy"
-      ]
-    },
-    // y p 로 file path 복사
-    {
-      "before": [ "y", "p" ],
-      "commands": [
-        "copyFilePath"
-      ]
-    },
-    // r n 으로 rename symbol
-    {
-      "before": [ "<leader>", "r", "n" ],
-      "commands": [
-        "editor.action.rename"
-      ]
-    },
-    // K 로 hover
-    {
-      "before": [ "K" ],
-      "commands": [
-        "editor.action.showHover"
-      ]
-    },
-    // harpoon
-    {
-      "before": ["<leader>", "a"],
-      "commands": ["vscode-harpoon.addEditor"]
-    },
-    {
-      "before": ["<leader>", "e"],
-      "commands": ["vscode-harpoon.editEditors"]
-    },
-    {
-      "before": ["<leader>", "p", "e"],
-      "commands": ["vscode-harpoon.editorQuickPick"]
-    },
-    {
-      "before": ["<leader>", "1"],
-      "commands": ["vscode-harpoon.gotoEditor1"]
-    }
-  ],
-  "workbench.colorTheme": "Tokyo Night Gogh",
+  "workbench.colorTheme": "Catppuccin Macchiato",
   "workbench.iconTheme": "material-icon-theme",
   "zenMode.showTabs": "single",
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "dart.lineLength": 150,
+  "editor.formatOnSave": false,
+  "html.format.wrapLineLength": 150,
+  "editor.inlayHints.maximumLength": 150,
+  "editor.rulers": [
+    150
+  ],
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "continue.telemetryEnabled": false,
+  "telemetry.telemetryLevel": "off",
+  "workbench.colorCustomizations": {
+    "terminal.background": "#00000000"
+  },
+  "terminal.integrated.gpuAcceleration": "off",
+  "window.titleBarStyle": "custom",
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:claude-3.7-sonnet",
+  "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
 }
