@@ -94,7 +94,7 @@
     {
         "key": "] r",
         "command": "references-view.next",
-        "when": "reference-list.hasResult && references-view.canNavigate"
+        "when": "reference-list.hasResult && references-view.canNavigate && neovim.mode != 'insert'"
     },
     {
         "key": "f4",
@@ -104,7 +104,7 @@
     {
         "key": "[ r",
         "command": "references-view.prev",
-        "when": "reference-list.hasResult && references-view.canNavigate"
+        "when": "reference-list.hasResult && references-view.canNavigate && neovim.mode != 'insert'"
     },
     {
         "key": "shift+f4",
@@ -114,7 +114,7 @@
     {
         "key": "] q",
         "command": "editor.action.marker.next",
-        "when": "editorFocus"
+        "when": "editorFocus && neovim.mode != 'insert'"
     },
     {
         "key": "alt+f8",
@@ -124,7 +124,7 @@
     {
         "key": "[ q",
         "command": "editor.action.marker.prev",
-        "when": "editorFocus"
+        "when": "editorFocus && neovim.mode != 'insert'"
     },
     {
         "key": "shift+alt+f8",
@@ -132,9 +132,9 @@
         "when": "editorFocus"
     },
     {
-        "key": "] g",
+        "key": "] s",
         "command": "search.action.focusNextSearchResult",
-        "when": "hasSearchResult || inSearchEditor"
+        "when": "(hasSearchResult || inSearchEditor) && neovim.mode != 'insert'"
     },
     {
         "key": "f4",
@@ -142,9 +142,9 @@
         "when": "hasSearchResult || inSearchEditor"
     },
     {
-        "key": "[ g",
+        "key": "[ s",
         "command": "search.action.focusPreviousSearchResult",
-        "when": "hasSearchResult || inSearchEditor"
+        "when": "(hasSearchResult || inSearchEditor) && neovim.mode != 'insert'"
     },
     {
         "key": "shift+f4",
@@ -154,7 +154,7 @@
     {
         "key": "] c",
         "command": "workbench.action.editor.nextChange",
-        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
+        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0' && neovim.mode != 'insert'"
     },
     {
         "key": "alt+f5",
@@ -169,6 +169,6 @@
     {
         "key": "[ c",
         "command": "workbench.action.editor.previousChange",
-        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
+        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0' && neovim.mode != 'insert'"
     },
 ]
