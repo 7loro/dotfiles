@@ -66,10 +66,6 @@ keymap({ "n" }, "]e", "<cmd>lua require('vscode').action('editor.action.marker.n
 keymap({ "n" }, "[b", "<cmd>lua require('vscode').action('workbench.action.previousEditor')<CR>")
 -- 다음 편집기(탭)로 이동
 keymap({ "n" }, "]b", "<cmd>lua require('vscode').action('workbench.action.nextEditor')<CR>")
--- 이전 변경사항으로 이동
-keymap({ "n" }, "[c", "<cmd>lua require('vscode').action('workbench.action.editor.previousChange')<CR>")
--- 다음 변경사항으로 이동
-keymap({ "n" }, "]c", "<cmd>lua require('vscode').action('workbench.action.editor.nextChange')<CR>")
 -- 코드 액션 실행
 keymap({ "n" }, "<leader>ca", "<cmd>lua require('vscode').action('editor.action.quickFix')<CR>")
 -- 문서 포맷팅
