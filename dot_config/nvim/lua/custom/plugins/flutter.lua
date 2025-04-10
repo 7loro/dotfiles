@@ -36,6 +36,16 @@ return {
           enabled = true,
           run_via_dap = true,
           exception_breakpoints = {},
+          fvm = true,
+          dev_log = {
+            enabled = false,
+            filter = nil, -- optional callback to filter the log
+            -- takes a log_line as string argument; returns a boolean or nil;
+            -- the log_line is only added to the output if the function returns true
+            notify_errors = false, -- if there is an error whilst running then notify the user
+            open_cmd = "15split", -- command to use to open the log buffer
+            focus_on_open = true, -- focus on the newly opened log window
+          },
           register_configurations = function(paths)
             local dap = require 'dap'
             -- See also: https://github.com/akinsho/flutter-tools.nvim/pull/292
@@ -44,18 +54,17 @@ return {
               command = paths.flutter_bin,
               args = { 'debug-adapter' },
             }
-            dap.configurations.dart = {
-              {
-                type = 'dart',
-                request = 'launch',
-                name = 'Launch flutter',
-                dartSdkPath = '/Users/casper/fvm/default/bin/',
-                flutterSdkPath = '/Users/casper/fvm/default/bin/flutter',
-                program = '${workspaceFolder}/lib/main.dart',
-                cwd = '${workspaceFolder}',
-              },
-            }
-            require('dap.ext.vscode').load_launchjs()
+            -- dap.configurations.dart = {
+            --   {
+            --     type = 'dart',
+            --     request = 'launch',
+            --     name = 'Launch flutter',
+            --     dartSdkPath = '/Users/casper/fvm/default/bin/',
+            --     flutterSdkPath = '/Users/casper/fvm/default/bin/flutter',
+            --     program = '${workspaceFolder}/lib/main.dart',
+            --     cwd = '${workspaceFolder}',
+            --   },
+            -- }
           end,
         },
       }
@@ -67,6 +76,7 @@ return {
     config = function()
       vim.g.dart_format_on_save = false
       vim.g.dart_style_guide = 2
+      vim.g.dart_html_in_string = true
       vim.g.dart_trailing_comma_indent = true
       vim.g.dartfmt_options = { '--line-length', '150' } -- 라인 길이 설정
       -- keymap 추가: <leader>df -> DartFmt 실행

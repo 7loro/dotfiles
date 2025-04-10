@@ -350,6 +350,7 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'flutter')
+      pcall(require('telescope').load_extension, 'fvm')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -588,7 +589,9 @@ require('lazy').setup({
         custom_highlights = function(colors)
           return {
             -- Visual 영역 색상 커스터마이징 (Visual: 원하는 색상으로 설정)
-            Visual = { bg = colors.surface2, style = { 'bold' } }
+            Visual = { bg = colors.surface2, style = { 'bold' } },
+            LineNr = { fg = colors.rosewater }, -- 줄 번호 색상 커스터마이징
+            CursorLineNr = { fg = colors.pink, style = { 'bold' } }, -- 현재 줄 번호 색상 커스터마이징
           }
         end
       }
