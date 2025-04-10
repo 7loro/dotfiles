@@ -165,6 +165,9 @@ return {
         desc = 'LSP: Disable hover capability from Ruff',
       })
 
+      vim.diagnostic.config({
+        virtual_text = true
+      })
       -- Change diagnostic symbols in the sign column (gutter)
       -- if vim.g.have_nerd_font then
       --   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
@@ -192,7 +195,7 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         pyright = {
           settings = {
