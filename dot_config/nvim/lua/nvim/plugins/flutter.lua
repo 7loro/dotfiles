@@ -80,7 +80,12 @@ return {
       vim.g.dart_trailing_comma_indent = true
       vim.g.dartfmt_options = { '--line-length', '150' } -- 라인 길이 설정
       -- keymap 추가: <leader>df -> DartFmt 실행
-      vim.api.nvim_set_keymap('n', '<leader>df', ':DartFmt<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<leader>df', ':DartFmt<CR>', { noremap = true, silent = true, desc = '[d]art [f]ormat' })
+      vim.api.nvim_set_keymap('v', '<leader>df', ":'<,'>DartFmt<CR>", {
+        noremap = true,
+        silent = true,
+        desc = '[d]art [f]ormat'
+      })
     end,
     ft = 'dart',
   },
