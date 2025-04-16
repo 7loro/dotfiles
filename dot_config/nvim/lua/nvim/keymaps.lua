@@ -43,5 +43,10 @@ vim.keymap.set('n', '<leader>Fl', ':FlutterLogToggle <CR>', { desc = '[F]lutter 
 vim.keymap.set('n', ']q', ':cnext <CR>', { desc = 'Next quickfix' })
 vim.keymap.set('n', '[q', ':cprev <CR>', { desc = 'Prev quickfix' })
 
--- Code action
-vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = '[C]ode [A]ction' })
+-- LSP 관련 설정
+vim.keymap.del('n', 'grn', { buffer = nil, silent = true })
+vim.keymap.del('n', 'grr', { buffer = nil, silent = true })
+vim.keymap.del('n', 'gri', { buffer = nil, silent = true })
+vim.keymap.del('n', 'gra', { buffer = nil, silent = true })
+vim.keymap.del('v', 'gra', { buffer = nil, silent = true })
+
