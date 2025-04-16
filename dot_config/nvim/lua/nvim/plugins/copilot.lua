@@ -16,8 +16,15 @@ return {
     end,
   },
   -- blink.cmp 에서 copilot 사용
+  -- {
+  --   "giuxtaposition/blink-cmp-copilot",
+  -- },
+  -- nvim-cmp 에서 copilot 사용
   {
-    "giuxtaposition/blink-cmp-copilot",
+    'zbirenbaum/copilot-cmp',
+    config = function()
+      require('copilot_cmp').setup()
+    end,
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
