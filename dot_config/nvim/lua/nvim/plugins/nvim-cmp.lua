@@ -18,29 +18,40 @@ return { -- Autocompletion
         -- `friendly-snippets` contains a variety of premade snippets.
         --    See the README about individual language/framework/plugin snippets:
         --    https://github.com/rafamadriz/friendly-snippets
-        -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-            --     require('luasnip.loaders.from_vscode').lazy_load()
-            --   end,
-            -- },
-          },
+        {
+          'rafamadriz/friendly-snippets',
+          config = function()
+            require("luasnip.loaders.from_lua").lazy_load({
+              paths = { "~/.config/nvim/lua/nvim/snippets" }
+            })
+          end,
         },
-        'saadparwaiz1/cmp_luasnip',
-
-        -- Adds other completion capabilities.
-        --  nvim-cmp does not ship with all sources by default. They are split
-        --  into multiple repos for maintenance purposes.
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-path',
       },
+    },
+    'saadparwaiz1/cmp_luasnip',
+
+    -- Adds other completion capabilities.
+    --  nvim-cmp does not ship with all sources by default. They are split
+    --  into multiple repos for maintenance purposes.
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-path',
+  },
       config = function()
         -- See `:help cmp`
         local cmp = require 'cmp'
         local luasnip = require 'luasnip'
         luasnip.config.setup {}
         -- local lspkind = require 'lspkind'
-
+        local border = {
+          { "╭", "CmpBorder" },
+          { "─", "CmpBorder" },
+          { "╮", "CmpBorder" },
+          { "│", "CmpBorder" },
+          { "╯", "CmpBorder" },
+          { "─", "CmpBorder" },
+          { "╰", "CmpBorder" },
+          { "│", "CmpBorder" },
+        }
         cmp.setup {
           snippet = {
             expand = function(args)
@@ -50,6 +61,14 @@ return { -- Autocompletion
           completion = {
             completeopt = 'menu,menuone,noinsert',
             autocomplete = false,
+          },
+          window = {
+            documentation = {
+              border = border,
+            },
+            completion = {
+              border = border,
+            },
           },
 
           -- For an understanding of why these mappings were
@@ -111,10 +130,10 @@ return { -- Autocompletion
               group_index = 0,
             },
             { name = 'copilot', group_index = 2 },
-            { name = 'nvim_lsp', group_index = 2 }, -- lsp
+            { name = 'luasnip', max_item_count = 3, group_index = 2 }, -- snippets
+            { name = 'nvim_lsp', max_item_count = 10, group_index = 2 }, -- lsp
             { name = 'buffer', max_item_count = 5, group_index = 2 }, -- text within current buffer
             { name = 'path', max_item_count = 3, group_index = 2 }, -- file system paths
-            { name = 'luasnip', max_item_count = 3, group_index = 2 }, -- snippets
           },
           -- formatting = {
           --   format = lspkind.cmp_format {

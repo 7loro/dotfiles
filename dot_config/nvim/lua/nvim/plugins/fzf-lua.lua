@@ -4,7 +4,16 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     -- fzf-lua 설정 (선택 사항, 필요시 여기에 추가)
-    require('fzf-lua').setup({{"telescope",winopts={preview={default="bat"}}}})
+    require('fzf-lua').setup({
+      {
+        "telescope",
+        winopts = {
+          preview = {
+            default = "bat"
+          }
+        }
+      }
+    })
 
     -- 키맵 설정
     local map = vim.keymap.set
