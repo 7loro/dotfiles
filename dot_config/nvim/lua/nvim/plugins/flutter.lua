@@ -29,7 +29,7 @@ return {
             },
             renamefileswithclasses = 'prompt',
             updateimportsonrename = true,
-            enablesnippets = true,
+            enablesnippets = false,
           },
         },
         debugger = {
@@ -77,7 +77,7 @@ return {
       vim.g.dart_format_on_save = false
       vim.g.dart_style_guide = 2
       vim.g.dart_html_in_string = true
-      vim.g.dart_trailing_comma_indent = true
+      -- vim.g.dart_trailing_comma_indent = true 이거 키면 파라메터 들여쓰기가 2칸이 안 되고 4칸이 되는 문제 있음
       vim.g.dartfmt_options = { '--line-length', '150' } -- 라인 길이 설정
       -- keymap 추가: <leader>df -> DartFmt 실행
       vim.api.nvim_set_keymap('n', '<leader>df', ':DartFmt<CR>', { noremap = true, silent = true, desc = '[d]art [f]ormat' })
