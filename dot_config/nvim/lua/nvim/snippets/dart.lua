@@ -6,7 +6,7 @@ local flutter_snippets_dir = config_path .. "/lua/nvim/snippets/flutter"
 local base_require_path = "nvim.snippets.flutter"
 
 -- 디버그: 스니펫 디렉토리 경로 출력
-print("DEBUG: Flutter Snippet Directory: " .. flutter_snippets_dir)
+-- print("DEBUG: Flutter Snippet Directory: " .. flutter_snippets_dir)
 
 local files_processed = 0 -- 디버그: 처리된 파일 수 카운트
 -- 디렉토리 내 파일 목록을 순회 (vim.fs.dir 사용)
@@ -19,14 +19,14 @@ for filename, filetype in vim.fs.dir(flutter_snippets_dir) do
     local require_path = base_require_path .. "." .. module_name
 
     -- 디버그: require 시도 경로 출력
-    print("DEBUG: Attempting to require: " .. require_path)
+    -- print("DEBUG: Attempting to require: " .. require_path)
 
     -- pcall (protected call)을 사용하여 안전하게 모듈 로드 시도
     local ok, loaded_module = pcall(require, require_path)
 
     if ok then
       -- 디버그: 로드 성공 출력 및 로드된 모듈 타입 확인
-      print("DEBUG: Successfully required: " .. require_path .. " (Type: " .. type(loaded_module) .. ")")
+      -- print("DEBUG: Successfully required: " .. require_path .. " (Type: " .. type(loaded_module) .. ")")
 
       -- *** 중요: 여기서 로드된 'loaded_module' (스니펫 정의 테이블)을 사용하시는 스니펫 엔진에 전달해야 합니다. ***
       -- 예시 (LuaSnip 사용 시):
@@ -47,4 +47,4 @@ for filename, filetype in vim.fs.dir(flutter_snippets_dir) do
 end
 
 -- 디버그: 디렉토리 순회 완료 및 파일 수 출력
-print("DEBUG: Finished iterating snippet directory. Processed " .. files_processed .. " lua files.")
+-- print("DEBUG: Finished iterating snippet directory. Processed " .. files_processed .. " lua files.")
