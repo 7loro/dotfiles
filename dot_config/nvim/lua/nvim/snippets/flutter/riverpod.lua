@@ -93,7 +93,7 @@ return {
 
   -- ref.onDispose
   s("refod", fmt([[
-  ref.onDispose(() => {{
+  ref.onDispose(() {{
     {}
   }});
   ]], {
