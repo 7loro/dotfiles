@@ -49,4 +49,7 @@ vim.keymap.del('n', 'grr', { buffer = nil, silent = true })
 vim.keymap.del('n', 'gri', { buffer = nil, silent = true })
 vim.keymap.del('n', 'gra', { buffer = nil, silent = true })
 vim.keymap.del('v', 'gra', { buffer = nil, silent = true })
-
+-- K - hover popup with bordered window
+vim.keymap.set('n', 'K', function()
+  vim.lsp.buf.hover { border = "rounded", max_height = 25, max_width = 150 }
+end, { desc = 'Show hover documentation' })
