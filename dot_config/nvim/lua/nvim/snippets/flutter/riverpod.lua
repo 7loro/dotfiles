@@ -159,4 +159,29 @@ return {
     rep(1),-- {}: const 생성자 이름 (이름 반복)
     i(0, "Container()"), -- {}: build 메서드 본문 (최종 커서)
   })),
+
+  -- create riverpod 2.0 controller (@riverpod annotation)
+  s("rpc", fmt([[
+  import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+  part '{}.g.dart';
+
+  @riverpod
+  class {} extends _${} {{
+
+    @override
+    build() {{
+      {}
+    }}
+  }}
+  ]], {
+    -- {}: part directive filename (manual correction needed)
+    i(1, "controller_filename"),
+    -- {}: Controller Class Name (first appearance)
+    i(2, "ControllerName"),
+    -- {}: Extends _$ControllerName (repetition of name)
+    rep(2),
+    -- {}: Controller body cursor (final position)
+    i(0),
+  })),
 }
