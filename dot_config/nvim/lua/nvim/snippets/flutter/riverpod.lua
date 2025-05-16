@@ -184,4 +184,15 @@ return {
     -- {}: Controller body cursor (final position)
     i(0),
   })),
+
+  -- HookConsumer
+  s("hc", fmt([[
+  return HookConsumer(
+    builder: (context, ref, child) {{
+      {}
+    }},
+  );
+  ]], {
+    i(0), -- 최종 커서
+  })),
 }
