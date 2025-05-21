@@ -339,4 +339,15 @@
         "key": "cmd+t",
         "command": "-workbench.action.showAllSymbols"
     },
+    // Format document
+    {
+        "key": "space d f",
+        "command": "editor.action.formatDocument",
+        "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor && neovim.mode == 'normal'"
+    },
+    {
+        "key": "shift+alt+f",
+        "command": "-editor.action.formatDocument",
+        "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+    },
 ]
