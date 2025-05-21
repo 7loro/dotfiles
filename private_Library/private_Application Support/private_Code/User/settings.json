@@ -51,8 +51,7 @@
     "asvetliakov.vscode-neovim": 1
   },
   "extensions.ignoreRecommendations": true,
-  "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
-  "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim-vscode/init.lua",
+  "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.lua",
   "debug.console.fontFamily": "D2CodingLigature Nerd Font",
   "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
   "terminal.integrated.fontSize": 14,
@@ -92,7 +91,6 @@
   "editor.rulers": [
     150
   ],
-  "github.copilot.nextEditSuggestions.enabled": true,
   "continue.telemetryEnabled": false,
   "telemetry.telemetryLevel": "off",
   "workbench.colorCustomizations": {
@@ -100,8 +98,6 @@
   },
   "terminal.integrated.gpuAcceleration": "off",
   "window.titleBarStyle": "custom",
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:claude-3.7-sonnet",
   "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
   "github.copilot.enable": {
     "*": true,
@@ -109,4 +105,25 @@
     "markdown": false,
     "scminput": false
   },
+  "git.blame.editorDecoration.enabled": true,
+  "chat.agent.enabled": true,
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 19306,
+      "driver": "MySQL",
+      "name": "goomba",
+      "username": "remaster",
+      "password": "kT#i&ZXpU%dc",
+      "database": "remaster"
+    }
+  ],
+  "git.blame.statusBarItem.enabled": true,
+  "dart.devToolsBrowser": "default",
+  "workbench.activityBar.location": "bottom"
 }
