@@ -1,11 +1,10 @@
-require("options")
-require("autocmds")
-
 if vim.g.vscode then
   print("VSCode extension")
-  require("vscode.keymaps")
+  require("vscode-neovim.config")
 else
   print("Neovim extension")
+  require("options")
+  require("autocmds")
   require("nvim.keymaps")
   require("nvim.lazy")
   require("nvim.lsp")

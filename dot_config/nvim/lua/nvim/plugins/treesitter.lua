@@ -44,7 +44,10 @@ return {
         additional_vim_regex_highlighting = { "yaml", "jack", "haskell", "dart" },
       },
       incremental_selection = { enable = true },
-      indent = { enable = true },
+      indent = {
+        enable = true,
+        -- disable = { "dart" },
+      },
       autopairs = { enable = false },
       context_commentstring = {
         enable = true,
