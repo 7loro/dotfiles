@@ -174,7 +174,7 @@
     {
         "key": "space g h",
         "command": "references-view.showCallHierarchy",
-        "when": "editorHasCallHierarchyProvider"
+        "when": "editorHasCallHierarchyProvider && editorTextFocus && neovim.mode != 'insert'"
     },
     {
         "key": "shift+alt+h",
