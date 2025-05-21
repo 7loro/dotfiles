@@ -140,12 +140,6 @@ export LC_ALL=en_US.UTF-8
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-eval "$(rbenv init - zsh)"
-
 export EDITOR=/opt/homebrew/bin/nvim
 alias vi="nvim"
 alias ls='logo-ls'
