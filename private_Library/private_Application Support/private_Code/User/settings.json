@@ -25,7 +25,7 @@
   "dart.previewFlutterUiGuides": true,
   "[dart]": {
     "editor.formatOnSave": false,
-    "editor.formatOnType": true,
+    "editor.formatOnType": false,
     "editor.rulers": [
       150
     ],
@@ -85,7 +85,6 @@
   "zenMode.showTabs": "single",
   "editor.formatOnPaste": true,
   "dart.lineLength": 150,
-  "editor.formatOnSave": false,
   "html.format.wrapLineLength": 150,
   "editor.inlayHints.maximumLength": 150,
   "editor.rulers": [
