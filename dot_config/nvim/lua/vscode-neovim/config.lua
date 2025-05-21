@@ -31,6 +31,14 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 
+-- Highlight on yank
+vim.api.nvim_exec([[
+  augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=250}
+  augroup END
+]], false)
+
 -- better indent handling
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
