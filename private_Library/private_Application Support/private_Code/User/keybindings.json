@@ -318,4 +318,25 @@
         "when": "editorTextFocus && neovim.mode == 'normal'",
         "args": ":e ~/.config/nvim/lua/vscode-neovim/config.lua<cr>"
     },
+    // Document symbol
+    {
+        "key": "space d s",
+        "command": "workbench.action.gotoSymbol",
+        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown && editorTextFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "shift+cmd+o",
+        "command": "-workbench.action.gotoSymbol",
+        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown"
+    },
+    // Workspace symbol
+    {
+        "key": "space w s",
+        "command": "workbench.action.showAllSymbols",
+        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown && editorTextFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "cmd+t",
+        "command": "-workbench.action.showAllSymbols"
+    },
 ]
