@@ -1,30 +1,97 @@
 // 키 바인딩을 이 파일에 넣어서 기본값 재정의
 [
+    // 열려있는 버퍼에서 탐색
     {
-        "key": "cmd+e",
-        "command": "-actions.findWithSelection"
+        "key": "space space",
+        "command": "workbench.action.showAllEditorsByMostRecentlyUsed",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    // 파일 검색
+    {
+        "key": "ctrl+p",
+        "command": "-television.ToggleFileFinder"
     },
     {
-        "key": "ctrl+r",
-        "command": "-workbench.action.openRecent"
+        "key": "space s f",
+        "command": "television.ToggleFileFinder",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    // Text Grep
+    {
+        "key": "ctrl+shift+f",
+        "command": "-television.ToggleTextFinder"
     },
     {
-        "key": "cmd+e",
-        "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+        "key": "space s g",
+        "command": "television.ToggleTextFinder",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    // Lazygit
+    {
+        "key": "cmd+g g",
+        "command": "-lazygit.openLazygit"
     },
     {
-        "key": "cmd+shift+e",
-        "command": "workbench.action.openRecent"
+        "key": "space l g",
+        "command": "lazygit.openLazygit",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    // Quick fix (Code action)
+    {
+        "key": "space c a",
+        "command": "editor.action.quickFix",
+        "when": "editorHasCodeActionsProvider && editorTextFocus && !textCompareEditorActive && neovim.mode != 'insert'"
     },
     {
-        "key": "ctrl+alt+i",
+        "key": "cmd+.",
+        "command": "-editor.action.quickFix",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+    },
+    // Revert
+    {
+        "key": "space h r",
+        "command": "git.revertSelectedRanges",
+        "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file' && neovim.mode != 'insert'"
+    },
+    {
+        "key": "cmd+k cmd+r",
+        "command": "-git.revertSelectedRanges",
+        "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
+    },
+    // Problems
+    {
+        "key": "space q",
+        "command": "workbench.action.problems.focus",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    // Tab navigation
+    {
+        "key": "alt+cmd+right",
+        "command": "-workbench.action.nextEditor"
+    },
+    {
+        "key": "] b",
+        "command": "workbench.action.nextEditor",
+        "when": "editorTextFocus && neovim.mode != 'insert'"
+    },
+    {
+        "key": "alt+cmd+left",
+        "command": "-workbench.action.previousEditor"
+    },
+    {
+        "key": "[ b",
+        "command": "workbench.action.previousEditor",
+        "when": "editorTextFocus && neovim.mode != 'insert'"
+    },
+    {
+        "key": "ctrl+j",
         "command": "editor.action.triggerSuggest",
-        "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
+        "when": "editorHasCompletionItemProvider && textInputFocus && neovim.mode == 'insert' && !suggestWidgetVisible"
     },
     {
         "key": "cmd+i",
         "command": "-editor.action.triggerSuggest",
-        "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
+        "when": "editorHasCompletionItemProvider && textInputFocus && neovim.mode != 'insert' && !suggestWidgetVisible"
     },
     {
         "key": "ctrl+h",
@@ -37,10 +104,6 @@
     {
         "key": "ctrl+k",
         "command": "workbench.action.navigateUp"
-    },
-    {
-        "key": "ctrl+j",
-        "command": "workbench.action.navigateDown"
     },
     {
         "key": "shift+cmd+[",
@@ -86,11 +149,24 @@
         "key": "alt+cmd+b",
         "command": "-workbench.action.toggleAuxiliaryBar"
     },
-    // Option + Shift + F1 : Reveal fines in file explorer view
+    // Go to definition
     {
-        "key": "shift+alt+f1",
-        "command": "revealInExplorer"
+        "key": "g d",
+        "command": "editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !editorReadonly && neovim.mode != 'insert'"
     },
+    {
+        "key": "f12",
+        "command": "-editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !editorReadonly"
+    },
+    // References
+    {
+        "key": "g r",
+        "command": "references-view.findReferences",
+        "when": "editorHasReferenceProvider && editorTextFocus && !editorReadonly && neovim.mode != 'insert'"
+    },
+    // References 다음, 이전
     {
         "key": "] r",
         "command": "references-view.next",
@@ -111,6 +187,7 @@
         "command": "-references-view.prev",
         "when": "reference-list.hasResult && references-view.canNavigate"
     },
+    // Diagnostics
     {
         "key": "] q",
         "command": "editor.action.marker.next",
@@ -131,6 +208,7 @@
         "command": "-editor.action.marker.prev",
         "when": "editorFocus"
     },
+    // Search
     {
         "key": "] s",
         "command": "search.action.focusNextSearchResult",
@@ -151,6 +229,7 @@
         "command": "-search.action.focusPreviousSearchResult",
         "when": "hasSearchResult || inSearchEditor"
     },
+    // Changes
     {
         "key": "] c",
         "command": "workbench.action.editor.nextChange",
@@ -170,5 +249,79 @@
         "key": "[ c",
         "command": "workbench.action.editor.previousChange",
         "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0' && neovim.mode != 'insert'"
+    },
+    // Git status
+    {
+        "key": "ctrl+shift+g",
+        "command": "-workbench.view.scm",
+        "when": "workbench.scm.active"
+    },
+    {
+        "key": "space g s",
+        "command": "workbench.view.scm",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    // File explorer
+    {
+        "key": "space e",
+        "command": "workbench.view.explorer",
+        "when": "editorTextFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "shift+cmd+e",
+        "command": "-workbench.view.explorer",
+        "when": "viewContainer.workbench.view.explorer.enabled"
+    },
+    // Hide file explorer when focus on explorer
+    {
+        "key": "space e",
+        "command": "-workbench.action.closeSidebar",
+        "when": "filesExplorerFocus"
+    },
+    // Diff changes
+    {
+        "key": "alt+f5",
+        "command": "-workbench.action.compareEditor.nextChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "] c",
+        "command": "workbench.action.compareEditor.nextChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "shift+alt+f5",
+        "command": "-workbench.action.compareEditor.previousChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "[ c",
+        "command": "workbench.action.compareEditor.previousChange",
+        "when": "textCompareEditorVisible"
+    },
+    // Rename symbol
+    {
+        "key": "f2",
+        "command": "-editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "space g r n",
+        "command": "editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly && neovim.mode == 'normal'"
+    },
+    // Esc: clear vscode-neovim search results (highlight)
+    {
+        "key": "escape",
+        "command": "vscode-neovim.send",
+        "when": "editorTextFocus && neovim.mode != insert",
+        "args": ":nohl<cr>"
+    },
+    // Open vscode neovim config file
+    {
+        "key": "space c e",
+        "command": "vscode-neovim.send",
+        "when": "editorTextFocus && neovim.mode == 'normal'",
+        "args": ":e ~/.config/nvim/lua/vscode-neovim/config.lua<cr>"
     },
 ]
