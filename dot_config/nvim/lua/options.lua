@@ -93,10 +93,10 @@ vim.diagnostic.config({
       [vim.diagnostic.severity.HINT] = '󰌵',
     },
     -- linehl: 진단이 발생한 줄 전체의 배경색 하이라이트를 정의합니다.
-    linehl = {
-      -- 'ErrorMsg'는 Vim/Neovim에 내장된 하이라이트 그룹으로, 보통 빨간색 계열의 배경색을 가집니다.
-      [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
-    },
+    -- linehl = {
+    --   -- 'ErrorMsg'는 Vim/Neovim에 내장된 하이라이트 그룹으로, 보통 빨간색 계열의 배경색을 가집니다.
+    --   [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+    -- },
     -- numhl: 진단이 발생한 줄의 줄 번호(number column) 배경색 하이라이트를 정의합니다.
     numhl = {
       -- 'WarningMsg'는 Vim/Neovim에 내장된 하이라이트 그룹으로, 보통 노란색/주황색 계열의 배경색을 가집니다.
