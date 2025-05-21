@@ -149,23 +149,6 @@
         "key": "alt+cmd+b",
         "command": "-workbench.action.toggleAuxiliaryBar"
     },
-    // Go to definition
-    {
-        "key": "g d",
-        "command": "editor.action.revealDefinition",
-        "when": "editorHasDefinitionProvider && editorTextFocus && !editorReadonly && neovim.mode != 'insert'"
-    },
-    {
-        "key": "f12",
-        "command": "-editor.action.revealDefinition",
-        "when": "editorHasDefinitionProvider && editorTextFocus && !editorReadonly"
-    },
-    // References
-    {
-        "key": "g r",
-        "command": "references-view.findReferences",
-        "when": "editorHasReferenceProvider && editorTextFocus && !editorReadonly && neovim.mode != 'insert'"
-    },
     // References 다음, 이전
     {
         "key": "] r",
@@ -186,6 +169,17 @@
         "key": "shift+f4",
         "command": "-references-view.prev",
         "when": "reference-list.hasResult && references-view.canNavigate"
+    },
+    // Hierarchy
+    {
+        "key": "space g h",
+        "command": "references-view.showCallHierarchy",
+        "when": "editorHasCallHierarchyProvider"
+    },
+    {
+        "key": "shift+alt+h",
+        "command": "-references-view.showCallHierarchy",
+        "when": "editorHasCallHierarchyProvider"
     },
     // Diagnostics
     {
