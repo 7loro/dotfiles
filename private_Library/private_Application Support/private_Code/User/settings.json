@@ -24,7 +24,8 @@
   // },
   "dart.previewFlutterUiGuides": true,
   "[dart]": {
-    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": true,
     "editor.formatOnType": false,
     "editor.rulers": [
       150
@@ -62,7 +63,7 @@
   "github.copilot.chat.localeOverride": "ko",
   "github.copilot.chat.reviewSelection.instructions": [
     {
-      "text": "Use Korean for answer.",
+      "text": "Use Korean for answer. Answer concisely and professionally.",
       "type": "text"
     },
     {
@@ -72,13 +73,19 @@
   ],
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "text": "Use Korean for answer.",
+      "text": "Use Korean for answer. Answer concisely and professionally.",
       "type": "text"
     },
     {
       "text": "간결하게 대답하고, 전문성 있게 대답해.",
       "type": "text"
     }
+  ],
+  "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+    {
+      "text": "Use Korean. Answer concisely and professionally. Write detailed summary in description using markdown syntax. Write title in one line in 120 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: 신규 기능 구현",
+      "type": "text"
+    },
   ],
   "workbench.colorTheme": "Catppuccin Macchiato",
   "workbench.iconTheme": "material-icon-theme",
@@ -104,7 +111,7 @@
     "markdown": false,
     "scminput": false
   },
-  "git.blame.editorDecoration.enabled": true,
+  "git.blame.editorDecoration.enabled": false,
   "chat.agent.enabled": true,
   "sqltools.connections": [
     {
@@ -127,5 +134,100 @@
   "workbench.activityBar.location": "bottom",
   "window.commandCenter": false,
   "workbench.layoutControl.enabled": false,
-  "chat.commandCenter.enabled": false
+  "chat.commandCenter.enabled": false,
+  "search.seedWithNearestWord": true,
+  "search.seedOnFocus": true,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "errorLens.enabledDiagnosticLevels": [
+    "error",
+    "warning",
+    "info"
+  ],
+  "dart.debugExternalPackageLibraries": false,
+  "dart.debugSdkLibraries": false,
+  "better-comments.tags": [
+    {
+      "tag": "!",
+      "color": "#FF80AB",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "*!",
+      "color": "#FF80AB",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "warning",
+      "color": "#FF80AB",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "* warning",
+      "color": "#FF80AB",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "?",
+      "color": "#82B1FF",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "*?",
+      "color": "#82B1FF",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "todo",
+      "color": "#FF9E80",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "* todo",
+      "color": "#FF9E80",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "fixme",
+      "color": "#FFFF80",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "* fixme",
+      "color": "#FFFF80",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "note",
+      "color": "#F4FF81",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "* note",
+      "color": "#F4FF81",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    }
+  ],
+  "githubPullRequests.pushBranch": "always",
+  "custom-ui-style.electron": {
+    "frame": false,
+    "transparent": true,
+    "opacity": 0.92,
+  },
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gemini-2.5-pro",
+  "git.confirmSync": false,
+  "githubPullRequests.fileListLayout": "tree"
 }
