@@ -1,47 +1,29 @@
 // 키 바인딩을 이 파일에 넣어서 기본값 재정의
 [
-    // 열려있는 버퍼에서 탐색
     {
-        "key": "space space",
-        "command": "workbench.action.showAllEditorsByMostRecentlyUsed",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
+        "key": "shift+cmd+[",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "shift+cmd+]",
+        "command": "workbench.action.toggleAuxiliaryBar",
     },
     // 파일 검색
     {
         "key": "ctrl+p",
         "command": "-television.ToggleFileFinder"
     },
-    {
-        "key": "space s f",
-        "command": "television.ToggleFileFinder",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
-    },
     // Text Grep
     {
         "key": "ctrl+shift+f",
         "command": "-television.ToggleTextFinder"
-    },
-    {
-        "key": "space s g",
-        "command": "television.ToggleTextFinder",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
     },
     // Lazygit
     {
         "key": "cmd+g g",
         "command": "-lazygit.openLazygit"
     },
-    {
-        "key": "space l g",
-        "command": "lazygit.openLazygit",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
-    },
     // Quick fix (Code action)
-    {
-        "key": "space c a",
-        "command": "editor.action.quickFix",
-        "when": "editorHasCodeActionsProvider && editorTextFocus && !textCompareEditorActive && neovim.mode != 'insert'"
-    },
     {
         "key": "cmd+.",
         "command": "-editor.action.quickFix",
@@ -49,23 +31,11 @@
     },
     // Revert
     {
-        "key": "space h r",
-        "command": "git.revertSelectedRanges",
-        "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file' && neovim.mode != 'insert'"
-    },
-    {
         "key": "cmd+k cmd+r",
         "command": "-git.revertSelectedRanges",
         "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
     },
-    // Problems
-    {
-        "key": "space q",
-        "command": "workbench.action.problems.focus",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
-    },
     // Tab navigation
-    // Neovim 에서 키 설정
     {
         "key": "alt+cmd+right",
         "command": "-workbench.action.nextEditor"
@@ -75,26 +45,9 @@
         "command": "-workbench.action.previousEditor"
     },
     {
-        "key": "ctrl+j",
-        "command": "editor.action.triggerSuggest",
-        "when": "editorHasCompletionItemProvider && textInputFocus && neovim.mode == 'insert' && !suggestWidgetVisible"
-    },
-    {
         "key": "cmd+i",
         "command": "-editor.action.triggerSuggest",
         "when": "editorHasCompletionItemProvider && textInputFocus && neovim.mode != 'insert' && !suggestWidgetVisible"
-    },
-    {
-        "key": "ctrl+h",
-        "command": "workbench.action.navigateLeft"
-    },
-    {
-        "key": "ctrl+l",
-        "command": "workbench.action.navigateRight"
-    },
-    {
-        "key": "ctrl+k",
-        "command": "workbench.action.navigateUp"
     },
     {
         "key": "shift+cmd+[",
@@ -109,10 +62,6 @@
     {
         "key": "shift+cmd+[",
         "command": "-workbench.action.previousEditor"
-    },
-    {
-        "key": "shift+cmd+[",
-        "command": "workbench.action.toggleSidebarVisibility"
     },
     {
         "key": "cmd+b",
@@ -133,15 +82,10 @@
         "command": "-workbench.action.nextEditor"
     },
     {
-        "key": "shift+cmd+]",
-        "command": "workbench.action.toggleAuxiliaryBar"
-    },
-    {
         "key": "alt+cmd+b",
         "command": "-workbench.action.toggleAuxiliaryBar"
     },
     // References 다음, 이전
-    // neovim 에서 키 설정
     {
         "key": "f4",
         "command": "-references-view.next",
@@ -154,17 +98,11 @@
     },
     // Hierarchy
     {
-        "key": "space g h",
-        "command": "references-view.showCallHierarchy",
-        "when": "editorHasCallHierarchyProvider && editorTextFocus && neovim.mode != 'insert'"
-    },
-    {
         "key": "shift+alt+h",
         "command": "-references-view.showCallHierarchy",
         "when": "editorHasCallHierarchyProvider"
     },
     // Diagnostics
-    // neovim 에서 키 설정
     {
         "key": "alt+f8",
         "command": "-editor.action.marker.next",
@@ -176,7 +114,6 @@
         "when": "editorFocus"
     },
     // Search
-    // neovim 에서 키 설정
     {
         "key": "f4",
         "command": "-search.action.focusNextSearchResult",
@@ -188,7 +125,6 @@
         "when": "hasSearchResult || inSearchEditor"
     },
     // Changes
-    // neovim 에서 키 설정
     {
         "key": "alt+f5",
         "command": "-workbench.action.editor.nextChange",
@@ -205,17 +141,7 @@
         "command": "-workbench.view.scm",
         "when": "workbench.scm.active"
     },
-    {
-        "key": "space g s",
-        "command": "workbench.view.scm",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
-    },
     // File explorer
-    {
-        "key": "space e",
-        "command": "workbench.view.explorer",
-        "when": "editorTextFocus && neovim.mode == 'normal'"
-    },
     {
         "key": "shift+cmd+e",
         "command": "-workbench.view.explorer",
@@ -233,42 +159,20 @@
         "command": "-editor.action.rename",
         "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
     },
-    {
-        "key": "space g r n",
-        "command": "editor.action.rename",
-        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly && neovim.mode == 'normal'"
-    },
-    // Esc: clear vscode-neovim search results (highlight)
-    {
-        "key": "escape",
-        "command": "vscode-neovim.send",
-        "when": "editorTextFocus && neovim.mode != insert",
-        "args": ":nohl<cr>"
-    },
     // Open vscode neovim config file
-    {
-        "key": "space c e",
-        "command": "vscode-neovim.send",
-        "when": "editorTextFocus && neovim.mode == 'normal'",
-        "args": ":e ~/.config/nvim/lua/vscode-neovim/config.lua<cr>"
-    },
+    // {
+    //     "key": "space c e",
+    //     "command": "vscode-neovim.send",
+    //     "when": "editorTextFocus && neovim.mode == 'normal'",
+    //     "args": ":e ~/.config/nvim/lua/vscode-neovim/config.lua<cr>"
+    // },
     // Document symbol
-    {
-        "key": "space d s",
-        "command": "workbench.action.gotoSymbol",
-        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown && editorTextFocus && neovim.mode == 'normal'"
-    },
     {
         "key": "shift+cmd+o",
         "command": "-workbench.action.gotoSymbol",
         "when": "!accessibilityHelpIsShown && !accessibleViewIsShown"
     },
     // Workspace symbol
-    {
-        "key": "space w s",
-        "command": "workbench.action.showAllSymbols",
-        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown && editorTextFocus && neovim.mode == 'normal'"
-    },
     {
         "key": "cmd+t",
         "command": "-workbench.action.showAllSymbols"
@@ -280,8 +184,51 @@
         "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
     },
     {
-        "key": "space d f",
-        "command": "editor.action.formatDocument",
-        "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor && neovim.mode == 'normal'"
+        "key": "cmd+i",
+        "command": "-cloudcode.duetAI.showinEditor",
+        "when": "authLoggedIn && config.geminicodeassist.enable && editorTextFocus && shouldRegisterInEditorCommand && !inGeminiDiffView && !isInDiffEditor"
+    },
+    {
+        "key": "shift+f12",
+        "command": "-editor.action.goToReferences",
+        "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+        "key": "] c",
+        "command": "workbench.action.compareEditor.nextChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "alt+f5",
+        "command": "-workbench.action.compareEditor.nextChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "[ c",
+        "command": "workbench.action.compareEditor.previousChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "shift+alt+f5",
+        "command": "-workbench.action.compareEditor.previousChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "-vscode-neovim.send",
+        "when": "editorTextFocus && neovim.ctrlKeysNormal.w && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "-vscode-neovim.send",
+        "when": "editorTextFocus && neovim.ctrlKeysInsert.w && neovim.init && neovim.mode == 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    },
+    {
+        "key": "ctrl+,",
+        "command": "workbench.action.decreaseViewSize"
+    },
+    {
+        "key": "ctrl+.",
+        "command": "workbench.action.increaseViewSize"
     },
 ]
