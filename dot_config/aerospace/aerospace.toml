@@ -300,3 +300,6 @@ run = 'layout floating'
 if.app-id = 'com.piccoma.contentshub'
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-id = 'com.apple.iBooksX'
+run = 'layout floating'
