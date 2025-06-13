@@ -52,16 +52,16 @@ set relativenumber
 " consider camelCase and snake_case words when jumping between words
 
 " move to the beginning of the next word
-map w [w
+" map w [w
 
 " move to the end of the next word
-map e ]w
+" map e ]w
 
 " move to the beginning of the previous word
-map b [b
+" map b [b
 
 " move to the end of the previous word
-map <S-b> ]b
+" map <S-b> ]b
 
 " go to the left split
 map <C-h> <C-w>h
@@ -118,14 +118,14 @@ map <leader>rf <Action>(IntroduceField)
 map <leader>rs <Action>(ChangeSignature)
 map <leader>rr <Action>(Refactorings.QuickListPopupAction)
 
-map <leader>e, <Action>(GotoPreviousError)
-map <leader>e. <Action>(GotoNextError)
+map ]e <Action>(GotoNextError)
+map [e <Action>(GotoPreviousError)
 map <leader>lc <Action>(JumpToLastChange)
 map <leader>ll <Action>(RecentLocations)
-nmap <leader>f, <Action>(PreviousTab)
-nmap <leader>f. <Action>(NextTab)
-map <leader>m, <Action>(MethodUp)
-map <leader>m. <Action>(MethodDown)
+nmap <S-Tab> <Action>(PreviousTab)
+nmap <Tab> <Action>(NextTab)
+map [m <Action>(MethodUp)
+map ]m <Action>(MethodDown)
 " Next change, prev change 는 IDE 키보드 설정에서 변경함
 
 map <leader><leader> <Action>(ReformatCode)
