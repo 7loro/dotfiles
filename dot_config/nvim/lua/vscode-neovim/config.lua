@@ -39,6 +39,72 @@ vim.api.nvim_exec([[
   augroup END
 ]], false)
 
+-- 열려있는 버퍼에서 탐색 (Show All Editors By Most Recently Used)
+keymap("n", "<leader><leader>", "<cmd>lua require('vscode').action('workbench.action.showAllEditorsByMostRecentlyUsed')<CR>", { desc = "VSCode: Show all editors (MRU)" })
+
+-- 파일 검색 (Television File Finder)
+keymap("n", "<leader>sf", "<cmd>lua require('vscode').action('television.ToggleFileFinder')<CR>", { desc = "VSCode: Toggle File Finder" })
+
+-- Text Grep (Television Text Finder)
+keymap("n", "<leader>sg", "<cmd>lua require('vscode').action('television.ToggleTextFinder')<CR>", { desc = "VSCode: Toggle Text Finder" })
+
+-- Lazygit
+keymap("n", "<leader>lg", "<cmd>lua require('vscode').action('lazygit.openLazygit')<CR>", { desc = "VSCode: Open Lazygit" })
+
+-- Quick fix (Code action)
+keymap({ "n", "v" }, "<leader>ca", "<cmd>lua require('vscode').action('editor.action.quickFix')<CR>", { desc = "VSCode: Quick Fix / Code Action" })
+
+-- Revert selected ranges (Git)
+keymap({ "n", "v" }, "<leader>hr", "<cmd>lua require('vscode').action('git.revertSelectedRanges')<CR>", { desc = "VSCode: Git Revert Selected Ranges" })
+
+-- Problems (Focus problems view)
+keymap("n", "<leader>q", "<cmd>lua require('vscode').action('workbench.action.problems.focus')<CR>", { desc = "VSCode: Focus Problems View" })
+
+-- Trigger Suggest (Insert mode)
+keymap("i", "<C-j>", "<cmd>lua require('vscode').action('editor.action.triggerSuggest')<CR>", { desc = "VSCode: Trigger Suggest" })
+
+-- VS Code UI Navigation (using Neovim normal mode keys)
+keymap("n", "<C-h>", "<cmd>lua require('vscode').action('workbench.action.navigateLeft')<CR>", { desc = "VSCode: UI Navigate Left" })
+keymap("n", "<C-l>", "<cmd>lua require('vscode').action('workbench.action.navigateRight')<CR>", { desc = "VSCode: UI Navigate Right" })
+keymap("n", "<C-k>", "<cmd>lua require('vscode').action('workbench.action.navigateUp')<CR>", { desc = "VSCode: UI Navigate Up" })
+keymap("n", "<C-j>", "<cmd>lua require('vscode').action('workbench.action.navigateDown')<CR>", { desc = "VSCode: UI Navigate Down" })
+
+-- Show Call Hierarchy
+keymap({ "n", "v" }, "<leader>gh", "<cmd>lua require('vscode').action('references-view.showCallHierarchy')<CR>", { desc = "VSCode: Show Call Hierarchy" })
+
+-- References
+keymap({ "n", "v" }, "gr", "<cmd>lua require('vscode').action('editor.action.goToReferences')<CR>", { desc = "VSCode: Find References" })
+
+-- Git status (SCM view)
+keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('workbench.view.scm')<CR>", { desc = "VSCode: Show Git SCM View" })
+
+-- Show github view
+keymap("n", "<leader>gh", "<cmd>lua require('vscode').action('workbench.view.extension.github-pull-requests')<CR>", { desc = "VSCode: Show GitHub view" })
+
+-- File explorer
+keymap("n", "<leader>e", "<cmd>lua require('vscode').action('workbench.view.explorer')<CR>", { desc = "VSCode: Toggle File Explorer" })
+
+-- Rename symbol
+keymap("n", "<leader>grn", "<cmd>lua require('vscode').action('editor.action.rename')<CR>", { desc = "VSCode: Rename Symbol" })
+
+-- Clear vscode-neovim search results (highlight)
+keymap({ "n", "v", "c" }, "<Esc>", "<cmd>nohlsearch<CR><Esc>", { desc = "Clear search highlight & ESC" })
+
+-- Open vscode neovim config file (Example path)
+keymap("n", "<leader>ce", "<cmd>e ~/.config/nvim/lua/vscode-neovim/config.lua<CR>", { desc = "Edit VSCode-Neovim user config" }) -- 경로 확인 필요
+
+-- Document symbol
+keymap("n", "<leader>ds", "<cmd>lua require('vscode').action('workbench.action.gotoSymbol')<CR>", { desc = "VSCode: Go to Symbol in Document" })
+
+-- Workspace symbol
+keymap("n", "<leader>ws", "<cmd>lua require('vscode').action('workbench.action.showAllSymbols')<CR>", { desc = "VSCode: Show All Symbols in Workspace" })
+
+-- Format document
+keymap("n", "<leader>df", "<cmd>lua require('vscode').action('editor.action.formatDocument')<CR>", { desc = "VSCode: Format Document" })
+
+-- Toggle git blame
+keymap("n", "<leader>tb", "<cmd>lua require('vscode').action('gitlens.toggleFileBlame')<CR>", { desc = "VSCode: Toggle Git Blame" })
+
 -- better indent handling
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
@@ -68,6 +134,8 @@ keymap({ "n", "v" }, "]r", "<cmd>lua require('vscode').action('references-view.n
 -- Diagnostics
 keymap({ "n", "v" }, "[q", "<cmd>lua require('vscode').action('editor.action.marker.prev')<CR>", opts)
 keymap({ "n", "v" }, "]q", "<cmd>lua require('vscode').action('editor.action.marker.next')<CR>", opts)
+-- Search
+keymap({ "n", "v" }, "<leader>sw", "<cmd>lua require('vscode').action('workbench.action.findInFiles')<CR>", opts)
 
 -- 간단한 메시지 출력 테스트 (VSCode 내에서 Neovim이 로드되었는지 확인)
 vim.cmd([[autocmd VimEnter * echom "VSCode Neovim 설정이 로드되었습니다."]])
