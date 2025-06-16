@@ -82,7 +82,7 @@ keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('workbench.view.scm
 keymap("n", "<leader>ms", "<cmd>lua require('vscode').action('magit.status')<CR>", { desc = "VSCode: Show Magit status" })
 
 -- Show github view
-keymap("n", "<leader>gh", "<cmd>lua require('vscode').action('workbench.view.extension.github-pull-requests')<CR>", { desc = "VSCode: Show GitHub view" })
+keymap("n", "<leader>gH", "<cmd>lua require('vscode').action('workbench.view.extension.github-pull-requests')<CR>", { desc = "VSCode: Show GitHub view" })
 
 -- File explorer
 keymap("n", "<leader>e", "<cmd>lua require('vscode').action('workbench.view.explorer')<CR>", { desc = "VSCode: Toggle File Explorer" })
