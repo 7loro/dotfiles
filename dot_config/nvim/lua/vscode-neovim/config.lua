@@ -78,6 +78,9 @@ keymap({ "n", "v" }, "gr", "<cmd>lua require('vscode').action('editor.action.goT
 -- Git status (SCM view)
 keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('workbench.view.scm')<CR>", { desc = "VSCode: Show Git SCM View" })
 
+-- Magit status
+keymap("n", "<leader>ms", "<cmd>lua require('vscode').action('magit.status')<CR>", { desc = "VSCode: Show Magit status" })
+
 -- Show github view
 keymap("n", "<leader>gh", "<cmd>lua require('vscode').action('workbench.view.extension.github-pull-requests')<CR>", { desc = "VSCode: Show GitHub view" })
 
