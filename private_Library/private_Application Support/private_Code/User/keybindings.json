@@ -294,5 +294,24 @@
     {
         "key": "ctrl+u x",
         "command": "-magit.reset-hard"
-    }
+    },
+    // 에디터 말고 다른 패널에서 에디터로 포커스
+    // 왼쪽 창에서 ctrl + l 로 에디터로 포커스 이동
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.navigateRight",
+        "when": "viewContainer.workbench.view.explorer.enabled && !editorTextFocus"
+    },
+    // 아래 창에서 ctrl + k 로 에디터로 포커스 이동
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.navigateUp",
+        "when": "viewContainer.workbench.view.explorer.enabled && !editorTextFocus"
+    },
+    // 오른쪽 창에서 ctrl + h 로 에디터로 포커스 이동
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.navigateLeft",
+        "when": "auxiliaryBarFocus && !editorTextFocus"
+    },
 ]
