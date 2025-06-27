@@ -81,6 +81,12 @@
       "type": "text"
     }
   ],
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Answer concisely and professionally. Write in one line in 80 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: implement cross check viewer",
+      "type": "text"
+    },
+  ],
   "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
     {
       "text": "Use Korean. Answer concisely and professionally. Write detailed summary in description using markdown syntax. Write title in one line in 120 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: 신규 기능 구현",
@@ -229,5 +235,10 @@
   "gitlens.ai.model": "vscode",
   "gitlens.ai.vscode.model": "copilot:gemini-2.5-pro",
   "git.confirmSync": false,
-  "githubPullRequests.fileListLayout": "tree"
+  "githubPullRequests.fileListLayout": "tree",
+  "projectManager.tags": [
+    "Personal",
+    "Work",
+    "Sample"
+  ]
 }
