@@ -127,7 +127,7 @@ alt-b = 'workspace B' # Browsers
 alt-c = 'workspace C' # Chat apps
 alt-d = 'workspace D' # Development
 alt-n = 'workspace N' # Notes
-alt-m = 'workspace M' # Notes
+alt-m = 'workspace M' # Mail
 alt-p = 'workspace P' # Productivity
 alt-t = 'workspace T' # Terminal
 
@@ -145,6 +145,7 @@ alt-shift-b = 'move-node-to-workspace B'
 alt-shift-c = 'move-node-to-workspace C'
 alt-shift-d = 'move-node-to-workspace D'
 alt-shift-n = 'move-node-to-workspace N'
+alt-shift-m = 'move-node-to-workspace M'
 alt-shift-p = 'move-node-to-workspace P'
 alt-shift-t = 'move-node-to-workspace T'
 
@@ -244,6 +245,10 @@ run = 'move-node-to-workspace D'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail'
+run = 'move-node-to-workspace M'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
 run = 'move-node-to-workspace M'
 
 [[on-window-detected]]

@@ -240,5 +240,6 @@
     "Personal",
     "Work",
     "Sample"
-  ]
+  ],
+  "terminal.integrated.fontLigatures.enabled": true
 }
