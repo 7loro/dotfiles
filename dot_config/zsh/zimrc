@@ -43,6 +43,8 @@ zmodule zsh-users/zsh-autosuggestions
 zmodule aloxaf/fzf-tab
 # Autojump
 zmodule wting/autojump
+# zsh-vi-mode
+zmodule jeffreytse/zsh-vi-mode
 
 #
 # Themes

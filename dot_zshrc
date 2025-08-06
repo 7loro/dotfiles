@@ -161,6 +161,12 @@ function flutter-watch() {
 [[ -f /Users/casper/.config/.dart-cli-completion/zsh-config.zsh ]] && . /Users/casper/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+# Directory aliases
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
 # 업무용 환경변수
 if [ -f ~/.zsh_profile_work ]; then
   . ~/.zsh_profile_work
