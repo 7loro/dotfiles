@@ -14,6 +14,16 @@ fi
 
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
+
+# Atuin과 zsh-vi-mode 키 바인딩 충돌 해결
+function load_atuin_binding() {
+  eval . "$HOME/.atuin/bin/env"
+  eval "$(atuin init zsh)"
+
+  # zsh vi 명령 모드 (vicmd) 때도 입력 모드 (viins) 처럼 ctrl + r 로 atuin 검색 실행
+  bindkey -M vicmd '^r' atuin-search
+}
+zvm_after_init_commands+=(load_atuin_binding)
 # ===== Zim 관련 설정 end =====
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
