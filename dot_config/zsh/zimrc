@@ -50,3 +50,4 @@ zmodule jeffreytse/zsh-vi-mode
 # Themes
 #
 zmodule romkatv/powerlevel10k --use degit
+
