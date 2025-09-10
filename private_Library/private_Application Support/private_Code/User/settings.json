@@ -89,7 +89,7 @@
   ],
   "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
     {
-      "text": "Use Korean. Answer concisely and professionally. Write detailed summary in description using markdown syntax. Write title in one line in 120 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: 신규 기능 구현",
+      "text": "Use Korean. Answer concisely and professionally. Write detailed summary in description using markdown syntax. Write title in one line in 120 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: 신규 기능 구현. Also, include a section called # 수정 내용 as header and list each item with - as a bullet point.",
       "type": "text"
     },
   ],
@@ -241,5 +241,11 @@
     "Work",
     "Sample"
   ],
-  "terminal.integrated.fontLigatures.enabled": true
+  "terminal.integrated.fontLigatures.enabled": true,
+  "chat.mcp.discovery.enabled": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.g.dart,${capture}.freezed.dart"
+  },
+  "pubspec-assist.sortDependencies": false
 }
