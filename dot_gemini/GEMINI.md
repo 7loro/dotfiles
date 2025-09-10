@@ -40,7 +40,7 @@ State management logic in the Presentation layer (e.g., a Riverpod Notifier) sho
 All Git commit messages MUST adhere to the following format:
 
 -   The entire message must be a single line.
--   The line length should not exceed 80 characters.
+-   The line length should not exceed 100 characters.
 -   The message must be written in English.
 -   The message MUST start with one of the following lowercase type prefixes, followed by a colon and a space: `feat`, `fix`, `refactor`,
 `build`, `docs`, `style`, `test`.
@@ -86,7 +86,8 @@ All Git commit messages MUST adhere to the following format:
 
   ---
 
-Pull request 만들 때 goomba-hum 는 develop 으로, epub_viewer 모듈은 main 브랜치로 넣는 것으로 만들어줘.
+Pull request 만들 때 goomba-hum 는 develop 으로, epub_viewer 모듈은 main 브랜치로 넣는 것으로 만들되, stacked change 방식으로 base 브랜치가 따로 있으면 해당 브랜치로 넣는 것으로 만들어줘.
+필요한 경우 commit 을 만들되, 영문으로 작성해.
 Pull request 제목은 commit 을 참고하여, feat, fix, refactor 같은 키워드를 붙이고 한글로 작성해주고, 키워드는 영어로 유지해.
 Pull request 내용은 Pull Request Template 을 사용하되, 수정 내용을 한글로 작성해서 넣어줘.
 수정 내용은 현재 브랜치와 base 브랜치의 커밋 차이를 보고 내용들을 요약해서 정리해주고, PR 타이틀도 전체적인 수정 사항을 포함하여 정리하는 제목으로 작성해줘.
