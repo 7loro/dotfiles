@@ -2,6 +2,10 @@ Use Korean for answer. Answer concisely and professionally.
 I'm a senior android, flutter developer.
 Currently, mainly working on flutter mac os app.
 If you write a code, use korean for comments.
+If you write a code, one line max length is 150.
+If you write a code, apply trailing commas.
+If you write a dart code, please follow below rules.
+- do not use whereNotNull, instead use nonNulls
 
 ---
 
@@ -86,7 +90,10 @@ All Git commit messages MUST adhere to the following format:
 
   ---
 
-Pull request 만들 때 goomba-hum 는 develop 으로, epub_viewer 모듈은 main 브랜치로 넣는 것으로 만들되, stacked change 방식으로 base 브랜치가 따로 있으면 해당 브랜치로 넣는 것으로 만들어줘.
+PR 이라고만 요청 받으면, 아래 내용을 고려해서 작업해줘.
+
+현재 브랜치의 Local 수정사항이 있으면 커밋을 만들어줘.
+Pull request 만들 때 goomba-hum 는 develop 으로, epub_viewer 모듈은 main 브랜치로 넣는 것으로 만드는데, 현재 브랜치가 다른 브랜치에서 파생 된 것이면 stacked change 방식으로 base 브랜치를 적절히 설정해줘.
 필요한 경우 commit 을 만들되, 영문으로 작성해.
 Pull request 제목은 commit 을 참고하여, feat, fix, refactor 같은 키워드를 붙이고 한글로 작성해주고, 키워드는 영어로 유지해.
 Pull request 내용은 Pull Request Template 을 사용하되, 수정 내용을 한글로 작성해서 넣어줘.
@@ -95,5 +102,6 @@ Diagram 같은 내용을 같이 추가해줘도 좋아.
 gh pr create 커맨드 라인을 사용하고 `--assignee @me` 를 이용해서 담당자를 나로 설정해.
 pr 생성 시 템플릿 내용에 특수문자가 있으므로 아래 같은 에러가 발생할 수 있어. 임시 파일을 작업 공간 내에 pull_request.md 로 만들어서 작성하여 사용 후 삭제해.
 Error executing tool run_shell_command: Command substitution using $(), <(), or >() is not allowed for security reasons
+PR 은 draft 로  생성해줘.
 PR 생성 후에는 PR 주소를 화면에 출력해줘.
 
