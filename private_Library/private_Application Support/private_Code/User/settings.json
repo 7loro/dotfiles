@@ -150,8 +150,8 @@
     "warning",
     "info"
   ],
-  "dart.debugExternalPackageLibraries": false,
-  "dart.debugSdkLibraries": false,
+  "dart.debugExternalPackageLibraries": true,
+  "dart.debugSdkLibraries": true,
   "better-comments.tags": [
     {
       "tag": "!",
@@ -242,10 +242,17 @@
     "Sample"
   ],
   "terminal.integrated.fontLigatures.enabled": true,
-  "chat.mcp.discovery.enabled": true,
+  "chat.mcp.discovery.enabled": {
+    "claude-desktop": true,
+    "windsurf": true,
+    "cursor-global": true,
+    "cursor-workspace": true
+  },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.dart": "${capture}.g.dart,${capture}.freezed.dart"
   },
-  "pubspec-assist.sortDependencies": false
+  "pubspec-assist.sortDependencies": false,
+  "githubPullRequests.pullBranch": "never",
+  "git.ignoreRebaseWarning": true
 }

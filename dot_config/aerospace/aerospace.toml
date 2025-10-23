@@ -180,7 +180,7 @@ alt-shift-l = ['join-with right', 'mode main']
 alt-t = ['exec-and-forget open -a /opt/homebrew/bin/ghostty', 'mode main']
 alt-f = ['exec-and-forget open -a /System/Library/CoreServices/Finder.app', 'mode main']
 alt-n = ['exec-and-forget open -a /Applications/Obsidian.app', 'mode main']
-alt-b = ['exec-and-forget open -a /Applications/Arc.app', 'mode main']
+alt-b = ['exec-and-forget open -a /Applications/Zen.app', 'mode main']
 
 # Make all windows floating default
 
@@ -224,6 +224,10 @@ run = 'move-node-to-workspace B'
 
 [[on-window-detected]]
 if.app-id = 'com.mozilla.firefox'
+run = 'move-node-to-workspace B'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
 run = 'move-node-to-workspace B'
 
 ## Youtube music PWA
