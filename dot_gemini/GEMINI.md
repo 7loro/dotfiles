@@ -6,6 +6,7 @@ If you write a code, one line max length is 150.
 If you write a code, apply trailing commas.
 If you write a dart code, please follow below rules.
 - do not use whereNotNull, instead use nonNulls
+- do not use withOpacity as it is deprecated, instead use withValues
 
 ---
 
