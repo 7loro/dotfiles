@@ -83,7 +83,7 @@
   ],
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "Answer concisely and professionally. Write in one line in 80 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: implement cross check viewer",
+      "text": "Answer concisely and professionally. Write in one line in 80 characters. Use english. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: implement cross check viewer",
       "type": "text"
     },
   ],
