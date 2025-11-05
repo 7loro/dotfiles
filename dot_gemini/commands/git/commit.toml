@@ -1,0 +1,32 @@
+description = "Generates a Git commit based on changes."
+prompt = """
+Please make a commit based on the following git diff:
+!{git diff}
+
+Answer concisely and professionally.
+Write in one line in 80 characters.
+Use english.
+
+Follow these strict formatting guidelines:
+- Format: type: description
+- Add a space after the colon
+- use type from below types: feat, fix, refactor, build, docs, style, test, chore
+- Example: feat(auth): add user login functionality
+- Example: fix(database.js): resolve connection timeout issue
+- Example: chore(config): update environment variables
+
+Common types to use:
+- feat: new feature or functionality
+- fix: bug fix
+- chore: maintenance tasks, config changes
+- docs: documentation changes
+- style: code formatting, whitespace
+- refactor: code restructuring without behavior change
+- test: adding or updating tests
+- build: build related files. app version up.
+
+Keep the description concise and use imperative mood (e.g., "add" not "added").
+Make a git commit and echo git hash and commit message to output.
+
+{{args}}
+"""
