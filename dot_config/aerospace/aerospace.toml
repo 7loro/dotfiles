@@ -177,11 +177,13 @@ alt-shift-l = ['join-with right', 'mode main']
 
 [mode.apps.binding]
 # alt-t = ['exec-and-forget open -a /Applications/Warp.app', 'mode main']
-alt-t = ['exec-and-forget open -a /opt/homebrew/bin/ghostty', 'mode main']
+# alt-t = ['exec-and-forget open -a /opt/homebrew/bin/ghostty', 'mode main']
+alt-t = ['exec-and-forget open -a /opt/homebrew/bin/wezterm', 'mode main']
 # alt-f = ['exec-and-forget open -a /System/Library/CoreServices/Finder.app', 'mode main']
 alt-f = ['exec-and-forget open -a /Applications/ForkLift.app', 'mode main']
 alt-n = ['exec-and-forget open -a /Applications/Obsidian.app', 'mode main']
 alt-b = ['exec-and-forget open -a /Applications/Zen.app', 'mode main']
+alt-h = ['exec-and-forget open -a /Applications/Contents_Hub.app', 'mode main']
 
 # Make all windows floating default
 

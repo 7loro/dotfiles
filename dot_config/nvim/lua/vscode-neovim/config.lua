@@ -87,6 +87,9 @@ keymap("n", "<leader>gH", "<cmd>lua require('vscode').action('workbench.view.ext
 -- File explorer
 keymap("n", "<leader>e", "<cmd>lua require('vscode').action('workbench.view.explorer')<CR>", { desc = "VSCode: Toggle File Explorer" })
 
+-- Terminal
+keymap("n", "<leader>t", "<cmd>lua require('vscode').action('terminal.focus')<CR>", { desc = "VSCode: Focus terminal" })
+
 -- Rename symbol
 keymap("n", "<leader>grn", "<cmd>lua require('vscode').action('editor.action.rename')<CR>", { desc = "VSCode: Rename Symbol" })
 
