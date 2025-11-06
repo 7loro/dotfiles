@@ -1,5 +1,15 @@
+
+
 description = "Generates a Git commit based on changes."
 prompt = """
+Please check staged files are exist on the following git status:
+!{git status}
+
+If staged files are existed,
+Please make a commit based on the following git diff:
+!{git diff --staged}
+
+If staged files are not existed,
 Please make a commit based on the following git diff:
 !{git diff}
 
@@ -10,10 +20,12 @@ Use english.
 Follow these strict formatting guidelines:
 - Format: type: description
 - Add a space after the colon
-- use type from below types: feat, fix, refactor, build, docs, style, test, chore
-- Example: feat(auth): add user login functionality
-- Example: fix(database.js): resolve connection timeout issue
-- Example: chore(config): update environment variables
+- If {{args}} is provided (e.g., "feat", "fix"), use {{args}} as the 'type'.
+- Otherwise, choose the 'type' from the list below: feat, fix, refactor, build, docs, style, test, chore
+- after type: title should start with lowercase
+- Example: feat: add user login functionality
+- Example: fix: resolve connection timeout issue
+- Example: chore: update environment variables
 
 Common types to use:
 - feat: new feature or functionality
@@ -26,7 +38,11 @@ Common types to use:
 - build: build related files. app version up.
 
 Keep the description concise and use imperative mood (e.g., "add" not "added").
-Make a git commit and echo git hash and commit message to output.
+Make a git commit.
 
-{{args}}
+After make a git commit, print below informations with korean exception git commit message using markdown syntax.
+
+1. Summary of commit diff
+2. How commit title is decided
+3. git commit hash and commit message in one line.
 """
