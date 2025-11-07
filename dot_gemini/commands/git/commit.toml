@@ -1,5 +1,3 @@
-
-
 description = "Generates a Git commit based on changes."
 prompt = """
 Please check staged files are exist on the following git status:

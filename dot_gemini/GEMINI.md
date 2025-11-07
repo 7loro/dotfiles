@@ -8,6 +8,7 @@ If you write a dart code, please follow below rules.
 - do not use whereNotNull, instead use nonNulls
 - do not use withOpacity as it is deprecated, instead use withValues
 - do not use dart format . or dart fix --apply. those commands changes whole file. I want to make a small commit asap.
+- when use riverpod, Use Ref instead of xxxxxxRef which is deprecated in 3.0
 
 ---
 
