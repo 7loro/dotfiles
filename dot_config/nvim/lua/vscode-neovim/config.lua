@@ -140,6 +140,9 @@ keymap({ "n", "v" }, "]r", "<cmd>lua require('vscode').action('references-view.n
 -- Diagnostics
 keymap({ "n", "v" }, "[q", "<cmd>lua require('vscode').action('editor.action.marker.prev')<CR>", opts)
 keymap({ "n", "v" }, "]q", "<cmd>lua require('vscode').action('editor.action.marker.next')<CR>", opts)
+-- Edit locations
+keymap({ "n", "v" }, "[C", "<cmd>lua require('vscode').action('workbench.action.navigateBackInEditLocations')<CR>", opts)
+keymap({ "n", "v" }, "]C", "<cmd>lua require('vscode').action('workbench.action.navigateForwardInEditLocations')<CR>", opts)
 -- Search
 keymap({ "n", "v" }, "<leader>sw", "<cmd>lua require('vscode').action('workbench.action.findInFiles')<CR>", opts)
 
