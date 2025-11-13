@@ -93,7 +93,6 @@
       "type": "text"
     },
   ],
-  "workbench.colorTheme": "Catppuccin Macchiato",
   "workbench.iconTheme": "material-icon-theme",
   "zenMode.showTabs": "single",
   "editor.formatOnPaste": true,
@@ -254,5 +253,6 @@
   },
   "pubspec-assist.sortDependencies": false,
   "githubPullRequests.pullBranch": "never",
-  "git.ignoreRebaseWarning": true
+  "git.ignoreRebaseWarning": true,
+  "workbench.colorTheme": "Catppuccin Mocha"
 }
