@@ -75,6 +75,12 @@ keymap({ "n", "v" }, "<leader>gh", "<cmd>lua require('vscode').action('reference
 -- References
 keymap({ "n", "v" }, "gr", "<cmd>lua require('vscode').action('editor.action.goToReferences')<CR>", { desc = "VSCode: Find References" })
 
+-- Go to implementations
+keymap({ "n", "v" }, "gI", "<cmd>lua require('vscode').action('editor.action.goToImplementation')<CR>", { desc = "VSCode: Go to implemetations" })
+
+-- Peek hierarchy
+keymap({ "n", "v" }, "gH", "<cmd>lua require('vscode').action('editor.showCallHierarchy')<CR>", { desc = "VSCode: Peek Call Hierarchy" })
+
 -- Git status (SCM view)
 keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('workbench.view.scm')<CR>", { desc = "VSCode: Show Git SCM View" })
 
