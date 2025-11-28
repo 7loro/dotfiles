@@ -346,5 +346,15 @@
     {
         "key": "ctrl+i",
         "command": "workbench.action.navigateForwardInNavigationLocations"
+    },
+    {
+        "key": "cmd+f12",
+        "command": "-editor.action.goToImplementation",
+        "when": "editorHasImplementationProvider && editorTextFocus"
+    },
+    {
+        "key": "shift+alt+h",
+        "command": "-editor.showCallHierarchy",
+        "when": "editorHasCallHierarchyProvider && editorTextFocus && !inReferenceSearchEditor"
     }
 ]

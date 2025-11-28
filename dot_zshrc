@@ -184,3 +184,6 @@ if [ -f ~/.zsh_profile_personal ]; then
   . ~/.zsh_profile_personal
 fi
 
+
+# Added by Antigravity
+export PATH="/Users/casper/.antigravity/antigravity/bin:$PATH"
