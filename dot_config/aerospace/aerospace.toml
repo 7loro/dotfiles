@@ -291,15 +291,6 @@ run = 'layout floating'
 if.app-name-regex-substring = 'ForkLift'
 run = 'layout floating'
 
-# Contents hub float
-[[on-window-detected]]
-if.app-name-regex-substring = 'com.piccoma.contentshub'
-run = 'layout floating'
-
-[[on-window-detected]]
-if.app-name-regex-substring = 'com.piccoma.contentshub.stage'
-run = 'layout floating'
-
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = 'layout floating'
@@ -318,6 +309,10 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.piccoma.contentshub'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.piccoma.contentshub.stage'
 run = 'layout floating'
 
 [[on-window-detected]]
