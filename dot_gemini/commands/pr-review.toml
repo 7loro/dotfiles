@@ -1,0 +1,22 @@
+description = "Check github pull request and review"
+
+prompt = """
+Please provide a detailed pull request review on GitHub issue: {{args}}.
+
+Follow these steps:
+
+1. Use `gh pr view {{args}}` to pull the information of the PR.
+2. Use `gh pr diff {{args}}` to view the diff of the PR.
+3. Understand the intent of the PR using the PR description.
+4. If PR description is not detailed enough to understand the intent of the PR, make sure to note it in your review.
+5. Search the codebase if required.
+6. Use flutter mcp, context7 mcp if required.
+7. Write review in Korean.
+8. If all content is good, don't need to write a comment. Just let me know the result.
+9. Write a concise review of the PR, keeping in mind to encourage strong code quality and best practices. Do not post before asking to user.
+10. Must ask the user before post the review to the PR.
+11. Use `gh pr comment {{args}} --body {{review}}` to post the review to the PR.
+
+Remember to use the GitHub CLI (`gh`) with the Shell tool for all
+GitHub-related tasks.
+"""
