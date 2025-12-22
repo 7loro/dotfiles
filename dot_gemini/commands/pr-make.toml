@@ -1,0 +1,68 @@
+description = "Automates the process of committing changes, pushing branches, and creating a draft Pull Request with specific branching logic and templates."
+prompt = """
+Please perform a Pull Request (PR) workflow for the current changes: {{args}}. Follow these strict technical requirements:
+
+1. Commit and Push Logic
+Check Local Changes: If there are uncommitted local changes, create a commit using the /commit-make command. The commit message must be written in English.
+
+Remote Sync: If the current branch does not exist on the remote repository, push the branch.
+
+2. Base Branch Selection
+
+Stacked Changes: If the current branch was derived from a branch other than the defaults(develop or main), use the parent branch as the base (Stacked PR approach).
+
+3. PR Title and Content
+PR Title: Generate a title based on the commit history.
+
+Format: [Type] Title in Korean (e.g., feat: 로그인 기능 구현).
+
+Types must remain in English (feat, fix, refactor, chore, etc.).
+
+PR Content: > - Analyze the diff between the current branch and the base branch.
+
+Summarize the changes in Korean.
+
+Feel free to include a Mermaid diagram if it helps explain logic or flow changes.
+
+4. PR Creation Execution
+Template Handling: To avoid special character errors in the CLI, create a temporary file named pull_request.md in the workspace.
+
+Template Structure:
+
+```markdown
+## What does this PR do?
+
+-
+
+<!--
+## Dependent PR
+
+- https://github.kakaocorp.com/kjk/goomba-hub/pull/ Describe pr (Optional)
+
+-->
+
+<!--
+## Screenshots
+(Insert Mermaid code here if applicable)
+
+<table>
+  <tr>
+    <td align="center">Before</td>
+    <td align="center">After</td>
+  </tr>
+  <tr><td colspan="2">설명이 필요하지 않는 경우 제거</td></tr>
+  <tr>
+    <td align="center"><img width="350" alt="" src=""></td>
+    <td align="center"><img width="350" alt="" src=""></td>
+  </tr>
+</table>
+-->
+```
+CLI Command: Execute the PR creation using: gh pr create --draft --assignee @me --title "[Title]" --body-file pull_request.md --base [BaseBranch]
+
+Cleanup: Delete the pull_request.md file after the PR is successfully created.
+
+5. Final Output
+Display the final PR URL clearly in the chat.
+Display the PR title and description.
+"""
