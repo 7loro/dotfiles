@@ -36,7 +36,6 @@
     "editor.tabCompletion": "onlySnippets",
     "editor.wordBasedSuggestions": "off"
   },
-  "vim.smartRelativeLine": true,
   "editor.lineNumbers": "relative",
   "editor.multiCursorModifier": "ctrlCmd",
   "[python]": {
@@ -57,41 +56,20 @@
   "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
   "terminal.integrated.fontSize": 14,
   "editor.formatOnSaveMode": "modifications",
-  "zenMode.centerLayout": false, 
+  "zenMode.centerLayout": false,
   "zenMode.hideLineNumbers": false,
   "chat.editor.fontFamily": "D2CodingLigature Nerd Font",
+  "chat.useAgentsMdFile": true,
   "github.copilot.chat.localeOverride": "ko",
-  "github.copilot.chat.reviewSelection.instructions": [
-    {
-      "text": "Use Korean for answer. Answer concisely and professionally.",
-      "type": "text"
-    },
-    {
-      "text": "간결하게 대답하고, 전문성 있게 대답해.",
-      "type": "text"
-    }
-  ],
-  "github.copilot.chat.codeGeneration.instructions": [
-    {
-      "text": "Use Korean for answer. Answer concisely and professionally.",
-      "type": "text"
-    },
-    {
-      "text": "간결하게 대답하고, 전문성 있게 대답해.",
-      "type": "text"
-    }
-  ],
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "Answer concisely and professionally. Write in one line in 80 characters. Use english. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: implement cross check viewer",
-      "type": "text"
+      "file": ".vscode/make-commit.md"
     },
   ],
   "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
     {
-      "text": "Use Korean. Answer concisely and professionally. Write detailed summary in description using markdown syntax. Write title in one line in 120 characters. Start with one of feat, fix, refactor, build, docs, style, test. For example, feat: 신규 기능 구현. Also, include a section called # 수정 내용 as header and list each item with - as a bullet point.",
-      "type": "text"
-    },
+      "file": ".vscode/make-pr.md"
+    }
   ],
   "workbench.iconTheme": "material-icon-theme",
   "zenMode.showTabs": "single",
@@ -102,7 +80,6 @@
   "editor.rulers": [
     150
   ],
-  "continue.telemetryEnabled": false,
   "telemetry.telemetryLevel": "off",
   "workbench.colorCustomizations": {
     "terminal.background": "#00000000"
@@ -118,22 +95,6 @@
   },
   "git.blame.editorDecoration.enabled": false,
   "chat.agent.enabled": true,
-  "sqltools.connections": [
-    {
-      "mysqlOptions": {
-        "authProtocol": "default",
-        "enableSsl": "Disabled"
-      },
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 19306,
-      "driver": "MySQL",
-      "name": "goomba",
-      "username": "remaster",
-      "password": "kT#i&ZXpU%dc",
-      "database": "remaster"
-    }
-  ],
   "git.blame.statusBarItem.enabled": true,
   "dart.devToolsBrowser": "default",
   "workbench.activityBar.location": "bottom",
@@ -254,5 +215,5 @@
   "pubspec-assist.sortDependencies": false,
   "githubPullRequests.pullBranch": "never",
   "git.ignoreRebaseWarning": true,
-  "workbench.colorTheme": "Catppuccin Mocha"
+  "workbench.colorTheme": "Catppuccin Mocha",
 }
