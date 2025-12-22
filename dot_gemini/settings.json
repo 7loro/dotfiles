@@ -27,6 +27,9 @@
       }
     }
   },
+  "mcp": {
+    "excluded": [ "playwright", "context7" ]
+  },
   "ui": {
     "showMemoryUsage": true,
     "showLineNumbers": true,
