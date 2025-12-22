@@ -147,6 +147,9 @@ function yy() {
 # ---- RG (Ripgrep) ----
 alias rg="rg -S"
 
+# Grep 색상 변경
+export GREP_COLOR="01;32"
+
 # ---- Flutter run ----
 function flutter-run() {
   tmux send-keys "fvm flutter pub get;dart run build_runner build --delete-conflicting-outputs;fvm flutter run -d macos $1 $2 $3 $4 --pid-file=/tmp/tf1.pid | tee flutter.log" Enter \;
