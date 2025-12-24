@@ -1,0 +1,24 @@
+gui:
+  showCommandLog: true
+  showBottomLine: true
+customCommands:
+- key: 'G'
+  description: 'Gemini AI 커밋'
+  context: 'files'
+  loadingText: 'Gemini가 메시지를 생성 중입니다...'
+  prompts:
+    - type: 'input'
+      title: '커밋 타입을 입력하세요 (feat, fix, docs...)'
+      initialValue: ''
+    - type: 'menuFromCommand'
+      title: '커밋 메시지 선택 (마지막 5개)'
+      # 1. bash -c 를 사용하여 파이프(|)가 확실히 쉘에서 실행되도록 합니다.
+      # 2. grep을 추가하여 'refactor:', 'feat:' 등으로 시작하는 줄만 먼저 거릅니다.
+      command: >
+        bash -c "gemini -y -m gemini-3-flash-preview '/commit-msg-make {{index .PromptResponses 0}}' 2>/dev/null | tail -n 5"
+      # 3. 'filter'를 사용하여 로그 메시지(YOLO...)를 무시하고 
+      # 실제 메시지 패턴(type: message)만 메뉴에 표시합니다.
+      filter: '(?P<msg>^[a-z]+: .*)'
+      valueFormat: '{{ .msg }}'
+      labelFormat: '{{ .msg }}'
+  command: "git commit -m '{{index .PromptResponses 1}}'"
