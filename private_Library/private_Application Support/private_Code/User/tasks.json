@@ -32,6 +32,20 @@
             }
         },
         {
+            "label": "gemini - PR 생성",
+            "type": "shell",
+            "command": "gemini -y '/pr-make'",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true,
+            }
+        },
+        {
             "label": "gemini - 코드 리뷰",
             "type": "shell",
             "command": "gemini -y '/code-review'",
