@@ -12,23 +12,20 @@
         "@playwright/mcp@latest"
       ]
     },
-    "dart": {
-      "command": "dart",
-      "args": [
-        "mcp-server",
-        "--experimental-mcp-server"
-      ]
-    },
     "context7": {
       "httpUrl": "https://mcp.context7.com/mcp",
       "headers": {
         "CONTEXT7_API_KEY": "$CONTENXT7_API_KEY",
         "Accept": "application/json, text/event-stream"
       }
+    },
+    "google_workspace": {
+      "command": "uvx",
+      "args": [ "workspace-mcp", "--tools", "slides" ]
     }
   },
   "mcp": {
-    "excluded": [ "playwright", "context7" ]
+    "excluded": [ "playwright", "context7", "google_workspace" ]
   },
   "ui": {
     "showMemoryUsage": true,

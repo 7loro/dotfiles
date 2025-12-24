@@ -14,7 +14,7 @@ Stacked Changes: If the current branch was derived from a branch other than the 
 3. PR Title and Content
 PR Title: Generate a title based on the commit history.
 
-Format: [Type] Title in Korean (e.g., feat: 로그인 기능 구현).
+Format: type: Title in Korean (e.g., feat: 로그인 기능 구현).
 
 Types must remain in English (feat, fix, refactor, chore, etc.).
 
