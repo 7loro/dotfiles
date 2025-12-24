@@ -356,5 +356,9 @@
         "key": "shift+alt+h",
         "command": "-editor.showCallHierarchy",
         "when": "editorHasCallHierarchyProvider && editorTextFocus && !inReferenceSearchEditor"
-    }
+    },
+    {
+        "key": "cmd+t",
+        "command": "workbench.action.tasks.runTask"
+    },
 ]
