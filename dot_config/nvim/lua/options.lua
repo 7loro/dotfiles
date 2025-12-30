@@ -80,7 +80,7 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 
 -- dd 로 복사되는 것 방지
-vim.keymap.set('n', 'dd', '"_dd')
+-- vim.keymap.set('n', 'dd', '"_dd')
 vim.keymap.set('x', 'd', '"_d')
 
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })

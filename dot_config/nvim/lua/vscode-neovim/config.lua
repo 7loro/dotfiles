@@ -45,8 +45,17 @@ keymap("n", "<leader><leader>", "<cmd>lua require('vscode').action('workbench.ac
 -- 파일 검색 (Television File Finder)
 keymap("n", "<leader>sf", "<cmd>lua require('vscode').action('television.ToggleFileFinder')<CR>", { desc = "VSCode: Toggle File Finder" })
 
+-- Git status 파일 검색 (Television)
+keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('television.ToggleGitStatus')<CR>", { desc = "VSCode: Toggle Git Status" })
+
 -- Text Grep (Television Text Finder)
 keymap("n", "<leader>sg", "<cmd>lua require('vscode').action('television.ToggleTextFinder')<CR>", { desc = "VSCode: Toggle Text Finder" })
+
+-- Text Grep with current selection (Television Text Finder)
+keymap("v", "<leader>sg", "<cmd>lua require('vscode').action('television.ToggleTextFinderWithSelection')<CR>", { desc = "VSCode: Toggle Text Finder" })
+
+-- Git status (SCM view) 일단 ctrl+shift+g vscode 기본 단축키로 사용
+-- keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('workbench.view.scm')<CR>", { desc = "VSCode: Show Git SCM View" })
 
 -- Lazygit
 keymap("n", "<leader>lg", "<cmd>lua require('vscode').action('lazygit.openLazygit')<CR>", { desc = "VSCode: Open Lazygit" })
@@ -80,9 +89,6 @@ keymap({ "n", "v" }, "gI", "<cmd>lua require('vscode').action('editor.action.goT
 
 -- Peek hierarchy
 keymap({ "n", "v" }, "gH", "<cmd>lua require('vscode').action('editor.showCallHierarchy')<CR>", { desc = "VSCode: Peek Call Hierarchy" })
-
--- Git status (SCM view)
-keymap("n", "<leader>gs", "<cmd>lua require('vscode').action('workbench.view.scm')<CR>", { desc = "VSCode: Show Git SCM View" })
 
 -- Magit status
 keymap("n", "<leader>ms", "<cmd>lua require('vscode').action('magit.status')<CR>", { desc = "VSCode: Show Magit status" })
