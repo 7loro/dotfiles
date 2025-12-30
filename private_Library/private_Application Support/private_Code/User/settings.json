@@ -216,4 +216,6 @@
   "githubPullRequests.pullBranch": "never",
   "git.ignoreRebaseWarning": true,
   "workbench.colorTheme": "Catppuccin Mocha",
+  "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
+  "githubPullRequests.showPullRequestNumberInTree": true,
 }

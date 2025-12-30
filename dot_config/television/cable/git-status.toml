@@ -1,0 +1,18 @@
+[metadata]
+name = "git-status"
+description = "A channel to select files from git status commands"
+requirements = ["git"]
+
+[source]
+command = "git status --porcelain"
+output = "{split: :2}"
+
+[preview]
+command = '''
+f=$(echo '{}' | cut -c 4-);
+if [ "$(echo '{}' | cut -c 1-2)" = "??" ]; then
+    bat --color=always --style=plain "$f";
+else
+    git diff HEAD --color=always -- "$f" | bat --color=always --style=plain -l diff;
+fi
+'''
