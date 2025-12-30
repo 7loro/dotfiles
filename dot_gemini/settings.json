@@ -22,6 +22,17 @@
     "google_workspace": {
       "command": "uvx",
       "args": [ "workspace-mcp", "--tools", "slides" ]
+    },
+    "mcp-obsidian": {
+      "command": "uvx",
+      "args": [
+        "mcp-obsidian"
+      ],
+      "env": {
+        "OBSIDIAN_API_KEY": "$OBSIDIAN_MCP_API_KEY",
+        "OBSIDIAN_HOST": "$OBSIDIAN_MCP_HOST",
+        "OBSIDIAN_PORT": "$OBSIDIAN_MCP_PORT"
+      }
     }
   },
   "mcp": {
