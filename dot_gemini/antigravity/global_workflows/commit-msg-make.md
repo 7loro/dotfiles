@@ -1,5 +1,7 @@
-description = "Generates 5 distinct Git commit messages based ONLY on staged changes."
-prompt = """
+---
+description: Generates 5 distinct Git commit messages based ONLY on staged changes.
+---
+
 Analyze ONLY the provided staged changes and generate exactly 5 distinct commit message candidates.
 
 [Context]
@@ -34,4 +36,3 @@ feat: implement jwt token verification middleware
 feat: enable secure password hashing for new users
 feat: refactor session management for better scalability
 feat: update auth service to handle oauth2 callbacks
-"""

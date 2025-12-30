@@ -1,5 +1,7 @@
-description = "Generates a Git commit based on changes."
-prompt = """
+---
+description: Generates a Git commit based on changes.
+---
+
 Please check staged files are exist on the following git status:
 !{git status}
 
@@ -43,4 +45,3 @@ After make a git commit, print below informations with korean exception git comm
 1. Summary of commit diff
 2. How commit title is decided
 3. git commit hash and commit message in one line.
-"""

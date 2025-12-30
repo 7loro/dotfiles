@@ -158,5 +158,14 @@ keymap({ "n", "v" }, "]C", "<cmd>lua require('vscode').action('workbench.action.
 -- Search
 keymap({ "n", "v" }, "<leader>sw", "<cmd>lua require('vscode').action('workbench.action.findInFiles')<CR>", opts)
 
+-- antigravity 설정
+-- Agent hunk (수정사항 제안 다음/이전)
+keymap({ "n", "v" }, "[h", "<cmd>lua require('vscode').action('antigravity.prioritized.agentFocusPreviousHunk')<CR>", opts)
+keymap({ "n", "v" }, "]h", "<cmd>lua require('vscode').action('antigravity.prioritized.agentFocusNextHunk')<CR>", opts)
+
+-- Agent file (수정사항 제안 파일 다음/이전)
+keymap({ "n", "v" }, "[f", "<cmd>lua require('vscode').action('antigravity.prioritized.agentFocusPreviousFile')<CR>", opts)
+keymap({ "n", "v" }, "]f", "<cmd>lua require('vscode').action('antigravity.prioritized.agentFocusNextFile')<CR>", opts)
+
 -- 간단한 메시지 출력 테스트 (VSCode 내에서 Neovim이 로드되었는지 확인)
 vim.cmd([[autocmd VimEnter * echom "VSCode Neovim 설정이 로드되었습니다."]])
