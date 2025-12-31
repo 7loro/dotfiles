@@ -1,9 +1,11 @@
-description = "Automates the process of committing changes, pushing branches, and creating a draft Pull Request with specific branching logic and templates."
-prompt = """
+---
+description: Automates the process of committing changes, pushing branches, and creating a draft Pull Request with specific branching logic and templates.
+---
+
 Please perform a Pull Request (PR) workflow for the current changes: {{args}}. Follow these strict technical requirements:
 
 1. Commit and Push Logic
-Check Local Changes: If there are uncommitted local changes, create a commit using the /commit-make command. The commit message must be written in English.
+Check Local Changes: If there are uncommitted local changes, create a commit using the /commit-make command. The commit message must be written in Korean.
 
 Remote Sync: If the current branch does not exist on the remote repository, push the branch.
 
@@ -65,4 +67,3 @@ Cleanup: Delete the pull_request.md file after the PR is successfully created.
 5. Final Output
 Display the final PR URL clearly in the chat.
 Display the PR title and description.
-"""
