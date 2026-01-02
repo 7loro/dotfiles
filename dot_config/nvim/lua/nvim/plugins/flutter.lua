@@ -54,6 +54,27 @@ return {
               command = paths.flutter_bin,
               args = { 'debug-adapter' },
             }
+            -- VS Code의 launch.json 설정을 여기에 추가합니다.
+            dap.configurations.dart = {
+              {
+                type = 'dart',
+                request = 'launch',
+                name = 'Debug (stage)',
+                -- VS Code의 args 배열을 그대로 Lua 테이블로 옮깁니다.
+                args = {
+                  "--flavor", "stage",
+                  "--dart-define", "FLAVOR=stage",
+                },
+                -- fvm을 사용하는 경우 프로젝트 루트를 지정해주는 것이 좋습니다.
+                cwd = "${workspaceFolder}",
+              },
+              {
+                type = 'dart',
+                request = 'launch',
+                name = 'Debug (real)',
+                cwd = "${workspaceFolder}",
+              }
+            }
             -- dap.configurations.dart = {
             --   {
             --     type = 'dart',
