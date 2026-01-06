@@ -20,7 +20,7 @@
     },
     "google_workspace": {
       "command": "uvx",
-      "args": [ "workspace-mcp", "--tools", "slides" ]
+      "args": [ "workspace-mcp", "--tools", "slides", "calendar" ]
     },
     "mcp-obsidian": {
       "command": "uvx",
@@ -35,7 +35,7 @@
     }
   },
   "mcp": {
-    "excluded": [ "playwright", "context7", "google_workspace" ]
+    "excluded": [ "playwright", "context7" ]
   },
   "ui": {
     "showMemoryUsage": true,
