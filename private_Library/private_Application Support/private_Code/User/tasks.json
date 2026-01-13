@@ -83,5 +83,17 @@
                 "clear": true,
             }
         },
+        {
+            "label": "Git submodule update recursive",
+            "type": "shell",
+            "command": "git submodule update --init --recursive --force",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+            }
+        },
     ]
 }
