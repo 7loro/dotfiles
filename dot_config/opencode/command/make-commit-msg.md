@@ -1,0 +1,40 @@
+---
+description: Generates 5 distinct Git commit messages based ONLY on staged changes.
+agent: build
+model: google-vertex/gemini-3-flash-preview
+---
+
+Analyze ONLY the provided staged changes and generate exactly 5 distinct commit message candidates.
+
+[Context]
+Staged Changes (The ONLY source for analysis):
+!{git diff --staged}
+
+[MANDATORY TYPE OVERRIDE]
+If '$ARGUMENTS' is provided (not empty), you MUST use '$ARGUMENTS' as the 'type' for EVERY SINGLE candidate.
+DO NOT ignore '$ARGUMENTS'. Even if the changes look like a different type, you MUST force the type to be '$ARGUMENTS'.
+If '$ARGUMENTS' is empty, choose from: feat, fix, refactor, build, docs, style, test, chore.
+
+[Strict Rules]
+1. Source Material: ONLY use the provided 'git diff --staged'. IGNORE any previous commits or current branch history.
+2. Output Format: Output ONLY the 5 commit messages, one per line. No numbers, no markdown, no bold.
+3. Structure: {type}: {description}
+4. Length: Each line under 80 characters.
+5. Language: korean only.
+6. Case: Description after colon must start with a lowercase letter.
+7. Mood: Use the imperative mood (e.g., "add", "fix", "update").
+
+[Diversity of Candidates]
+Generate 5 messages from different perspectives using the forced type '$ARGUMENTS':
+1. High-level functional summary.
+2. Specific technical implementation detail.
+3. Impact-based (what this change enables or fixes).
+4. Code structure/Refinement perspective.
+5. File-specific focus (primary module changed).
+
+Example Output (if $ARGUMENTS is 'feat'):
+feat: add user authentication logic to login controller
+feat: implement jwt token verification middleware
+feat: enable secure password hashing for new users
+feat: refactor session management for better scalability
+feat: update auth service to handle oauth2 callbacks
