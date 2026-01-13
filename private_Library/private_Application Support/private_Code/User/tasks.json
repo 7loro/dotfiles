@@ -74,13 +74,15 @@
         {
             "label": "Flutter build_runner",
             "type": "shell",
-            "command": "dart run build_runner build --delete-conflicting-outputs",
+            "command": "dart run build_runner build --delete-conflicting-outputs; exit",
             "problemMatcher": [],
             "presentation": {
                 "echo": true,
-                "reveal": "silent",
+                "reveal": "always",
+                "panel": "dedicated",
                 "focus": false,
                 "clear": true,
+                "close": true,
             }
         },
         {
