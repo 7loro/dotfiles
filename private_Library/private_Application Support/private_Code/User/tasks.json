@@ -66,9 +66,11 @@
             "problemMatcher": [],
             "presentation": {
                 "echo": true,
-                "reveal": "silent",
+                "reveal": "always",
+                "panel": "dedicated",
                 "focus": false,
                 "clear": true,
+                "close": true,
             }
         },
         {
