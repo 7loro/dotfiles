@@ -59,5 +59,29 @@
                 "clear": true,
             }
         },
+        {
+            "label": "Flutter i18n",
+            "type": "shell",
+            "command": "flutter gen-l10n",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+            }
+        },
+        {
+            "label": "Flutter build_runner",
+            "type": "shell",
+            "command": "dart run build_runner build --delete-conflicting-outputs",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+            }
+        },
     ]
 }
