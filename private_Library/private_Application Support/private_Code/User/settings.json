@@ -218,4 +218,7 @@
   "workbench.colorTheme": "Catppuccin Mocha",
   "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
   "githubPullRequests.showPullRequestNumberInTree": true,
+  "workbench.editorAssociations": {
+    "git-rebase-todo": "gitlens.rebase"
+  },
 }
