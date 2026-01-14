@@ -1,0 +1,34 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "catppuccin",
+  "autoupdate": true,
+  "plugin": [
+  ],
+  "mcp": {
+    "dart-mcp-server": {
+      "type": "local",
+      "command": [ "dart", "mcp-server", "--force-roots-fallback" ]
+    },
+    "mcp-obsidian": {
+      "type": "local",
+      "command": [ "uvx", "mcp-obsidian" ],
+      "environment": {
+        "OBSIDIAN_API_KEY": "{env:OBSIDIAN_MCP_API_KEY}",
+        "OBSIDIAN_HOST": "{env:OBSIDIAN_MCP_HOST}",
+        "OBSIDIAN_PORT": "{env:OBSIDIAN_MCP_PORT}"
+      }
+    },
+    "google_workspace": {
+      "type": "local",
+      "command": [ "uvx", "workspace-mcp", "--tools", "slides" ]
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
+        "Accept": "application/json, text/event-stream"
+      }
+    }
+  }
+}
