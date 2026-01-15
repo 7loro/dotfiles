@@ -30,5 +30,23 @@
         "Accept": "application/json, text/event-stream"
       }
     }
+  },
+  "permission": {
+    "mcp-obsidian": "deny",
+    "skill": {
+      "obsidian*": "deny",
+      "pkm-work": "deny"
+    }
+  },
+  "agent": {
+    "pkm": {
+      "permission": {
+        "skill": {
+          "obsidian*": "allow",
+          "pkm-*": "allow"
+        },
+        "mcp-obsidian": "allow"
+      }
+    }
   }
 }

@@ -1,0 +1,224 @@
+{
+    "editor.accessibilitySupport": "off",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.env.osx": {
+        "FIG_NEW_SESSION": "1"
+    },
+    "terminal.integrated.profiles.osx": {
+        "rosetta": {
+            "args": [
+                "-x86_64",
+                "zsh",
+                "-l"
+            ],
+            "overrideName": true,
+            "path": "arch"
+        }
+    },
+    "window.zoomLevel": 2,
+    "editor.unicodeHighlight.nonBasicASCII": false,
+    "dart.previewFlutterUiGuides": true,
+    "[dart]": {
+        "editor.defaultFormatter": "Dart-Code.dart-code",
+        "editor.formatOnSave": true,
+        "editor.formatOnType": false,
+        "editor.rulers": [
+            150
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "editor.lineNumbers": "relative",
+    "editor.multiCursorModifier": "ctrlCmd",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "git.openRepositoryInParentFolders": "never",
+    "editor.minimap.enabled": false,
+    "editor.fontSize": 14,
+    "editor.fontFamily": "D2CodingLigature Nerd Font",
+    "dart.devToolsPort": 10999,
+    "security.workspace.trust.untrustedFiles": "open",
+    "extensions.ignoreRecommendations": true,
+    "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.lua",
+    "debug.console.fontFamily": "D2CodingLigature Nerd Font",
+    "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
+    "terminal.integrated.fontSize": 14,
+    "editor.formatOnSaveMode": "modifications",
+    "zenMode.centerLayout": false,
+    "zenMode.hideLineNumbers": false,
+    "chat.editor.fontFamily": "D2CodingLigature Nerd Font",
+    "chat.useAgentsMdFile": true,
+    "github.copilot.chat.localeOverride": "ko",
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "file": ".vscode/make-commit.md"
+        }
+    ],
+    "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+        {
+            "file": ".vscode/make-pr.md"
+        }
+    ],
+    "workbench.iconTheme": "material-icon-theme",
+    "zenMode.showTabs": "single",
+    "editor.formatOnPaste": true,
+    "dart.lineLength": 150,
+    "html.format.wrapLineLength": 150,
+    "editor.inlayHints.maximumLength": 150,
+    "editor.rulers": [
+        150
+    ],
+    "telemetry.telemetryLevel": "off",
+    "workbench.colorCustomizations": {
+        "terminal.background": "#00000000"
+    },
+    "terminal.integrated.gpuAcceleration": "off",
+    "window.titleBarStyle": "custom",
+    "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "git.blame.editorDecoration.enabled": false,
+    "chat.agent.enabled": true,
+    "git.blame.statusBarItem.enabled": true,
+    "dart.devToolsBrowser": "default",
+    "workbench.activityBar.location": "bottom",
+    "window.commandCenter": false,
+    "chat.commandCenter.enabled": false,
+    "search.seedWithNearestWord": true,
+    "search.seedOnFocus": true,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "diffEditor.ignoreTrimWhitespace": true,
+    "errorLens.enabledDiagnosticLevels": [
+        "error",
+        "warning",
+        "info"
+    ],
+    "dart.debugExternalPackageLibraries": true,
+    "dart.debugSdkLibraries": true,
+    "better-comments.tags": [
+        {
+            "tag": "!",
+            "color": "#FF80AB",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "*!",
+            "color": "#FF80AB",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "warning",
+            "color": "#FF80AB",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "* warning",
+            "color": "#FF80AB",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "?",
+            "color": "#82B1FF",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "*?",
+            "color": "#82B1FF",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "todo",
+            "color": "#FF9E80",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "* todo",
+            "color": "#FF9E80",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "fixme",
+            "color": "#FFFF80",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "* fixme",
+            "color": "#FFFF80",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "note",
+            "color": "#F4FF81",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+        {
+            "tag": "* note",
+            "color": "#F4FF81",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        }
+    ],
+    "githubPullRequests.pushBranch": "always",
+    "custom-ui-style.electron": {
+        "frame": false,
+        "transparent": true,
+        "opacity": 0.92
+    },
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gemini-2.5-pro",
+    "git.confirmSync": false,
+    "githubPullRequests.fileListLayout": "tree",
+    "projectManager.tags": [
+        "Personal",
+        "Work",
+        "Sample"
+    ],
+    "terminal.integrated.fontLigatures.enabled": true,
+    "chat.mcp.discovery.enabled": {
+        "claude-desktop": true,
+        "windsurf": true,
+        "cursor-global": true,
+        "cursor-workspace": true
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.dart": "${capture}.g.dart,${capture}.freezed.dart"
+    },
+    "pubspec-assist.sortDependencies": false,
+    "githubPullRequests.pullBranch": "never",
+    "git.ignoreRebaseWarning": true,
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
+    "githubPullRequests.showPullRequestNumberInTree": true,
+    "workbench.editorAssociations": {
+        "git-rebase-todo": "gitlens.rebase"
+    },
+    "cursor.cpp.disabledLanguages": [
+        "plaintext",
+        "markdown",
+        "scminput"
+    ],
+    "update.releaseTrack": "dev",
+    "update.mode": "silentlyApplyOnQuit"
+}

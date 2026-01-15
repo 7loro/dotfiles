@@ -1,5 +1,7 @@
 ---
 description: Generates 5 distinct Git commit messages based ONLY on staged changes.
+agent: build
+model: google-vertex/gemini-3-flash-preview
 ---
 
 Analyze ONLY the provided staged changes and generate exactly 5 distinct commit message candidates.
@@ -9,9 +11,9 @@ Staged Changes (The ONLY source for analysis):
 !{git diff --staged}
 
 [MANDATORY TYPE OVERRIDE]
-If '{{args}}' is provided (not empty), you MUST use '{{args}}' as the 'type' for EVERY SINGLE candidate.
-DO NOT ignore '{{args}}'. Even if the changes look like a different type, you MUST force the type to be '{{args}}'.
-If '{{args}}' is empty, choose from: feat, fix, refactor, build, docs, style, test, chore.
+If '$ARGUMENTS' is provided (not empty), you MUST use '$ARGUMENTS' as the 'type' for EVERY SINGLE candidate.
+DO NOT ignore '$ARGUMENTS'. Even if the changes look like a different type, you MUST force the type to be '$ARGUMENTS'.
+If '$ARGUMENTS' is empty, choose from: feat, fix, refactor, build, docs, style, test, chore.
 
 [Strict Rules]
 1. Source Material: ONLY use the provided 'git diff --staged'. IGNORE any previous commits or current branch history.
@@ -23,14 +25,14 @@ If '{{args}}' is empty, choose from: feat, fix, refactor, build, docs, style, te
 7. Mood: Use the imperative mood (e.g., "add", "fix", "update").
 
 [Diversity of Candidates]
-Generate 5 messages from different perspectives using the forced type '{{args}}':
+Generate 5 messages from different perspectives using the forced type '$ARGUMENTS':
 1. High-level functional summary.
 2. Specific technical implementation detail.
 3. Impact-based (what this change enables or fixes).
 4. Code structure/Refinement perspective.
 5. File-specific focus (primary module changed).
 
-Example Output (if {{args}} is 'feat'):
+Example Output (if $ARGUMENTS is 'feat'):
 feat: add user authentication logic to login controller
 feat: implement jwt token verification middleware
 feat: enable secure password hashing for new users

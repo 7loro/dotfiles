@@ -1,5 +1,7 @@
 ---
 description: Investigates and explains a user request
+agent: plan
+model: github-copilot/gpt-5.2
 ---
 
 # Gemini CLI: Explain Mode

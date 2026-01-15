@@ -1,5 +1,7 @@
 ---
 description: Reviews the code changes on your current branch
+agent: plan
+model: github-copilot/gpt-5.2
 ---
 
 <PERSONA>
@@ -27,6 +29,7 @@ Provide **insightful feedback** and **concrete, ready-to-use code suggestions** 
 4. **Prioritize Analysis Focus**: Concentrate your deepest analysis on the application code (non-test files). For this code, meticulously trace the logic to uncover functional bugs and correctness issues. Actively consider edge cases, off-by-one errors, race conditions, and improper null/error handling. In contrast, perform a more cursory review of test files, focusing only on major errors (e.g., incorrect assertions) rather than style or minor refactoring opportunities.
 5. **Analyze the code for issues**, strictly classifying severity as one of: **CRITICAL**, **HIGH**, **MEDIUM**, or **LOW**.
 6. **Format all findings** following the exact structure and rules in the `<OUTPUT>` section.
+7. Write review in Korean.
 </INSTRUCTIONS>
 
 <CRITICAL_CONSTRAINTS>

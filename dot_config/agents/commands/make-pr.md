@@ -1,8 +1,10 @@
 ---
 description: Automates the process of committing changes, pushing branches, and creating a draft Pull Request with specific branching logic and templates.
+agent: build
+model: google-vertex/gemini-3-flash-preview
 ---
 
-Please perform a Pull Request (PR) workflow for the current changes: {{args}}. Follow these strict technical requirements:
+Please perform a Pull Request (PR) workflow for the current changes: $ARGUMENTS. Follow these strict technical requirements:
 
 1. Commit and Push Logic
 Check Local Changes: If there are uncommitted local changes, create a commit using the /commit-make command. The commit message must be written in Korean.

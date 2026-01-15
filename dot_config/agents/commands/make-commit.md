@@ -1,5 +1,7 @@
 ---
 description: Generates a Git commit based on changes.
+agent: build
+model: google-vertex/gemini-3-flash-preview
 ---
 
 Please check staged files are exist on the following git status:
@@ -20,7 +22,7 @@ Write in one line in 80 characters.
 Follow these strict formatting guidelines:
 - Format: type: description
 - Add a space after the colon
-- If {{args}} is provided (e.g., "feat", "fix"), use {{args}} as the 'type'.
+- If $ARGUMENTS is provided (e.g., "feat", "fix"), use $ARGUMENTS as the 'type'.
 - Otherwise, choose the 'type' from the list below: feat, fix, refactor, build, docs, style, test, chore
 - after type: title should start with lowercase
 - Example: feat: 사용자 로그인 기능 구현
