@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+	sparsecheckout = true
+[remote "origin"]
+	url = https://github.com/vercel-labs/agent-skills
+	fetch = +refs/heads/*:refs/remotes/origin/*
