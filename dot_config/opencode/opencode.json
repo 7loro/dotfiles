@@ -3,6 +3,7 @@
   "theme": "catppuccin",
   "autoupdate": true,
   "plugin": [
+    "@franlol/opencode-md-table-formatter@0.0.3"
   ],
   "mcp": {
     "dart-mcp-server": {

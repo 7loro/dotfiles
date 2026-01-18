@@ -52,19 +52,6 @@
     "editor.formatOnSaveMode": "modifications",
     "zenMode.centerLayout": false,
     "zenMode.hideLineNumbers": false,
-    "chat.editor.fontFamily": "D2CodingLigature Nerd Font",
-    "chat.useAgentsMdFile": true,
-    "github.copilot.chat.localeOverride": "ko",
-    "github.copilot.chat.commitMessageGeneration.instructions": [
-        {
-            "file": ".vscode/make-commit.md"
-        }
-    ],
-    "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
-        {
-            "file": ".vscode/make-pr.md"
-        }
-    ],
     "workbench.iconTheme": "material-icon-theme",
     "zenMode.showTabs": "single",
     "editor.formatOnPaste": true,
@@ -74,29 +61,18 @@
     "editor.rulers": [
         150
     ],
-    "telemetry.telemetryLevel": "off",
     "workbench.colorCustomizations": {
         "terminal.background": "#00000000"
     },
     "terminal.integrated.gpuAcceleration": "off",
     "window.titleBarStyle": "custom",
-    "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
-    "github.copilot.enable": {
-        "*": true,
-        "plaintext": false,
-        "markdown": false,
-        "scminput": false
-    },
     "git.blame.editorDecoration.enabled": false,
-    "chat.agent.enabled": true,
     "git.blame.statusBarItem.enabled": true,
     "dart.devToolsBrowser": "default",
     "workbench.activityBar.location": "bottom",
     "window.commandCenter": false,
-    "chat.commandCenter.enabled": false,
     "search.seedWithNearestWord": true,
     "search.seedOnFocus": true,
-    "github.copilot.nextEditSuggestions.enabled": true,
     "diffEditor.ignoreTrimWhitespace": true,
     "errorLens.enabledDiagnosticLevels": [
         "error",
@@ -195,12 +171,6 @@
         "Sample"
     ],
     "terminal.integrated.fontLigatures.enabled": true,
-    "chat.mcp.discovery.enabled": {
-        "claude-desktop": true,
-        "windsurf": true,
-        "cursor-global": true,
-        "cursor-workspace": true
-    },
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
         "*.dart": "${capture}.g.dart,${capture}.freezed.dart"
