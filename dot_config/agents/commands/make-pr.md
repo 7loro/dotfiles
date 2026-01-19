@@ -1,7 +1,6 @@
 ---
 description: Automates the process of committing changes, pushing branches, and creating a draft Pull Request with specific branching logic and templates.
 agent: build
-model: google-vertex/gemini-3-flash-preview
 ---
 
 Please perform a Pull Request (PR) workflow for the current changes: $ARGUMENTS. Follow these strict technical requirements:

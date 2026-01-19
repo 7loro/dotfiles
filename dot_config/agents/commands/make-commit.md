@@ -1,7 +1,6 @@
 ---
 description: Generates a Git commit based on changes.
 agent: build
-model: google-vertex/gemini-3-flash-preview
 ---
 
 Please check staged files are exist on the following git status:

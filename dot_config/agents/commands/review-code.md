@@ -1,7 +1,6 @@
 ---
 description: Reviews the code changes on your current branch
 agent: plan
-model: github-copilot/gpt-5.2
 ---
 
 <PERSONA>

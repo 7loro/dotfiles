@@ -1,7 +1,6 @@
 ---
 description: Check github pull request and review
 agent: plan
-model: github-copilot/gpt-5.2
 ---
 
 Please provide a detailed pull request review on GitHub pull request: $ARGUMENTS.

@@ -1,7 +1,6 @@
 ---
 description: Generates 5 distinct Git commit messages based ONLY on staged changes.
 agent: build
-model: google-vertex/gemini-3-flash-preview
 ---
 
 Analyze ONLY the provided staged changes and generate exactly 5 distinct commit message candidates.
