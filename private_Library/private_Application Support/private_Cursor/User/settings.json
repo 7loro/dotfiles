@@ -190,5 +190,8 @@
         "scminput"
     ],
     "update.releaseTrack": "dev",
-    "update.mode": "silentlyApplyOnQuit"
+    "update.mode": "silentlyApplyOnQuit",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    }
 }
