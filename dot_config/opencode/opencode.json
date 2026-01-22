@@ -3,16 +3,24 @@
   "theme": "catppuccin",
   "autoupdate": true,
   "plugin": [
-    "@franlol/opencode-md-table-formatter@0.0.3"
+    "@franlol/opencode-md-table-formatter@0.0.3",
+    "oh-my-opencode"
   ],
   "mcp": {
     "dart-mcp-server": {
       "type": "local",
-      "command": [ "dart", "mcp-server", "--force-roots-fallback" ]
+      "command": [
+        "dart",
+        "mcp-server",
+        "--force-roots-fallback"
+      ]
     },
     "mcp-obsidian": {
       "type": "local",
-      "command": [ "uvx", "mcp-obsidian" ],
+      "command": [
+        "uvx",
+        "mcp-obsidian"
+      ],
       "environment": {
         "OBSIDIAN_API_KEY": "{env:OBSIDIAN_MCP_API_KEY}",
         "OBSIDIAN_HOST": "{env:OBSIDIAN_MCP_HOST}",
@@ -21,7 +29,12 @@
     },
     "google_workspace": {
       "type": "local",
-      "command": [ "uvx", "workspace-mcp", "--tools", "slides" ]
+      "command": [
+        "uvx",
+        "workspace-mcp",
+        "--tools",
+        "slides"
+      ]
     },
     "context7": {
       "type": "remote",
@@ -47,23 +60,6 @@
           "pkm-*": "allow"
         },
         "mcp-obsidian": "allow"
-      }
-    }
-  },
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Ollama (local)",
-      "options": {
-        "baseURL": "http://localhost:11434/v1"
-      },
-      "models": {
-        "gpt-oss:20b": {
-          "name": "GPT OSS 20B"
-        },
-        "qwen3-coder:30b": {
-          "name": "Qwen3 Coder 30B"
-        }
       }
     }
   }

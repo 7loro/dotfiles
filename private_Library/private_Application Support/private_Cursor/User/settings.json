@@ -79,8 +79,8 @@
         "warning",
         "info"
     ],
-    "dart.debugExternalPackageLibraries": true,
-    "dart.debugSdkLibraries": true,
+    "dart.debugExternalPackageLibraries": false,
+    "dart.debugSdkLibraries": false,
     "better-comments.tags": [
         {
             "tag": "!",

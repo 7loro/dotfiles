@@ -1,8 +1,16 @@
 {
-  "model": "sonnet",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "defaultMode": "plan"
+  },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh",
     "padding": 0
-  }
+  },
+  "plansDirectory": ".claude/plans",
+  "model": "sonnet"
 }
