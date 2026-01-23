@@ -99,5 +99,70 @@
                 "clear": true,
             }
         },
+        {
+            "label": "Locale - 한국어 (ko)",
+            "type": "shell",
+            "command": "defaults write com.piccoma.contentshub.stage flutter.localeCode ko",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+                "close": true,
+            }
+        },
+        {
+            "label": "Locale - 일본어 (ja)",
+            "type": "shell",
+            "command": "defaults write com.piccoma.contentshub.stage flutter.localeCode ja",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+                "close": true,
+            }
+        },
+        {
+            "label": "Environment - dev",
+            "type": "shell",
+            "command": "defaults write com.piccoma.contentshub.stage flutter.run_environment dev",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+                "close": true,
+            }
+        },
+        {
+            "label": "Environment - stage",
+            "type": "shell",
+            "command": "defaults write com.piccoma.contentshub.stage flutter.run_environment stage",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+                "close": true,
+            }
+        },
+        {
+            "label": "Environment - real",
+            "type": "shell",
+            "command": "defaults write com.piccoma.contentshub.stage flutter.run_environment real",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "clear": true,
+                "close": true,
+            }
+        },
     ]
 }

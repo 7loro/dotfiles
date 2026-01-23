@@ -152,12 +152,25 @@ PR 번호만 제공하는 경우, 다음 repository에서 검색합니다:
 - 특수문자는 제거하거나 대체 (`/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|` → `-`)
 
 ### 카테고리 자동 판단
-변경된 파일 경로를 분석하여 카테고리 결정:
-- `lib/`, `src/` → development
-- `android/`, `ios/` → mobile
-- `test/` → testing
-- `docs/`, `README` → documentation
-- `.github/` → devops
+PR은 항상 `tags: work`로 설정합니다.
+
+`category`는 PR 제목과 커밋 메시지의 타입 프리픽스를 분석하여 결정합니다:
+
+**Conventional Commits 타입 기반 매핑:**
+- `feat:`, `feature:` → **feature** (기능 개발, 구현)
+- `fix:` → **fix** (버그 수정, 이슈 대응)
+- `refactor:` → **refactor** (코드 구조 개선, 리팩토링)
+- `docs:` → **docs** (문서 작성, 가이드 정리)
+- `chore:`, `build:`, `ci:`, `style:` → **chore** (빌드 설정, 패키지 관리, 코드 스타일)
+- `test:` → **chore** (테스트 코드는 chore로 분류)
+
+**특수 케이스:**
+- 제목에 "troubleshoot", "debug", "error", "issue" 포함 → **troubleshooting**
+- 제목에 "plan", "design", "architecture" 포함 → **planning**
+- 제목에 "setup", "config", "environment" 포함 → **setup**
+
+**기본값:**
+- 타입을 판단할 수 없는 경우 → **feature** (대부분의 PR이 기능 개발)
 
 ### 시간대 판단
 ```javascript
