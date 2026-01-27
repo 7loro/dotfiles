@@ -11,6 +11,5 @@
     "command": "~/.claude/statusline.sh",
     "padding": 0
   },
-  "plansDirectory": ".claude/plans",
-  "model": "sonnet"
+  "plansDirectory": ".claude/plans"
 }
