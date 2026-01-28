@@ -4,7 +4,8 @@
   "autoupdate": true,
   "plugin": [
     "@franlol/opencode-md-table-formatter@0.0.3",
-    "oh-my-opencode"
+    "oh-my-opencode",
+    "opencode-anthropic-auth@latest"
   ],
   "mcp": {
     "dart-mcp-server": {
