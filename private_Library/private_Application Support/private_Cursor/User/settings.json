@@ -46,6 +46,9 @@
     "security.workspace.trust.untrustedFiles": "open",
     "extensions.ignoreRecommendations": true,
     "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.lua",
+    "vscode-neovim.afterInitConfig": [
+        "autocmd InsertLeave * silent! lua vim.fn.jobstart({'/opt/homebrew/bin/im-select', 'com.apple.keylayout.UnicodeHexInput'})"
+    ],
     "debug.console.fontFamily": "D2CodingLigature Nerd Font",
     "terminal.integrated.fontFamily": "D2CodingLigature Nerd Font",
     "terminal.integrated.fontSize": 14,
