@@ -1,6 +1,6 @@
 ---
 description: Check github pull request and review
-agent: plan
+model: anthropic/claude-haiku-4-5
 ---
 
 Please provide a detailed pull request review on GitHub pull request: $ARGUMENTS.

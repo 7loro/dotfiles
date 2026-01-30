@@ -56,6 +56,8 @@ cd /Users/casper/Workspace/goomba-hub && git worktree list
 
 ### B-2. 각 Worktree 상태 확인 (B-1 결과 기반, 각각 병렬 실행)
 
+**제외 대상**: `goomba-hub-review` (PR 리뷰 전용 worktree)
+
 각 worktree 경로에서 **동시에** 다음 명령 실행:
 
 ```bash
