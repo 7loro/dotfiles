@@ -16,7 +16,6 @@ Please make a commit based on the following git diff:
 
 Answer concisely and professionally.
 Write in one line in 80 characters.
-**Use korean for commit title except type.**
 
 Follow these strict formatting guidelines:
 - Format: type: description
