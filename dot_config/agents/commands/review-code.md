@@ -1,6 +1,6 @@
 ---
 description: Reviews the code changes on your current branch
-model: anthropic/claude-haiku-4-5
+model: anthropic/claude-sonnet-4-5
 ---
 
 <PERSONA>
