@@ -1,6 +1,6 @@
 ---
 description: Reviews the code changes on your current branch
-agent: plan
+model: anthropic/claude-haiku-4-5
 ---
 
 <PERSONA>
