@@ -1,0 +1,102 @@
+{
+  "sessionId": "claude-code-20260206",
+  "topic": "Claude Code",
+  "sourceUrl": "https://code.claude.com/docs/en/overview",
+  "createdAt": "2026-02-06",
+  "updatedAt": "2026-02-06",
+  "currentSection": 5,
+  "sections": [
+    {
+      "id": 1,
+      "title": "Claude Code 개요와 설치 (Overview & Setup)",
+      "level": "basic",
+      "status": "completed",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/overview",
+        "https://code.claude.com/docs/en/setup"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "첫 번째 세션 시작하기 (Quickstart)",
+      "level": "basic",
+      "status": "completed",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/quickstart"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "에이전트 루프와 동작 원리 (How Claude Code Works)",
+      "level": "basic",
+      "status": "completed",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/how-claude-code-works"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "일상 워크플로우 (Common Workflows)",
+      "level": "intermediate",
+      "status": "completed",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/common-workflows"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "메모리 관리 - CLAUDE.md (Memory)",
+      "level": "intermediate",
+      "status": "not_started",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/memory"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "베스트 프랙티스 (Best Practices)",
+      "level": "intermediate",
+      "status": "not_started",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/best-practices"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "확장 기능 개요 (Extend Claude Code)",
+      "level": "intermediate",
+      "status": "not_started",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/features-overview"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "스킬 (Skills)",
+      "level": "advanced",
+      "status": "not_started",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/skills"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "훅 (Hooks)",
+      "level": "advanced",
+      "status": "not_started",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/hooks-guide"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "MCP 서버 연결 (Model Context Protocol)",
+      "level": "advanced",
+      "status": "not_started",
+      "sourceUrls": [
+        "https://code.claude.com/docs/en/mcp"
+      ]
+    }
+  ],
+  "quizResults": []
+}
