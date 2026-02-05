@@ -1,0 +1,48 @@
+{
+  "sessionId": "",
+  "topic": "",
+  "sourceUrl": "",
+  "createdAt": "",
+  "updatedAt": "",
+  "progress": {
+    "totalSections": 0,
+    "completedSections": 0,
+    "currentSection": "",
+    "currentSectionIndex": 0,
+    "percentage": 0
+  },
+  "structure": [
+    {
+      "index": 0,
+      "title": "",
+      "level": "beginner",
+      "status": "pending",
+      "sourceUrl": "",
+      "keyTopics": [],
+      "summary": ""
+    }
+  ],
+  "quizResults": [
+    {
+      "sectionIndex": 0,
+      "score": 0,
+      "total": 0,
+      "percentage": 0,
+      "weakPoints": [],
+      "timestamp": ""
+    }
+  ],
+  "notes": [
+    {
+      "sectionIndex": 0,
+      "content": "",
+      "timestamp": ""
+    }
+  ],
+  "explorationData": {
+    "totalPagesExplored": 0,
+    "failedUrls": [],
+    "exploredPages": []
+  },
+  "nextSteps": []
+}
