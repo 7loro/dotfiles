@@ -177,6 +177,9 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
+# Claude
+alias claude='claude --dangerously-skip-permissions'
+
 # 업무용 환경변수
 if [ -f ~/.zsh_profile_work ]; then
   . ~/.zsh_profile_work
