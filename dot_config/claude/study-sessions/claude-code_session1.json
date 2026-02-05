@@ -3,8 +3,8 @@
   "topic": "Claude Code",
   "sourceUrl": "https://code.claude.com/docs/en/overview",
   "createdAt": "2026-02-06",
-  "updatedAt": "2026-02-06",
-  "currentSection": 5,
+  "updatedAt": "2026-02-06T02:40:00",
+  "currentSection": 7,
   "sections": [
     {
       "id": 1,
@@ -47,7 +47,7 @@
       "id": 5,
       "title": "메모리 관리 - CLAUDE.md (Memory)",
       "level": "intermediate",
-      "status": "not_started",
+      "status": "completed",
       "sourceUrls": [
         "https://code.claude.com/docs/en/memory"
       ]
@@ -56,7 +56,7 @@
       "id": 6,
       "title": "베스트 프랙티스 (Best Practices)",
       "level": "intermediate",
-      "status": "not_started",
+      "status": "completed",
       "sourceUrls": [
         "https://code.claude.com/docs/en/best-practices"
       ]
@@ -65,7 +65,7 @@
       "id": 7,
       "title": "확장 기능 개요 (Extend Claude Code)",
       "level": "intermediate",
-      "status": "not_started",
+      "status": "completed",
       "sourceUrls": [
         "https://code.claude.com/docs/en/features-overview"
       ]
