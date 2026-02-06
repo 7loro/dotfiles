@@ -4,7 +4,20 @@
     "pr": ""
   },
   "permissions": {
-    "defaultMode": "plan"
+    "defaultMode": "plan",
+    "allow": [
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr list *)",
+      "Bash(git remote get-url *)",
+      "Baseh(git fetch *)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(find *)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "statusLine": {
     "type": "command",
