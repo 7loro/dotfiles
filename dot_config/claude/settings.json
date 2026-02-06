@@ -13,7 +13,8 @@
       "Baseh(git fetch *)",
       "Bash(git status *)",
       "Bash(git log *)",
-      "Bash(find *)"
+      "Bash(find *)",
+      "Read(~/pkm/*)"
     ]
   },
   "env": {

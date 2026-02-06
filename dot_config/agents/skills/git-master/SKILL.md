@@ -5,8 +5,7 @@ description: |
   트리거: "git-master", "/git-master", "atomic commit", "커밋 분할", "커밋 나눠", "rebase", "리베이스",
   "squash", "스쿼시", "히스토리 정리", "history cleanup", "git blame", "bisect", "누가 바꿨어",
   "언제 바뀌었", "find when", "who changed", "커밋 정리", "변경사항 정리해서 커밋".
-  make-commit과의 차이: make-commit은 단일 커밋 자동 생성, git-master는 다수 파일을 atomic 단위로 분할 커밋하고
-  rebase/history 검색까지 수행하는 종합 Git 전문가.
+  git-master는 다수 파일을 atomic 단위로 분할 커밋하고 rebase/history 검색까지 수행하는 종합 Git 전문가.
 ---
 
 # Git Master
