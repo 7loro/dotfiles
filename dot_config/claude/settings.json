@@ -1,10 +1,12 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
   },
   "permissions": {
-    "defaultMode": "plan",
     "allow": [
       "Bash(gh pr view *)",
       "Bash(gh pr diff *)",
@@ -15,30 +17,36 @@
       "Bash(git log *)",
       "Bash(find *)",
       "Read(~/pkm/*)"
-    ]
+    ],
+    "defaultMode": "plan"
   },
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Prompt submitted at $(date)' >> ~/.claude/prompt-log.txt"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$CLAUDE_TOOL_INPUT\" == *\"rm -rf\"* ]]; then echo 'Dangerous command blocked!' && exit 2; fi"
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh",
     "padding": 0
   },
-  "plansDirectory": ".claude/plans",
-  "hooks": {
-    "UserPromptSubmit": [{
-      "hooks": [{
-        "type": "command",
-        "command": "echo 'Prompt submitted at $(date)' >> ~/.claude/prompt-log.txt"
-      }]
-    }],
-    "PreToolUse": [{
-      "matcher": "Bash",
-      "hooks": [{
-        "type": "command",
-        "command": "if [[ \"$CLAUDE_TOOL_INPUT\" == *\"rm -rf\"* ]]; then echo 'Dangerous command blocked!' && exit 2; fi"
-      }]
-    }]
-  }
+  "plansDirectory": ".claude/plans"
 }

@@ -8,19 +8,19 @@
       "model": "anthropic/claude-haiku-4-5"
     },
     "oracle": {
-      "model": "anthropic/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-6"
     },
     "multimodal-looker": {
       "model": "anthropic/claude-haiku-4-5"
     },
     "prometheus": {
-      "model": "anthropic/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-6"
     },
     "metis": {
       "model": "anthropic/claude-sonnet-4-5"
     },
     "momus": {
-      "model": "anthropic/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-6"
     },
     "atlas": {
       "model": "anthropic/claude-sonnet-4-5"
@@ -28,14 +28,14 @@
   },
   "categories": {
     "visual-engineering": {
-      "model": "anthropic/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-6"
     },
     "ultrabrain": {
-      "model": "anthropic/claude-opus-4-5",
+      "model": "anthropic/claude-opus-4-6",
       "variant": "xhigh"
     },
     "artistry": {
-      "model": "anthropic/claude-opus-4-5",
+      "model": "anthropic/claude-opus-4-6",
       "variant": "max"
     },
     "quick": {
@@ -45,7 +45,7 @@
       "model": "anthropic/claude-sonnet-4-5"
     },
     "unspecified-high": {
-      "model": "anthropic/claude-opus-4-5",
+      "model": "anthropic/claude-opus-4-6",
       "variant": "max"
     },
     "writing": {
