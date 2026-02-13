@@ -76,6 +76,47 @@ AGENT=$(echo "$input" | jq -r '.agent.name // empty')
 AGENT_INFO=""
 [ -n "$AGENT" ] && AGENT_INFO=" ${DIM}|${RESET} 🤖 ${MAGENTA}${AGENT}${RESET}"
 
+# --- 마지막 사용자 메시지 (5초 캐시) ---
+MSG_CACHE="/tmp/claude-statusline-msg-cache"
+MSG_CACHE_AGE=5
+
+msg_cache_stale() {
+  [ ! -f "$MSG_CACHE" ] || \
+  [ $(($(date +%s) - $(stat -f %m "$MSG_CACHE" 2>/dev/null || stat -c %Y "$MSG_CACHE" 2>/dev/null || echo 0))) -gt $MSG_CACHE_AGE ]
+}
+
+LAST_MSG=""
+if msg_cache_stale; then
+  # transcript 경로 탐색: 입력 JSON에서 추출 시도 후 최신 파일 탐색
+  TRANSCRIPT=$(echo "$input" | jq -r '.session.transcript_path // .transcript_path // empty')
+  if [ -z "$TRANSCRIPT" ]; then
+    TRANSCRIPT=$(ls -t ~/.claude/projects/*/sessions/*.jsonl 2>/dev/null | head -1)
+  fi
+
+  if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
+    LAST_MSG=$(jq -rs '
+      def is_unhelpful:
+        startswith("[Request interrupted") or
+        startswith("[Request cancelled") or
+        startswith("<") or
+        test("^\\s*$");
+      [.[] | objects | select(.type == "user") |
+       select(.message.content | type == "string" or
+              (type == "array" and any(.[]; .type == "text")))] |
+      reverse |
+      map(.message.content |
+          if type == "string" then .
+          else [.[] | select(.type == "text") | .text] | join(" ") end |
+          gsub("\n"; " ") | gsub("  +"; " ") | gsub("^ +| +$"; "")) |
+      map(select(is_unhelpful | not)) |
+      first // ""
+    ' < "$TRANSCRIPT" 2>/dev/null)
+  fi
+  echo "$LAST_MSG" > "$MSG_CACHE"
+else
+  LAST_MSG=$(cat "$MSG_CACHE" 2>/dev/null)
+fi
+
 # --- 포맷된 값 ---
 USED_K=$(format_tokens "$USED_TOKENS")
 CTX_K=$(format_tokens "$CTX_SIZE")
@@ -113,3 +154,14 @@ printf " ${DIM}|${RESET} 💰 ${YELLOW}%s${RESET}" "$COST_FMT"
 printf " ${DIM}|${RESET} ⏱ %dm %ds" "$MINS" "$SECS"
 printf " ${DIM}|${RESET} 📊 ${GRAY}in:%s out:%s${RESET}" "$IN_K" "$OUT_K"
 printf "\n"
+
+# === 3줄: 💬 마지막 사용자 메시지 ===
+if [ -n "$LAST_MSG" ]; then
+  # 터미널 너비에 맞게 자르기 (prefix 💬 + 공백 = 약 4칸)
+  TERM_W=$(tput cols 2>/dev/null || echo 80)
+  MAX_LEN=$((TERM_W - 5))
+  if [ ${#LAST_MSG} -gt $MAX_LEN ]; then
+    LAST_MSG="${LAST_MSG:0:$MAX_LEN}…"
+  fi
+  printf "💬 ${DIM}%s${RESET}\n" "$LAST_MSG"
+fi
