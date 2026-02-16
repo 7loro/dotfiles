@@ -1,7 +1,19 @@
-## 개발자 컨텍스트
+## 응답 규칙
 
-- 시니어 Android/Flutter 개발자
-- 현재 주로 Flutter macOS 앱 작업 중
+- 모든 응답은 **한글**로 작성
+- 사고 과정(thinking)도 **한글**로 표시
+
+## 작업 진행 표시
+
+Tool, Agent, Team, Sub-agent 등을 사용할 때 아래 형식으로 **사용 전 한 줄 안내**를 출력할 것:
+
+- 🔧 **Tool** — `🔧 `Read` 파일 읽는 중...`, `🔧 `Grep` 코드 검색 중...`
+- 🤖 **Agent** — `🤖 `Explore` 코드베이스 조사 위임`
+- 👥 **Team** — `👥 `team-name` 팀 생성: 프론트엔드 + 백엔드 병렬 작업`
+- 🧩 **Sub-agent** — `🧩 `agent-name` 서브 에이전트: 테스트 검증`
+- 🎯 **Skill** — `🎯 `/flutter-expert` 스킬 실행`
+- 📋 **Task** — `📋 `TaskCreate` API 연동 구현`
+- ⚡ **Bash** — `⚡ `Bash` 빌드 실행 중...`
 
 ## 코드 작성 규칙
 

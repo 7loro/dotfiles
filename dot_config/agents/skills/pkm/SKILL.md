@@ -8,19 +8,36 @@ description: |
 
 # PKM Skill - Obsidian Vault 관리
 
-## Vault 정보
+## Vault 경로
 
 > [!CRITICAL] **절대 경로 - 반드시 준수**
 > - **Vault 경로**: `/Users/casper/pkm` (소문자 pkm)
 > - 다른 경로 사용 금지: `~/Library/Mobile Documents/...`, `iCloud~md~obsidian`, `SecondBrain` 등
 > - 모든 파일 작업은 반드시 `/Users/casper/pkm` 하위에서만 수행
 
-| 항목 | 절대 경로 |
+## 참조 규칙
+
+> [!IMPORTANT] **작업 시작 전 vault 규칙 파일을 반드시 읽을 것**
+>
+> Vault의 문서 컨벤션, frontmatter, 태그 체계 등은 아래 파일들에 정의되어 있다.
+> SKILL.md에서는 중복을 피하고, 아래 파일들을 single source of truth로 참조한다.
+
+| 규칙 | 파일 경로 |
 |------|-----------|
-| Vault Root | `/Users/casper/pkm` |
-| 새 파일 | `/Users/casper/pkm/007 inbox/` |
-| 저널 | `/Users/casper/pkm/005 journals/YYYY/YYYY-MM-DD.md` |
-| 템플릿 | `/Users/casper/pkm/003 resources/templates/` |
+| 디렉토리 구조, 파일 생성 위치, 파일명 규칙 | `/Users/casper/pkm/CLAUDE.md` |
+| Frontmatter 필수/선택 필드 | `/Users/casper/pkm/.claude/rules/frontmatter.md` |
+| 태그 체계 (기본 태그, 주제 태그, 허용 목록) | `/Users/casper/pkm/.claude/rules/tag.md` |
+| 문서 구조, 마크다운 스타일, 네이밍 규칙 | `/Users/casper/pkm/.claude/rules/writing-guide.md` |
+| 업무 문서 작성 절차, 저널 루틴 | `/Users/casper/pkm/.claude/rules/workflow.md` |
+| 인물 문서 구조, 참조 방법 | `/Users/casper/pkm/.claude/rules/person.md` |
+| 학습 기록 프로세스 | `/Users/casper/pkm/.claude/rules/learning.md` |
+
+**작업 전 프로세스**:
+1. 작업 유형에 해당하는 규칙 파일을 `Read`로 읽기
+2. 해당 규칙에 맞춰 작업 수행
+3. 작업 완료 후 학습 기록 프로세스 수행 (`learning.md` 참고)
+
+---
 
 ## 지원 기능
 
@@ -36,71 +53,16 @@ description: |
 
 ## 1. 노트 생성
 
-### 템플릿
-
-**work** (업무 문서):
-```yaml
----
-created: YYYY-MM-DD HH:mm:ss
-modified: YYYY-MM-DD HH:mm:ss
-date: YYYY-MM-DD
-tags:
-  - work
-category: [category]
----
-```
-
-**personal** (개인 문서):
-```yaml
----
-created: YYYY-MM-DD HH:mm:ss
-modified: YYYY-MM-DD HH:mm:ss
-date: YYYY-MM-DD
-tags:
-  - personal
-category: [category]
----
-```
-
-### Category 값
-
-**Work**: feature, fix, refactor, docs, chore, meeting, 1on1, troubleshooting, planning, retro, idea, resource, setup, okr
-
-**Personal**: gather, study, finance, health, travel, hobby, dev, idea, resource, setup
-
-### 파일명 규칙
-
-- **한글 자연어 형식**, 공백 허용
-- 특수문자(`/\:*?"<>|`) → `-` 대체
-- 최대 100자
-- 예: `로컬 소설 Auto 분할 작업 산출물 생성 기능 구현.md`
-
-### 문서 구조
-
-```markdown
->[!summary] 
->- 요약 1
->- 요약 2
-
-# 목적
-
-[작업 목적/배경]
-
-# 작업 내용
-
-[상세 내용]
-
-# 참고
-
-- [링크](URL)
-- [[관련 노트]]
-```
+1. `frontmatter.md`, `tag.md` 규칙에 맞춰 frontmatter 작성
+2. `writing-guide.md` 구조에 맞춰 본문 작성
+3. 파일 위치: `/Users/casper/pkm/007 inbox/`
+4. 파일명: 한글 자연어, 특수문자(`/\:*?"<>|`) → `-` 대체, 최대 100자
 
 ---
 
 ## 2. 노트 편집
 
-1. `obsidian_get_file_contents` 또는 `Read`로 기존 내용 확인
+1. `Read`로 기존 내용 확인
 2. 수정할 위치 파악 (섹션, frontmatter 등)
 3. `Edit` 도구로 정확한 위치에 수정
 4. 기존 내용 보존, 중복 방지
@@ -122,35 +84,21 @@ category: [category]
 
 ## 4. Daily Journal 관리
 
-### 위치 및 구조
+### 위치
 
 **절대 경로**: `/Users/casper/pkm/005 journals/YYYY/YYYY-MM-DD.md`
-
-**시간대별 섹션**:
-- Morning: 06:00~11:59
-- Afternoon: 12:00~17:59
-- Evening: 18:00~23:59
 
 ### 백링크 추가 프로세스
 
 **중요**: `obsidian_patch_content` / `obsidian_append_content` 사용 금지
 
-1. `Read`로 journal 파일 읽기
-2. 파일 없으면 생성:
-   ```markdown
-   ---
-   date: YYYY-MM-DD
-   tags:
-     - daily
-   ---
-   
-   ## Morning
-   
-   ## Afternoon
-   
-   ## Evening
-   ```
-3. 시간대 섹션 찾기 (없으면 추가)
+1. **날짜 및 시간대 판단**:
+   - 00:00~05:59 (새벽) → **전날 날짜**의 Evening 섹션에 기록 (아직 안 잔 것으로 간주)
+   - 06:00~11:59 → 당일 Morning
+   - 12:00~17:59 → 당일 Afternoon
+   - 18:00~23:59 → 당일 Evening
+2. `Read`로 해당 날짜의 journal 파일 읽기
+3. 파일 없으면 `writing-guide.md`의 일간 저널 구조 참고하여 생성
 4. `Edit`로 섹션 끝에 `- [[노트 제목]]` 또는 메모 추가
 5. 중복 체크, 기존 내용 보존
 
@@ -181,12 +129,12 @@ modified: YYYY-MM-DD HH:mm:ss
 date: YYYY-MM-DD
 tags:
   - work
-category: [PR 타입 기반]
+  - [PR 타입 기반 주제 태그]
 pr_url: [URL]
 repository: [repo-name]
 ---
 
->[!summary] 
+>[!summary]
 >- [핵심 변경사항 1~3개]
 
 ## 개요
@@ -218,11 +166,12 @@ repository: [repo-name]
 ## 참고
 - **PR**: [URL]
 - **Related Issues**: [#issue]
+```
 
-### Category 판단 (PR)
+### PR 타입 → 주제 태그 매핑
 
-| PR 타입 | Category |
-|---------|----------|
+| PR 타입 | 주제 태그 |
+|---------|-----------|
 | `feat:`, `feature:` | feature |
 | `fix:` | fix |
 | `refactor:` | refactor |
@@ -234,23 +183,7 @@ repository: [repo-name]
 
 ---
 
-## 공통 규칙
-
-### Frontmatter 필수 필드
-
-- `created`: YYYY-MM-DD HH:mm:ss
-- `modified`: YYYY-MM-DD HH:mm:ss
-- `date`: YYYY-MM-DD
-- `tags`: 배열 (work 또는 personal)
-- `category`: 문서 분류
-
-### 마크다운 스타일
-
-- **위키링크**: `[[파일명]]`, `[[파일명|별칭]]`, `[[파일명#섹션]]`
-- **Callout**: `>[!summary]`, `>[!info]`, `>[!tip]`, `>[!warning]`
-- **임베드**: `![[파일명]]`
-
-### 에러 처리
+## 에러 처리
 
 | 상황 | 처리 |
 |------|------|
