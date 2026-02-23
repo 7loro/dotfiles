@@ -1,0 +1,15 @@
+# Gmail 계정 설정 템플릿
+# 이 파일을 accounts.yaml로 복사한 후 실제 정보로 수정하세요.
+#
+# 사용법:
+#   cp assets/accounts.default.yaml accounts.yaml
+#   # accounts.yaml 편집 후
+#   uv run python scripts/setup_auth.py --account personal
+
+accounts:
+  personal:
+    email: your-personal@gmail.com
+    description: 개인 Gmail
+  work:
+    email: your-work@company.com
+    description: 업무용 계정

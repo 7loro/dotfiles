@@ -16,7 +16,8 @@
       "Bash(git status *)",
       "Bash(git log *)",
       "Bash(find *)",
-      "Read(~/pkm/*)"
+      "Read(~/pkm/*)",
+      "mcp__pencil"
     ],
     "defaultMode": "plan"
   },
@@ -31,12 +32,26 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/say-summary.py",
+            "timeout": 30
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh",
     "padding": 1
+  },
+  "enabledPlugins": {
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
   },
   "plansDirectory": ".claude/plans",
   "skipDangerousModePermissionPrompt": true

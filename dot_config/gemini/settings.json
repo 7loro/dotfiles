@@ -37,6 +37,14 @@
         "OBSIDIAN_HOST": "$OBSIDIAN_MCP_HOST",
         "OBSIDIAN_PORT": "$OBSIDIAN_MCP_PORT"
       }
+    },
+    "pencil": {
+      "command": "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
+      "args": [
+        "--app",
+        "desktop"
+      ],
+      "env": {}
     }
   },
   "mcp": {
@@ -55,7 +63,9 @@
     "enabled": true
   },
   "security": {
-    "auth": {}
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
   },
   "general": {
     "vimMode": true,

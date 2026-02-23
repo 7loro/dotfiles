@@ -1,0 +1,15 @@
+# Google Calendar 계정 설정
+# 계정 정보 편집 후 인증 실행:
+#   uv run python scripts/setup_auth.py --account personal
+
+accounts:
+  personal:
+    email: nowfeel88@gmail.com
+    description: 개인 Gmail
+  work:
+    email: casper.nam@kakaopiccoma.com
+    description: 업무용 계정
+    # 종일 이벤트 중 제외할 제목 패턴 (대소문자 무시, 정확히 일치)
+    exclude_allday:
+      - "사무실"
+      - "Office"

@@ -55,6 +55,7 @@ alias vi="nvim"
 alias ls='logo-ls'
 alias lk="walk"
 alias lg='lazygit'
+alias gwt='git worktree'
 
 # ---- FZF -----
 
@@ -111,6 +112,11 @@ _fzf_comprun() {
   esac
 }
 
+# ---- Zoxide (better cd) ----
+# zsh-vi-mode 초기화 이후에 실행되도록 등록 (chpwd_functions 충돌 방지)
+# --cmd cd: zoxide가 cd 명령을 직접 관리
+zvm_after_init_commands+=('eval "$(zoxide init --cmd cd zsh)"')
+
 # ----- FD (better find) -----
 alias fd="fd --no-ignore"
 
@@ -128,11 +134,6 @@ alias la="ls -a"
 # thefuck alias
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
-
-# ---- Zoxide (better cd) ----
-eval "$(zoxide init zsh)"
-
-alias cd="z"
 
 # ---- Yazi ----
 function yy() {
@@ -178,7 +179,7 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 # Claude
-alias claude='claude --dangerously-skip-permissions'
+alias claude='claude --dangerously-skip-permissions --model "opusplan"'
 
 # 업무용 환경변수
 if [ -f ~/.zsh_profile_work ]; then

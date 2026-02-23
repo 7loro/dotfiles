@@ -77,7 +77,21 @@ AGENT_INFO=""
 [ -n "$AGENT" ] && AGENT_INFO=" ${DIM}|${RESET} 🤖 ${MAGENTA}${AGENT}${RESET}"
 
 # --- 마지막 사용자 메시지 (5초 캐시) ---
-MSG_CACHE="/tmp/claude-statusline-msg-cache"
+# transcript 경로: 입력 JSON에서 추출 시도 후 현재 프로젝트 디렉토리 기반으로 탐색
+TRANSCRIPT=$(echo "$input" | jq -r '.session.transcript_path // .transcript_path // empty')
+if [ -z "$TRANSCRIPT" ]; then
+  # 현재 디렉토리를 프로젝트 키로 변환 (앞 슬래시 제거 후 /를 -로 치환)
+  DIR_KEY=$(echo "$DIR" | sed 's|^/||; s|/|-|g')
+  TRANSCRIPT=$(ls -t ~/.claude/projects/"$DIR_KEY"/sessions/*.jsonl 2>/dev/null | head -1)
+fi
+
+# 캐시 파일은 transcript 경로 기반으로 인스턴스별 고유하게 생성
+if [ -n "$TRANSCRIPT" ]; then
+  CACHE_KEY=$(echo "$TRANSCRIPT" | md5 -q 2>/dev/null || echo "$TRANSCRIPT" | md5sum 2>/dev/null | cut -c1-8)
+else
+  CACHE_KEY="default"
+fi
+MSG_CACHE="/tmp/claude-statusline-msg-${CACHE_KEY}"
 MSG_CACHE_AGE=5
 
 msg_cache_stale() {
@@ -87,11 +101,6 @@ msg_cache_stale() {
 
 LAST_MSG=""
 if msg_cache_stale; then
-  # transcript 경로 탐색: 입력 JSON에서 추출 시도 후 최신 파일 탐색
-  TRANSCRIPT=$(echo "$input" | jq -r '.session.transcript_path // .transcript_path // empty')
-  if [ -z "$TRANSCRIPT" ]; then
-    TRANSCRIPT=$(ls -t ~/.claude/projects/*/sessions/*.jsonl 2>/dev/null | head -1)
-  fi
 
   if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
     LAST_MSG=$(jq -rs '

@@ -1,0 +1,11 @@
+{
+  "apple_korean_voice": "Jian",
+  "apple_english_voice": "Flo",
+  "apple_korean_rate": 180,
+  "apple_english_rate": 180,
+  "edge_korean_voice": "ko-KR-SunHiNeural",
+  "edge_english_voice": "en-US-AriaNeural",
+  "edge_korean_rate": "-5%",
+  "edge_english_rate": "+0%",
+  "enabled": true
+}
