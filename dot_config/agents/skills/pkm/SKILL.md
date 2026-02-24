@@ -71,7 +71,7 @@ date '+%Y-%m-%d %H:%M:%S'
 1. `frontmatter.md`, `tag.md` 규칙에 맞춰 frontmatter 작성
 2. `writing-guide.md` 구조에 맞춰 본문 작성
 3. 파일 위치: `/Users/casper/pkm/007 inbox/`
-4. 파일명: 한글 자연어, 특수문자(`/\:*?"<>|`) → `-` 대체, 최대 100자
+4. 파일명: 한글 자연어, 특수문자(`/\:*?"<>|#`) → `-` 대체, 최대 100자
 
 ---
 
