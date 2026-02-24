@@ -48,8 +48,15 @@ description: |
 
 ### 조회 방법
 
-- Glob 패턴으로 일괄 검색: `/Users/casper/pkm/005 journals/*/????-MM-DD.md`
-  - 예: 오늘이 02-07이면 `005 journals/*/????-02-07.md`
+> ⚠️ Glob tool은 공백 포함 경로(`005 journals/`)에서 오동작하므로 **반드시 Bash의 find 명령어로 조회**
+
+```bash
+MMDD=$(date "+%m-%d")
+YYYY=$(date "+%Y")
+find "/Users/casper/pkm/005 journals" -name "????-${MMDD}.md" | grep -v "/${YYYY}/" | sort
+```
+
+- 파일 목록 확인 후 각 파일을 Read tool로 읽어 요약
 - 올해 파일은 제외 (과거 연도만 대상)
 - 파일이 존재하는 연도만 표시
 
