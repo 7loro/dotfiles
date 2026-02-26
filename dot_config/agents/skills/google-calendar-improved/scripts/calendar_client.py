@@ -24,14 +24,14 @@ TOKENS_DIR = SKILL_DIR / "accounts"
 def _get_credentials_file() -> str:
     """credentials.json 경로를 반환한다.
 
-    파일이 없으면 환경변수(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)로
+    파일이 없으면 환경변수(CLAUDE_SKILL_GOOGLE_CLIENT_ID, CLAUDE_SKILL_GOOGLE_CLIENT_SECRET)로
     임시 credentials.json을 생성한다.
     """
     if CREDENTIALS_FILE.exists():
         return str(CREDENTIALS_FILE)
 
-    client_id = os.environ.get("GOOGLE_CLIENT_ID", "")
-    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+    client_id = os.environ.get("CLAUDE_SKILL_GOOGLE_CLIENT_ID", "")
+    client_secret = os.environ.get("CLAUDE_SKILL_GOOGLE_CLIENT_SECRET", "")
     if client_id and client_secret:
         data = {
             "installed": {
@@ -49,7 +49,7 @@ def _get_credentials_file() -> str:
 
     raise FileNotFoundError(
         f"credentials.json이 없습니다: {CREDENTIALS_FILE}\n"
-        "GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET 환경변수를 설정하거나\n"
+        "CLAUDE_SKILL_GOOGLE_CLIENT_ID / CLAUDE_SKILL_GOOGLE_CLIENT_SECRET 환경변수를 설정하거나\n"
         "Google Cloud Console에서 OAuth 클라이언트 ID JSON을 다운로드하세요."
     )
 
@@ -101,10 +101,14 @@ def get_credentials(account_name: str) -> Credentials | None:
         creds = Credentials.from_authorized_user_file(str(token_path), SCOPES)
 
     if creds and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
-        token_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(token_path, "w") as f:
-            f.write(creds.to_json())
+        try:
+            creds.refresh(Request())
+            token_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(token_path, "w") as f:
+                f.write(creds.to_json())
+        except Exception:
+            # refresh token이 revoke된 경우 → 재인증 필요
+            creds = None
 
     if not creds or not creds.valid:
         return None
