@@ -14,20 +14,20 @@ Gmail API를 통한 다중 계정 이메일 관리.
 
 ### 환경변수 확인
 
-`GOOGLE_CLIENT_ID`와 `GOOGLE_CLIENT_SECRET`가 모두 설정되어 있는지 확인한다.
+`CLAUDE_SKILL_GOOGLE_CLIENT_ID`와 `CLAUDE_SKILL_GOOGLE_CLIENT_SECRET`가 모두 설정되어 있는지 확인한다.
 하나라도 비어있으면 **스크립트를 실행하지 않고** 아래 안내를 출력한다:
 
 > 다음 환경변수가 설정되지 않았습니다. `~/.zsh_profile_work`에 추가해 주세요:
 >
 > | 환경변수 | 용도 |
 > |----------|------|
-> | `GOOGLE_CLIENT_ID` | Google OAuth 클라이언트 ID |
-> | `GOOGLE_CLIENT_SECRET` | Google OAuth 클라이언트 시크릿 |
+> | `CLAUDE_SKILL_GOOGLE_CLIENT_ID` | Google OAuth 클라이언트 ID |
+> | `CLAUDE_SKILL_GOOGLE_CLIENT_SECRET` | Google OAuth 클라이언트 시크릿 |
 >
 > ```bash
 > # ~/.zsh_profile_work 에 추가
-> export GOOGLE_CLIENT_ID="your-client-id.apps.googleusercontent.com"
-> export GOOGLE_CLIENT_SECRET="GOCSPX-your-secret"
+> export CLAUDE_SKILL_GOOGLE_CLIENT_ID="your-client-id.apps.googleusercontent.com"
+> export CLAUDE_SKILL_GOOGLE_CLIENT_SECRET="GOCSPX-your-secret"
 > ```
 
 ### 계정 확인

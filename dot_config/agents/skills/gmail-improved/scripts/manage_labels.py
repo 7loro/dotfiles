@@ -4,6 +4,8 @@
     uv run python scripts/manage_labels.py --account work list-labels
     uv run python scripts/manage_labels.py --account work create-label --name "프로젝트/A"
     uv run python scripts/manage_labels.py --account work mark-read --id <message_id>
+    uv run python scripts/manage_labels.py --account work batch-mark-read --ids id1 id2 id3
+    uv run python scripts/manage_labels.py --account work batch-mark-read --query "is:unread"
     uv run python scripts/manage_labels.py --account work star --id <message_id>
     uv run python scripts/manage_labels.py --account work archive --id <message_id>
     uv run python scripts/manage_labels.py --account work trash --id <message_id>
@@ -39,6 +41,12 @@ def main():
     # mark-read
     p_read = subparsers.add_parser("mark-read", help="읽음 처리")
     p_read.add_argument("--id", required=True, help="메시지 ID")
+
+    # batch-mark-read
+    p_batch_read = subparsers.add_parser("batch-mark-read", help="여러 메시지 일괄 읽음 처리")
+    p_batch_read.add_argument("--ids", nargs="+", help="메시지 ID 목록 (공백 구분)")
+    p_batch_read.add_argument("--query", help="Gmail 검색 쿼리로 대상 선택 (예: is:unread)")
+    p_batch_read.add_argument("--max", type=int, default=500, help="쿼리 사용 시 최대 처리 수 (기본: 500)")
 
     # star
     p_star = subparsers.add_parser("star", help="별표 추가")
@@ -91,6 +99,7 @@ def main():
         "list-labels": lambda: cmd_list_labels(service),
         "create-label": lambda: cmd_create_label(service, args.name),
         "mark-read": lambda: cmd_mark_read(service, args.id),
+        "batch-mark-read": lambda: cmd_batch_mark_read(service, args.ids, args.query, args.max),
         "star": lambda: cmd_star(service, args.id),
         "unstar": lambda: cmd_unstar(service, args.id),
         "archive": lambda: cmd_archive(service, args.id),
@@ -152,6 +161,55 @@ def cmd_mark_read(service, msg_id: str):
         body={"removeLabelIds": ["UNREAD"]},
     ).execute()
     print(f"✅ 읽음 처리: {msg_id}")
+
+
+def cmd_batch_mark_read(service, ids: list[str] | None, query: str | None, max_results: int):
+    """여러 메시지를 일괄 읽음 처리한다.
+
+    --ids와 --query를 함께 사용하면 두 결과를 합쳐서 처리한다.
+    batchModify는 최대 1,000건 제한이 있으므로 청크로 나눠 처리한다.
+    """
+    if not ids and not query:
+        print("⚠️ --ids 또는 --query를 지정해주세요.")
+        print("  예) --ids id1 id2 id3")
+        print("  예) --query \"is:unread\"")
+        return
+
+    target_ids = list(ids) if ids else []
+
+    if query:
+        # 쿼리로 메시지 ID 수집 (페이지네이션 포함)
+        params = {"userId": "me", "q": query, "maxResults": min(max_results, 500)}
+        result = service.users().messages().list(**params).execute()
+        target_ids.extend(m["id"] for m in result.get("messages", []))
+
+        while "nextPageToken" in result and len(target_ids) < max_results:
+            result = service.users().messages().list(
+                **params, pageToken=result["nextPageToken"]
+            ).execute()
+            target_ids.extend(m["id"] for m in result.get("messages", []))
+
+    # 중복 제거 (순서 유지)
+    target_ids = list(dict.fromkeys(target_ids))
+
+    if not target_ids:
+        print("처리할 메시지가 없습니다.")
+        return
+
+    # 1,000건 단위로 청크 처리
+    CHUNK = 1000
+    total = len(target_ids)
+    processed = 0
+
+    for i in range(0, total, CHUNK):
+        chunk = target_ids[i:i + CHUNK]
+        service.users().messages().batchModify(
+            userId="me",
+            body={"ids": chunk, "removeLabelIds": ["UNREAD"]},
+        ).execute()
+        processed += len(chunk)
+
+    print(f"✅ 읽음 처리 완료: {processed}건")
 
 
 def cmd_star(service, msg_id: str):
