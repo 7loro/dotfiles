@@ -27,7 +27,7 @@ description: |
 │ (Daily Note) │ (이날의 기록) │ (Git Status) │ (GitHub PR 조회) │   (Gmail)     │    (Calendar)     │
 ├──────────────┼───────────────┼──────────────┼──────────────────┼───────────────┼───────────────────┤
 │ 어제 노트    │ 과거 연도     │ git worktree │ 4개 저장소       │ work/personal │ work/personal     │
-│ 읽기         │ 오늘 날짜     │ 각 상태 확인 │ gh CLI           │ 안 읽은 메일  │ 이번 주 일정 조회 │
+│ 읽기         │ 오늘 날짜     │ 각 상태 확인 │ gh CLI           │ 받은편지함    │ 이번 주 일정 조회 │
 │              │ 노트 읽기     │              │ - 내 PR 목록     │ 요약          │                   │
 │              │               │              │ - 리뷰 필요 PR   │               │                   │
 └──────────────┴───────────────┴──────────────┴──────────────────┴───────────────┴───────────────────┘
@@ -75,7 +75,7 @@ done | sort
 
 ---
 
-## TASK GROUP D: Gmail 안 읽은 메일 요약
+## TASK GROUP D: Gmail 받은편지함 메일 요약
 
 work, personal 두 계정을 **동시에** 실행한다.
 
@@ -84,18 +84,18 @@ work, personal 두 계정을 **동시에** 실행한다.
 ```bash
 # work 계정
 cd /Users/casper/.claude/skills/gmail-improved && \
-  uv run python scripts/list_messages.py --account work --query "is:unread" --max 20
+  uv run python scripts/list_messages.py --account work --query "in:inbox newer_than:10d" --max 20
 
 # personal 계정 (동시 실행)
 cd /Users/casper/.claude/skills/gmail-improved && \
-  uv run python scripts/list_messages.py --account personal --query "is:unread" --max 20
+  uv run python scripts/list_messages.py --account personal --query "in:inbox newer_than:10d" --max 20
 ```
 
 ### 요약 기준
 
 - 발신자 / 제목 / 수신 시각을 표 형식으로 정리
 - 중요도가 높아 보이는 메일(공지, 리뷰 요청, 긴급 등)은 ⚠️ 표시
-- 메일이 없으면 "안읽은 메일 없음" 표시
+- 메일이 없으면 "받은편지함 메일 없음" 표시
 - 메일 본문 내용은 읽지 않음 — 제목과 발신자로만 요약
 
 ---
@@ -192,7 +192,7 @@ gh pr list --repo {REPO} --state open --json number,title,author
 
 _(해당 날짜의 기록이 없으면 이 섹션 생략)_
 
-## 📬 안읽은 메일 요약
+## 📬 받은편지함 메일 요약
 
 ### 🔵 work (N개)
 | 발신자 | 제목 | 수신 시각 |
@@ -204,7 +204,7 @@ _(해당 날짜의 기록이 없으면 이 섹션 생략)_
 |--------|------|-----------|
 | ... | ... | ... |
 
-_(안읽은 메일이 없으면 "안읽은 메일 없음" 표시)_
+_(받은편지함 메일이 없으면 "받은편지함 메일 없음" 표시)_
 
 ## 🗓️ 이번 주 일정
 

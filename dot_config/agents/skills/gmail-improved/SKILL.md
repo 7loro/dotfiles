@@ -42,8 +42,8 @@ Gmail API를 통한 다중 계정 이메일 관리.
 # 최근 10개 메일
 uv run python scripts/list_messages.py --account work --max 10
 
-# 안 읽은 메일
-uv run python scripts/list_messages.py --account work --query "is:unread"
+# 보관(archive) 안 된 메일 (받은편지함)
+uv run python scripts/list_messages.py --account work --query "in:inbox"
 
 # 특정 발신자
 uv run python scripts/list_messages.py --account work --query "from:user@example.com"
