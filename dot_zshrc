@@ -183,6 +183,7 @@ alias .....="cd ../../../.."
 
 # Claude
 alias claude='claude --dangerously-skip-permissions --model "opusplan"'
+alias c='claude'
 
 # 업무용 환경변수
 if [ -f ~/.zsh_profile_work ]; then
