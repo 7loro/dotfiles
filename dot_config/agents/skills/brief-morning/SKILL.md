@@ -37,8 +37,15 @@ description: |
 
 ## TASK GROUP A: Daily Note 확인
 
-- `/Users/casper/pkm/005 journals/YYYY/` 에서 **어제 날짜**의 daily note 찾기
-- 파일 경로 형식: `005 journals/YYYY/YYYY-MM-DD.md` (어제 날짜 기준)
+어제 날짜의 daily note를 obsidian CLI로 읽는다.
+
+```bash
+YESTERDAY=$(date -v-1d '+%Y-%m-%d')
+YEAR=$(date -v-1d '+%Y')
+obsidian read path="005 journals/$YEAR/$YESTERDAY.md"
+```
+
+- 파일이 없으면 해당 섹션 생략
 - 추출 정보: 어제 완료한 작업, 진행 중인 작업, TODO
 
 ---
@@ -63,7 +70,7 @@ for dir in "/Users/casper/pkm/005 journals"/*/; do
 done | sort
 ```
 
-- 파일 목록 확인 후 각 파일을 Read tool로 읽어 요약
+- 파일 목록 확인 후 각 파일을 `obsidian read path="..."` 로 읽어 요약
 - 올해 파일은 제외 (과거 연도만 대상)
 - 파일이 존재하는 연도만 표시
 
