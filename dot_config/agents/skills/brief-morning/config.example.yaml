@@ -1,0 +1,35 @@
+# brief-morning 설정 파일 예시
+# 이 파일을 복사하여 config.yaml을 만들고 머신에 맞게 수정하세요.
+#
+# cp config.example.yaml config.yaml
+
+# ─────────────────────────────────────────────
+# 작업 그룹 enable/disable
+# ─────────────────────────────────────────────
+tasks:
+  daily_note: true      # TASK GROUP A  : 어제 daily note 확인
+  on_this_day: true     # TASK GROUP A' : 이날의 기록 (과거 같은 날짜)
+  git_status: true      # TASK GROUP B  : Git 로컬 상태 확인
+  github_pr: true       # TASK GROUP C  : GitHub PR 조회 (내 PR + 리뷰 필요)
+  gmail: true           # TASK GROUP D  : Gmail 받은편지함 요약
+  calendar: true        # TASK GROUP E  : Google Calendar 이번 주 일정
+
+# ─────────────────────────────────────────────
+# Git 상태 확인 설정 (tasks.git_status: true 일 때만 사용)
+# ─────────────────────────────────────────────
+git:
+  # worktree list를 조회할 기준 저장소 경로
+  root: /Users/casper/Workspace/goomba-hub
+  # 상태 확인에서 제외할 worktree 이름 목록
+  exclude:
+    - goomba-hub-review
+
+# ─────────────────────────────────────────────
+# GitHub PR 조회 설정 (tasks.github_pr: true 일 때만 사용)
+# ─────────────────────────────────────────────
+github:
+  repos:
+    - github.kakaocorp.com/kjk/goomba-hub
+    - github.kakaocorp.com/kjk/flutter_epub_viewer
+    - github.kakaocorp.com/kjk/pluto_grid
+    - github.kakaocorp.com/kjk/flutter_ocr

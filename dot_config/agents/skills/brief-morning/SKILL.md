@@ -3,7 +3,7 @@ name: brief-morning
 description: |
   아침 업무 시작 루틴: 어제 작업 요약 및 PR 리뷰 목록 확인.
   트리거: "아침 브리핑", "모닝 브리핑", "morning brief", "업무 시작", "/brief-morning" 등.
-  읽기 전용 작업만 수행하며 파일 추가/삭제/수정 금지.
+  config.yaml이 없으면 사용자에게 설정을 묻고 파일을 생성한 뒤 작업을 진행한다.
 ---
 
 # Brief Morning
@@ -12,12 +12,79 @@ description: |
 
 ## 제약사항
 
-- **절대 파일 추가, 삭제, 수정 금지** - 읽기 전용 작업만 수행
-- 정보 수집 및 요약만 진행
+- **정보 수집 및 요약만 진행** - 읽기 전용 작업이 원칙
+- 단, `config.yaml`이 존재하지 않는 경우에 한해 **최초 1회 설정 파일 생성**은 허용
+
+---
+
+## STEP 0: 설정 읽기 (가장 먼저 실행)
+
+스킬 디렉토리의 `config.yaml`을 읽어 이 머신의 설정을 파악한다.
+
+```bash
+cat ~/.config/agents/skills/brief-morning/config.yaml
+```
+
+### config.yaml이 있는 경우
+
+파일 내용을 파싱하여 설정값을 확인하고, **enabled된 태스크만** 아래 병렬 실행 블록에서 수행한다.
+
+### config.yaml이 없는 경우
+
+`AskUserQuestion` tool을 사용해 사용자에게 직접 물어본다. 질문은 **한 번에 모두** 묻는다 (여러 번 나눠서 묻지 않는다):
+
+**질문 1** — 수행할 작업 선택 (multiSelect: true)
+- `daily_note` — 어제 Daily Note 확인
+- `on_this_day` — 이날의 기록 (과거 같은 날짜)
+- `git_status` — Git 로컬 상태 확인
+- `github_pr` — GitHub PR 조회
+- `gmail` — Gmail 받은편지함 요약
+- `calendar` — Google Calendar 이번 주 일정
+
+**질문 2** — `git_status`를 선택한 경우: Git root 경로 입력
+- 예시 옵션: 자주 쓰는 경로 2~3개 + "직접 입력"
+
+**질문 3** — `github_pr`를 선택한 경우: PR 조회할 저장소 목록 입력 (쉼표 구분)
+
+> ⚠️ `git_status`나 `github_pr`를 선택하지 않았다면 해당 질문은 건너뛴다.
+
+### config.yaml 생성
+
+사용자 응답을 바탕으로 `~/.config/agents/skills/brief-morning/config.yaml`을 **Write tool**로 생성한다.
+
+생성할 파일 형식:
+
+```yaml
+tasks:
+  daily_note: true   # 사용자가 선택한 경우 true, 아니면 false
+  on_this_day: true  # 사용자가 선택한 경우 true, 아니면 false
+  git_status: false  # 사용자가 선택한 경우 true, 아니면 false
+  github_pr: false   # 사용자가 선택한 경우 true, 아니면 false
+  gmail: true        # 사용자가 선택한 경우 true, 아니면 false
+  calendar: true     # 사용자가 선택한 경우 true, 아니면 false
+
+git:
+  root: "/Users/casper/Workspace"  # git_status 선택 시 사용자가 고른 경로, 아니면 빈 문자열
+  exclude: []
+
+github:
+  repos: []  # github_pr 선택 시 사용자가 입력한 저장소 목록
+```
+
+파일 생성 후 사용자에게 다음 형식으로 안내한다:
+
+```
+✅ config.yaml이 생성되었습니다: ~/.config/agents/skills/brief-morning/config.yaml
+다음 실행부터는 자동으로 이 설정을 사용합니다.
+```
+
+설정을 확인한 뒤, **enabled된 태스크만** 아래 병렬 실행 블록에서 수행한다.
+
+---
 
 ## 실행 전략
 
-**병렬 실행 필수**: 아래 6개 작업 그룹은 서로 독립적이므로 **반드시 동시에 실행**
+**병렬 실행 필수**: enabled된 작업 그룹은 서로 독립적이므로 **반드시 동시에 실행**
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -26,16 +93,18 @@ description: |
 │ TASK GROUP A │ TASK GROUP A' │ TASK GROUP B │  TASK GROUP C    │ TASK GROUP D  │   TASK GROUP E    │
 │ (Daily Note) │ (이날의 기록) │ (Git Status) │ (GitHub PR 조회) │   (Gmail)     │    (Calendar)     │
 ├──────────────┼───────────────┼──────────────┼──────────────────┼───────────────┼───────────────────┤
-│ 어제 노트    │ 과거 연도     │ git worktree │ 4개 저장소       │ work/personal │ work/personal     │
-│ 읽기         │ 오늘 날짜     │ 각 상태 확인 │ gh CLI           │ 받은편지함    │ 이번 주 일정 조회 │
-│              │ 노트 읽기     │              │ - 내 PR 목록     │ 요약          │                   │
-│              │               │              │ - 리뷰 필요 PR   │               │                   │
+│ tasks.       │ tasks.        │ tasks.       │ tasks.           │ tasks.        │ tasks.            │
+│ daily_note   │ on_this_day   │ git_status   │ github_pr        │ gmail         │ calendar          │
+│ = true 시    │ = true 시     │ = true 시    │ = true 시        │ = true 시     │ = true 시         │
+│ 실행         │ 실행          │ 실행         │ 실행             │ 실행          │ 실행              │
 └──────────────┴───────────────┴──────────────┴──────────────────┴───────────────┴───────────────────┘
 ```
 
 ---
 
 ## TASK GROUP A: Daily Note 확인
+
+> **건너뛰기 조건**: `tasks.daily_note: false`
 
 어제 날짜의 daily note를 obsidian CLI로 읽는다.
 
@@ -51,6 +120,8 @@ obsidian read path="005 journals/$YEAR/$YESTERDAY.md"
 ---
 
 ## TASK GROUP A': 이날의 기록 (On This Day)
+
+> **건너뛰기 조건**: `tasks.on_this_day: false`
 
 오늘과 **같은 월-일(MM-DD)** 의 과거 연도 daily note를 모두 조회한다.
 
@@ -84,6 +155,8 @@ done | sort
 
 ## TASK GROUP D: Gmail 받은편지함 메일 요약
 
+> **건너뛰기 조건**: `tasks.gmail: false`
+
 work, personal 두 계정을 **동시에** 실행한다.
 
 ### 실행 명령
@@ -108,6 +181,8 @@ cd /Users/casper/.claude/skills/gmail-improved && \
 ---
 
 ## TASK GROUP E: Google Calendar 이번 주 일정 조회
+
+> **건너뛰기 조건**: `tasks.calendar: false`
 
 work, personal 두 계정을 **동시에** 실행한다.
 
@@ -135,15 +210,20 @@ cd /Users/casper/.claude/skills/google-calendar-improved && \
 
 ## TASK GROUP B: Git 로컬 상태 확인
 
+> **건너뛰기 조건**: `tasks.git_status: false`
+
 ### B-1. Worktree 목록 조회
 
+`config.yaml`의 `git.root` 경로를 기준으로 worktree 목록을 조회한다.
+
 ```bash
-cd /Users/casper/Workspace/goomba-hub && git worktree list
+# git.root 값을 사용 (예: /Users/casper/Workspace/goomba-hub)
+cd {git.root} && git worktree list
 ```
 
 ### B-2. 각 Worktree 상태 확인 (B-1 결과 기반, 각각 병렬 실행)
 
-**제외 대상**: `goomba-hub-review` (PR 리뷰 전용 worktree)
+**제외 대상**: `config.yaml`의 `git.exclude` 목록에 있는 worktree 이름
 
 각 worktree에서 **동시에** 실행:
 
@@ -158,25 +238,17 @@ git log origin/HEAD..HEAD --oneline 2>/dev/null || echo "(no upstream)"
 
 ## TASK GROUP C: GitHub PR 조회
 
-### 대상 저장소
+> **건너뛰기 조건**: `tasks.github_pr: false`
+> **저장소 목록**: `config.yaml`의 `github.repos` 배열 사용. 비어 있으면 이 섹션 생략.
 
-```
-REPOS=(
-  "github.kakaocorp.com/kjk/goomba-hub"
-  "github.kakaocorp.com/kjk/flutter_epub_viewer"
-  "github.kakaocorp.com/kjk/pluto_grid"
-  "github.kakaocorp.com/kjk/flutter_ocr"
-)
-```
-
-### C-1. 내 PR 목록 조회 (4개 저장소 병렬)
+### C-1. 내 PR 목록 조회 (repos 병렬)
 
 ```bash
 gh pr list --author @me --repo {REPO} --state open \
   --json number,title,reviewDecision,mergeable,statusCheckRollup
 ```
 
-### C-2. 리뷰 필요 PR 목록 조회 (4개 저장소 병렬)
+### C-2. 리뷰 필요 PR 목록 조회 (repos 병렬)
 
 ```bash
 gh pr list --repo {REPO} --state open --json number,title,author
@@ -187,6 +259,8 @@ gh pr list --repo {REPO} --state open --json number,title,author
 ---
 
 ## 출력 형식
+
+enabled된 섹션만 출력하고, disabled된 섹션은 완전히 생략한다.
 
 ```markdown
 # 🌅 Morning Brief - YYYY-MM-DD
