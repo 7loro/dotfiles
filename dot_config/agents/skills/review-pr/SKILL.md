@@ -164,6 +164,7 @@ gh pr diff {PR번호}
 **Step 2. AskUserQuestion으로 게시 방법을 묻는다.**
 
 머지 가능 여부를 판단한 후, 아래 선택지를 제시한다:
+- LGTM (코멘트 없이 "LGTM" 텍스트만으로 Approve)
 - Approve + 코멘트 게시
 - Approve만 (코멘트 없음)
 - Request Changes
