@@ -60,6 +60,42 @@
       "pluginName": "example-skills",
       "installedAt": "2026-03-01T01:38:39.180Z",
       "updatedAt": "2026-03-01T01:57:05.279Z"
+    },
+    "slack": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/slack/SKILL.md",
+      "skillFolderHash": "45b116adcbbb159d2103afc5d6ae704ba47427f8",
+      "installedAt": "2026-03-06T10:14:28.847Z",
+      "updatedAt": "2026-03-06T10:14:28.847Z"
+    },
+    "electron": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/electron/SKILL.md",
+      "skillFolderHash": "262130632e186c3ee2d153b6d5b5dd6e60b8236f",
+      "installedAt": "2026-03-06T10:14:28.867Z",
+      "updatedAt": "2026-03-06T10:14:28.867Z"
+    },
+    "dogfood": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/dogfood/SKILL.md",
+      "skillFolderHash": "ad41914e08b955060a80801619d6a36206187e9e",
+      "installedAt": "2026-03-06T10:14:28.885Z",
+      "updatedAt": "2026-03-06T10:14:28.885Z"
+    },
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/agent-browser/SKILL.md",
+      "skillFolderHash": "368263b629b1c1af2abd68ff2e45fa40ead82601",
+      "installedAt": "2026-03-06T10:14:28.902Z",
+      "updatedAt": "2026-03-06T10:14:28.902Z"
     }
   },
   "dismissed": {
@@ -67,9 +103,7 @@
   },
   "lastSelectedAgents": [
     "amp",
-    "cline",
     "codex",
-    "cursor",
     "gemini-cli",
     "github-copilot",
     "kimi-cli",
