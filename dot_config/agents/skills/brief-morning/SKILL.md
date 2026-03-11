@@ -106,16 +106,50 @@ github:
 
 > **건너뛰기 조건**: `tasks.daily_note: false`
 
-어제 날짜의 daily note를 obsidian CLI로 읽는다.
+오늘을 제외한 가장 최신 daily note를 찾아 읽는다. 주말(토·일)이 포함된 경우 금요일까지 함께 탐색한다.
+
+### 탐색 방법
 
 ```bash
-YESTERDAY=$(date -v-1d '+%Y-%m-%d')
-YEAR=$(date -v-1d '+%Y')
-obsidian read path="005 journals/$YEAR/$YESTERDAY.md"
+# 1단계: 오늘을 제외하고 가장 최신 노트 찾기 (최대 14일 이전까지)
+VAULT="/Users/casper/pkm/005 journals"
+TODAY=$(date '+%Y-%m-%d')
+LATEST=""
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14; do
+  D=$(date -v-${i}d '+%Y-%m-%d')
+  Y=$(date -v-${i}d '+%Y')
+  [ -f "$VAULT/$Y/$D.md" ] && LATEST="$D" && break
+done
+
+# 2단계: 찾은 노트가 주말(토=6, 일=0)이면 금요일까지 범위 확장
+if [ -n "$LATEST" ]; then
+  DOW=$(date -j -f '%Y-%m-%d' "$LATEST" '+%w')  # 0=일, 6=토
+  if [ "$DOW" = "0" ] || [ "$DOW" = "6" ]; then
+    # 주말이면 해당 주 금요일까지 탐색 (최대 2일 더 앞으로)
+    COLLECT="$LATEST"
+    for extra in 1 2; do
+      D_PREV=$(date -j -f '%Y-%m-%d' -v-${extra}d "$LATEST" '+%Y-%m-%d')
+      Y_PREV=$(date -j -f '%Y-%m-%d' -v-${extra}d "$LATEST" '+%Y')
+      DOW_PREV=$(date -j -f '%Y-%m-%d' "$D_PREV" '+%w')
+      [ -f "$VAULT/$Y_PREV/$D_PREV.md" ] && COLLECT="$D_PREV $COLLECT"
+      [ "$DOW_PREV" = "5" ] && break  # 금요일 도달하면 중단
+    done
+    echo "$COLLECT"
+  else
+    echo "$LATEST"
+  fi
+fi
 ```
 
-- 파일이 없으면 해당 섹션 생략
-- 추출 정보: 어제 완료한 작업, 진행 중인 작업, TODO
+- 수집된 날짜 목록의 각 파일을 순서대로 읽어 요약
+- 파일이 하나도 없으면 해당 섹션 생략
+- 추출 정보: 완료한 작업, 진행 중인 작업, TODO
+
+### 출력 형식
+
+- 단일 노트(평일): `## 지난 일지 요약 (YYYY-MM-DD)`
+- 복수 노트(주말 포함): `## 지난 일지 요약 (금 YYYY-MM-DD ~ 일 YYYY-MM-DD)` 형식으로 날짜 범위 명시
+- 각 날짜별 내용을 날짜 헤더(`### YYYY-MM-DD (요일)`)로 구분하여 표시
 
 ---
 
@@ -298,7 +332,7 @@ _(받은편지함 메일이 없으면 "받은편지함 메일 없음" 표시)_
 
 _(일정 없는 날은 생략, 충돌 시 ⚠️ 표시)_
 
-## 어제 작업 요약
+## 지난 일지 요약
 [요약 내용]
 
 ## 오늘 해야 할 일
