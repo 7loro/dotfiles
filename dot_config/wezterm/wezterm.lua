@@ -70,6 +70,19 @@ local function get_tab_title(tab)
   return tab.active_pane.title
 end
 
+-- 탭을 보면 🔔 제거 (🔔 prefix 제거 후 원래 타이틀로 복구)
+local BELL = '\xf0\x9f\x94\x94'  -- 🔔 UTF-8 (4바이트)
+
+-- 탭을 보면 🔔 제거: update-right-status는 탭 전환 시에도 발생
+wezterm.on('update-right-status', function(window, pane)
+  local tab = window:active_tab()
+  local title = tab:get_title()
+  if title:sub(1, 4) == BELL then
+    local original = title:sub(5):match('^%s*(.*)')
+    tab:set_title(original or '')
+  end
+end)
+
 local function tab_bg(t)
   return t.is_active and tab_accent[(t.tab_index % #tab_accent) + 1] or INACTIVE_BG
 end

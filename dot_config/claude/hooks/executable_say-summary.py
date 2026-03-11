@@ -501,6 +501,40 @@ def main() -> None:
 
     log(f"최종 요약: {summary}")
 
+    # WezTerm 탭에 🔔 알림 표시 (wezterm CLI로 탭 타이틀 변경)
+    try:
+        pane_id = os.environ.get("WEZTERM_PANE")
+        if pane_id and shutil.which("wezterm"):
+            list_result = subprocess.run(
+                ["wezterm", "cli", "list", "--format", "json"],
+                capture_output=True, text=True, timeout=3,
+            )
+            panes = json.loads(list_result.stdout)
+            tab_id = next(
+                (p["tab_id"] for p in panes if str(p.get("pane_id")) == pane_id),
+                None,
+            )
+            if tab_id is not None:
+                pane_info = next(
+                    (p for p in panes if str(p.get("pane_id")) == pane_id), {}
+                )
+                # 수동 설정 tab_title 우선, 없으면 프로세스 title 사용
+                original = pane_info.get("tab_title") or pane_info.get("title", "")
+                # 이미 🔔가 붙어 있으면 중복 방지
+                if not original.startswith("🔔"):
+                    new_title = f"🔔 {original}" if original else "🔔"
+                    subprocess.run(
+                        ["wezterm", "cli", "set-tab-title", "--tab-id", str(tab_id), new_title],
+                        timeout=3,
+                    )
+                    log(f"WezTerm 탭 {tab_id}에 🔔 설정: {new_title}")
+            else:
+                log(f"pane_id={pane_id} 에 해당하는 탭을 찾지 못함")
+        else:
+            log("WEZTERM_PANE 없거나 wezterm CLI 없음, 탭 알림 건너뜀")
+    except Exception as e:
+        log(f"WezTerm 탭 알림 설정 실패: {e}\n{traceback.format_exc()}")
+
     # 1순위: macOS say (Apple Intelligence Premium 음성)
     ok, voice, error = speak_macos_say(summary, config)
     if ok:
