@@ -194,4 +194,3 @@ fi
 if [ -f ~/.zsh_profile_personal ]; then
   . ~/.zsh_profile_personal
 fi
-
