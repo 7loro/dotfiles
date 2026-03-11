@@ -17,3 +17,20 @@ confirm-close-surface=false
 
 keybind = global:cmd+shift+`=toggle_quick_terminal
 
+# 리더 키: ctrl+a
+# 분할
+keybind = ctrl+a>v=new_split:right
+keybind = ctrl+a>s=new_split:down
+# pane 이동
+keybind = ctrl+a>h=goto_split:left
+keybind = ctrl+a>j=goto_split:bottom
+keybind = ctrl+a>k=goto_split:top
+keybind = ctrl+a>l=goto_split:right
+# pane 크기 조절
+keybind = ctrl+a>left=resize_split:left,10
+keybind = ctrl+a>right=resize_split:right,10
+keybind = ctrl+a>up=resize_split:up,10
+keybind = ctrl+a>down=resize_split:down,10
+# pane 닫기
+keybind = ctrl+a>x=close_surface
+
