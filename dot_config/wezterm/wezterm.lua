@@ -1,6 +1,19 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+-- macOS 시스템 알림 유틸리티 (wezterm.run_child_process 사용)
+local notify = {
+  send = function(title, message)
+    wezterm.run_child_process({
+      'osascript', '-e',
+      string.format(
+        'display notification "%s" with title "%s"',
+        message:gsub('"', '\\"'), title:gsub('"', '\\"')
+      ),
+    })
+  end,
+}
+
 -- Font
 config.font = wezterm.font("D2CodingLigature Nerd Font")
 config.font_size = 18
@@ -29,14 +42,96 @@ config.warn_about_missing_glyphs = false
 config.window_close_confirmation = "NeverPrompt"
 config.tab_bar_at_bottom = true
 
+-- 탭별 고유 색상 (활성 탭 배경 / 비활성 탭 인디케이터)
+local tab_accent = {
+  '#ff4d6d', -- red
+  '#ff9248', -- peach
+  '#ffd000', -- yellow
+  '#4cc840', -- green
+  '#20c0e8', -- sky
+  '#5898f8', -- blue
+  '#b080f8', -- mauve
+  '#f868c8', -- pink
+}
+
+local INACTIVE_BG = '#2a2b3d'
+local TAB_BAR_BG  = '#1e1e2e'
+local SEP = wezterm.nerdfonts.pl_left_hard_divider  --
+
+local function get_tab_title(tab)
+  local title = tab.tab_title
+  if title and #title > 0 then
+    return title
+  end
+  local cwd = tab.active_pane.current_working_dir
+  if cwd then
+    return cwd.file_path:match("([^/]+)/?$") or cwd.file_path
+  end
+  return tab.active_pane.title
+end
+
+local function tab_bg(t)
+  return t.is_active and tab_accent[(t.tab_index % #tab_accent) + 1] or INACTIVE_BG
+end
+
+wezterm.on('format-tab-title', function(tab, tabs)
+  local idx    = (tab.tab_index % #tab_accent) + 1
+  local accent = tab_accent[idx]
+  local title  = get_tab_title(tab)
+  local index  = tostring(tab.tab_index + 1)
+
+  local next_tab = tabs[tab.tab_index + 2]
+  local next_bg  = next_tab and tab_bg(next_tab) or TAB_BAR_BG
+
+  if tab.is_active then
+    return {
+      { Background = { Color = accent } },
+      { Foreground = { Color = '#1e1e2e' } },
+      { Attribute = { Intensity = 'Bold' } },
+      { Text = '  ' .. index .. '  ' .. title .. '  ' },
+      { Attribute = { Intensity = 'Normal' } },
+      { Background = { Color = next_bg } },
+      { Foreground = { Color = accent } },
+      { Text = SEP },
+    }
+  else
+    return {
+      { Background = { Color = INACTIVE_BG } },
+      { Foreground = { Color = accent } },
+      { Text = '▎' },
+      { Foreground = { Color = '#a0a8c0' } },
+      { Text = index .. '  ' .. title .. '  ' },
+      { Background = { Color = next_bg } },
+      { Foreground = { Color = INACTIVE_BG } },
+      { Text = SEP },
+    }
+  end
+end)
+
 -- Plugins
 local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
 tabline.setup({
   options = {
     icons_enabled = true,
     theme = 'Catppuccin Mocha',
-    tabs_enabled = true,
-    theme_overrides = {},
+    tabs_enabled = false,  -- 탭 렌더링은 format-tab-title 이벤트로 직접 처리
+    theme_overrides = {
+      normal_mode = {
+        a = { fg = '#1e1e2e', bg = '#89b4fa' },  -- blue
+        b = { fg = '#cdd6f4', bg = '#313244' },  -- surface0
+        c = { fg = '#cdd6f4', bg = '#313244' },
+      },
+      copy_mode = {
+        a = { fg = '#1e1e2e', bg = '#f9e2af' },  -- yellow
+        b = { fg = '#cdd6f4', bg = '#313244' },
+        c = { fg = '#cdd6f4', bg = '#313244' },
+      },
+      search_mode = {
+        a = { fg = '#1e1e2e', bg = '#a6e3a1' },  -- green
+        b = { fg = '#cdd6f4', bg = '#313244' },
+        c = { fg = '#cdd6f4', bg = '#313244' },
+      },
+    },
     section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
       right = wezterm.nerdfonts.pl_right_hard_divider,
@@ -45,30 +140,25 @@ tabline.setup({
       left = wezterm.nerdfonts.pl_left_soft_divider,
       right = wezterm.nerdfonts.pl_right_soft_divider,
     },
-    tab_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
-    },
   },
   sections = {
-    tabline_a = {  },
-    tabline_b = { 'workspace' },
+    tabline_a = { 'mode' },
+    tabline_b = { },
     tabline_c = { ' ' },
-    tab_active = {
-      'index',
-      { 'cwd', padding = { left = 2, right = 2 } },
+    tabline_x = {
+      function()
+        local expires = wezterm.GLOBAL.notification_expires or 0
+        if os.time() < expires then
+          return wezterm.GLOBAL.notification or ''
+        end
+        return ''
+      end,
     },
-    tab_inactive = {
-      'index',
-      { 'cwd', padding = { left = 2, right = 2 } },
-    },
-    tabline_x = { },
     tabline_y = { },
     tabline_z = {
-      {
-        'datetime',
-        format = '%Y-%m-%d %H:%M',
-      }
+      function()
+        return '  ' .. os.date('%Y-%m-%d %H:%M') .. ' '
+      end,
     },
   },
   extensions = {},
@@ -91,13 +181,23 @@ wezterm.on('resurrect.save_state.finished', function (session_path)
 
     local path = session_path:match(".+/([^+]+)$")
     local name = path:match("^(.+)%.json$")
-    -- notify.send("Wezterm - Save workspace", 'Saved workspace ' .. name .. "\n\n" .. session_path)
     notify.send("Wezterm Session Saved", "Current session state has been saved.")
 end)
 
 wezterm.on('resurrect.load_state.finished', function(name, type)
-    local msg  = 'Completed loading ' .. type .. ' state: ' .. name
+    local msg = 'Completed loading ' .. type .. ' state: ' .. name
     notify.send("Wezterm - Restore session", msg)
+end)
+
+-- 설정 리로드 시 우측 상단에 3초간 알림 표시
+wezterm.on('window-config-reloaded', function(window)
+  window:set_right_status(wezterm.format({
+    { Attribute = { Intensity = 'Bold' } },
+    { Foreground = { Color = '#a6e3a1' } },
+    { Text = '  config reloaded ' },
+  }))
+  wezterm.sleep_ms(3000)
+  window:set_right_status('')
 end)
 
 local smart_splits = wezterm.plugin.require('https://github.com/mrjones2014/smart-splits.nvim')
@@ -177,8 +277,7 @@ config.keys = {
     mods = "LEADER",
     action = wezterm.action_callback(function(win, pane)
       resurrect.state_manager.save_state(resurrect.workspace_state.get_workspace_state())
-      resurrect.window_state.save_window_action()
-      win:toast_notification("Wezterm - Save session", "Saving current session state...", nil, 2000)
+      notify.send("WezTerm", "Session saved")
     end),
   },
   {
@@ -207,6 +306,23 @@ config.keys = {
       end)
     end),
   },
+  {
+    key = 'l',
+    mods = 'LEADER',
+    action = wezterm.action.ClearScrollback 'ScrollbackAndViewport',
+  },
+  {
+    key = 'r',
+    mods = "LEADER",
+    action = wezterm.action.PromptInputLine {
+      description = 'Tab 이름 입력',
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          window:active_tab():set_title(line)
+        end
+      end),
+    },
+  }
 }
 config.key_tables = {
   activate_pane = {
@@ -238,6 +354,16 @@ config.key_tables = {
   split_pane_vertical = {
     { key = 'p',     action = act.SplitVertical },
   }
+}
+
+tabline.apply_to_config(config)
+
+-- apply_to_config가 padding을 0으로 덮어쓰므로 재설정
+config.window_padding = {
+  left   = '12px',
+  right  = '12px',
+  top    = '12px',
+  bottom = '0px',  -- 탭바가 하단에 있으므로 bottom은 0
 }
 
 return config
