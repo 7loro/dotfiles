@@ -299,14 +299,16 @@ SUMMARY_SYSTEM_PROMPT = (
     "Claude가 방금 한 작업의 핵심 동작을 자연스러운 한국어 한 문장으로 요약해.\n"
     "\n"
     "규칙:\n"
-    "- 10글자 내외(최대 15글자)\n"
+    "- 16글자 내외(최대 22글자)\n"
     "- 원문을 그대로 인용하지 말고, 어떤 행위를 했는지 동사 중심으로 요약\n"
-    "- 자연스러운 한국어 문법의 \"~했어요/~줬어요/~됐어요\" 종결\n"
+    "- 자연스러운 한국어 구어체 종결 (\"~했어요\", \"~드렸어요\", \"~완료했어요\", \"~수정했어요\", \"~만들었어요\", \"~설명해드렸어요\")\n"
     "- 영어 단어가 있으면 한국어로 바꿔서 표현\n"
+    "- 한 문장 전체가 자연스럽게 읽혀야 함\n"
     "\n"
-    '좋은 예: "버그 수정했어요", "파일 생성했어요", "인사에 답했어요", "코드 설명했어요", "질문에 답변했어요"\n'
+    '좋은 예: "버그를 수정했어요", "새 파일을 생성했어요", "질문에 답변해드렸어요", "코드를 리팩토링했어요", "인사에 답했어요"\n'
+    '좋은 예: "설정 오류를 고쳤어요", "노트를 새로 작성했어요", "PR 내용을 정리했어요"\n'
     '나쁜 예: "안녕하세요 무엇을 도와했어요" (원문 짜깁기, 문법 오류)\n'
-    '나쁜 예: "로그인 페이지의 인증 버그를 수정했어요" (너무 김)\n'
+    '나쁜 예: "로그인 페이지의 사용자 인증 버그를 수정하고 테스트를 추가했어요" (너무 김)\n'
     '나쁜 예: "안녕하세요했어요" (원문에 종결어미만 붙임)\n'
 )
 
@@ -351,17 +353,17 @@ def summarize_with_sdk(text: str) -> str | None:
 
 
 def fallback_summary(text: str) -> str:
-    """claude CLI 실패 시 규칙 기반 간단 요약 (10글자 내외)"""
+    """claude CLI 실패 시 규칙 기반 간단 요약 (16글자 내외)"""
     sentences = re.split(r"[.!?\n]", text)
     for sentence in sentences:
         sentence = sentence.strip()
         if len(sentence) > 3:
-            if len(sentence) > 15:
-                sentence = sentence[:12]
+            if len(sentence) > 22:
+                sentence = sentence[:18]
             if not sentence.endswith(("요", "다", "음", "죠")):
-                sentence += "했어요"
+                sentence += " 완료했어요"
             return sentence
-    return "작업 완료했어요"
+    return "작업을 완료했어요"
 
 
 def speak_macos_say(text: str, config: dict) -> tuple[bool, str, str | None]:
@@ -491,7 +493,7 @@ def main() -> None:
         return
 
     # 이미 짧은 텍스트면 그대로 사용, 아니면 SDK로 요약
-    if len(cleaned) <= 15:
+    if len(cleaned) <= 22:
         summary = cleaned
     else:
         summary = summarize_with_sdk(cleaned)
