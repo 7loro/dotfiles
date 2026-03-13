@@ -292,10 +292,15 @@ repository: [repo-name]
 
 PR 내용을 구성한 뒤 obsidian-cli로 생성:
 
-**파일명 규칙**: `PR{번호} - {제목에서 type prefix 제거한 설명}`
-- PR 번호 앞 `#` 사용 금지: `PR1748 - ...` (❌ `PR#1748`)
-- `feat:`, `fix:` 등 type prefix 제거: 태그로 표현하므로 파일명에는 불필요
-- 예시: `PR1748 - appcast PR 머지 시 Goomba-Hub-Appcast-upload 자동 트리거`
+**파일명 규칙**: Backlog 티켓 번호 유무에 따라 분기
+- **티켓 번호를 알고 있는 경우** (PR 제목에 `[CONTENTSHUB-XXXX]` 포함 또는 대화 중 언급):
+  - `CONTENTSHUB-XXXX - {설명}` 형식 사용
+  - 예시: `CONTENTSHUB-1112 - 앱 배포 공증 stage-real 병렬 진행`
+- **티켓 번호를 모르는 경우**:
+  - `PR{번호} - {설명}` 형식 사용
+  - 예시: `PR1748 - appcast PR 머지 시 Goomba-Hub-Appcast-upload 자동 트리거`
+- 공통: PR 번호 앞 `#` 사용 금지, `feat:` / `fix:` 등 type prefix 제거 (태그로 표현)
+- 파일명 특수문자(`/\:*?"<>|#`) → `-`로 대체
 
 ```bash
 NOW=$(date '+%Y-%m-%d %H:%M:%S')
@@ -303,7 +308,7 @@ CONTENT=$(cat << 'EOF'
 위 PR Work 노트 구조에 맞게 채운 내용
 EOF
 )
-obsidian create name="PR{번호} - {설명}" path="007 inbox/PR{번호} - {설명}.md" content="$CONTENT" silent
+obsidian create name="CONTENTSHUB-XXXX - {설명}" path="007 inbox/CONTENTSHUB-XXXX - {설명}.md" content="$CONTENT" silent
 ```
 
 ### PR 타입 → 주제 태그 매핑
