@@ -325,7 +325,7 @@ config.keys = {
     action = wezterm.action.ClearScrollback 'ScrollbackAndViewport',
   },
   {
-    key = 'r',
+    key = 't',
     mods = "LEADER",
     action = wezterm.action.PromptInputLine {
       description = 'Tab 이름 입력',

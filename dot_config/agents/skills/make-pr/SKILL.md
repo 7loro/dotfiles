@@ -91,9 +91,17 @@ argument-hint: "[PR 제목]"
 gh pr create --draft --assignee @me --title "[Title]" --body-file pull_request.md --base [BaseBranch]
 ```
 
+> **⚠️ body 전달 규칙 — 반드시 준수**
+> PR body는 항상 `pull_request.md` 파일로 작성한 뒤 `--body-file`로 전달한다.
+> `--body "$(cat << 'EOF'...)"` 방식은 heredoc 내부의 backtick(`` ` ``)이 `\``로 escape되어 PR에 그대로 노출되는 문제가 있다.
+> `gh pr edit` 등 수정 시에도 동일하게 임시 파일 방식을 사용한다:
+> ```bash
+> gh pr edit [number] --body-file pull_request.md
+> ```
+
 ### Cleanup
 
-PR 생성 성공 후 `pull_request.md` 파일 삭제
+PR 생성/수정 성공 후 `pull_request.md` 파일 삭제
 
 ## 5. 최종 출력
 

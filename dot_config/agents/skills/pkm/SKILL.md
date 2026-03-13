@@ -196,22 +196,19 @@ obsidian recents
    - 12:00~17:59 → 당일 Afternoon
    - 18:00~23:59 → 당일 Evening
 
-2. **오늘 날짜 저널 (당일 06:00 이후)**:
+2. **저널 파일 읽기**:
    ```bash
-   # 읽기
-   obsidian daily:read
-
-   # 섹션에 백링크 추가
-   obsidian daily:append content="\n- [[노트 제목]]"
+   obsidian daily:read         # 당일 (06:00 이후)
+   obsidian read path="005 journals/YYYY/YYYY-MM-DD.md"  # 전날 (새벽 시간대)
    ```
 
-3. **다른 날짜 저널 (새벽 시간대 = 전날)**:
-   ```bash
-   # 경로 직접 지정하여 읽기
-   obsidian read path="005 journals/YYYY/YYYY-MM-DD.md"
-
-   # 섹션에 백링크 추가
-   obsidian append path="005 journals/YYYY/YYYY-MM-DD.md" content="\n- [[노트 제목]]"
+3. **시간대 섹션에 백링크 삽입** — `obsidian daily:append` / `obsidian append` 사용 금지.
+   반드시 `Read` 도구로 파일을 읽은 뒤 `Edit` 도구로 해당 섹션의 마지막 항목 바로 뒤에 삽입한다.
+   ```
+   ### Afternoon          ← 현재 시간이 12:00~17:59이면 이 섹션
+   - 기존 항목
+   - [[새 노트]]          ← 여기에 삽입
+   ### Evening
    ```
 
 4. 파일 없으면 `writing-guide.md`의 일간 저널 구조 참고하여 생성:
@@ -223,7 +220,7 @@ obsidian recents
    obsidian create name="YYYY-MM-DD" path="005 journals/YYYY/YYYY-MM-DD.md" content="$CONTENT" silent
    ```
 
-5. 중복 체크: `obsidian read`로 내용을 읽고 이미 동일 백링크가 있으면 스킵
+5. 중복 체크: `Read`로 읽은 내용에 이미 동일 백링크가 있으면 스킵
 
 ---
 
@@ -295,13 +292,18 @@ repository: [repo-name]
 
 PR 내용을 구성한 뒤 obsidian-cli로 생성:
 
+**파일명 규칙**: `PR{번호} - {제목에서 type prefix 제거한 설명}`
+- PR 번호 앞 `#` 사용 금지: `PR1748 - ...` (❌ `PR#1748`)
+- `feat:`, `fix:` 등 type prefix 제거: 태그로 표현하므로 파일명에는 불필요
+- 예시: `PR1748 - appcast PR 머지 시 Goomba-Hub-Appcast-upload 자동 트리거`
+
 ```bash
 NOW=$(date '+%Y-%m-%d %H:%M:%S')
 CONTENT=$(cat << 'EOF'
 위 PR Work 노트 구조에 맞게 채운 내용
 EOF
 )
-obsidian create name="PR 제목" path="007 inbox/PR 제목.md" content="$CONTENT" silent
+obsidian create name="PR{번호} - {설명}" path="007 inbox/PR{번호} - {설명}.md" content="$CONTENT" silent
 ```
 
 ### PR 타입 → 주제 태그 매핑
