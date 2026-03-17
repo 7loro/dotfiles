@@ -1,9 +1,10 @@
 ---
 name: brief-morning
 description: |
-  아침 업무 시작 루틴: 어제 작업 요약, PR 리뷰 목록 확인, Slack 읽지 않은 메시지 요약.
+  아침 업무 시작 루틴: 어제 작업 요약, PR 리뷰 목록 확인.
   트리거: "아침 브리핑", "모닝 브리핑", "morning brief", "업무 시작", "/brief-morning" 등.
   config.yaml이 없으면 사용자에게 설정을 묻고 파일을 생성한 뒤 작업을 진행한다.
+allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---
 
 # Brief Morning
@@ -37,7 +38,6 @@ cat ~/.config/agents/skills/brief-morning/config.yaml
 - `on_this_day` — 이날의 기록 (과거 같은 날짜)
 - `calendar` — Google Calendar 이번 주 일정
 - `gmail` — Gmail 받은편지함 요약
-- `slack` — Slack 채널별 읽지 않은 메시지 요약
 - `daily_note` — 어제 Daily Note 확인
 - `git_status` — Git 로컬 상태 확인
 - `github_pr` — GitHub PR 조회
@@ -60,7 +60,6 @@ tasks:
   on_this_day: true  # 사용자가 선택한 경우 true, 아니면 false
   calendar: true     # 사용자가 선택한 경우 true, 아니면 false
   gmail: true        # 사용자가 선택한 경우 true, 아니면 false
-  slack: true        # 사용자가 선택한 경우 true, 아니면 false
   daily_note: true   # 사용자가 선택한 경우 true, 아니면 false
   git_status: false  # 사용자가 선택한 경우 true, 아니면 false
   github_pr: false   # 사용자가 선택한 경우 true, 아니면 false
@@ -71,6 +70,7 @@ git:
 
 github:
   repos: []  # github_pr 선택 시 사용자가 입력한 저장소 목록
+
 ```
 
 파일 생성 후 사용자에게 다음 형식으로 안내한다:
@@ -86,21 +86,37 @@ github:
 
 ## 실행 전략
 
-**병렬 실행 필수**: enabled된 작업 그룹은 서로 독립적이므로 **반드시 동시에 실행**
+**Agent 기반 병렬 실행**: enabled된 작업 그룹은 서로 독립적이므로 **Agent tool을 사용하여 반드시 동시에 실행**한다.
+
+### 실행 그룹 분류
+
+> ⚡ **속도 최적화**: Agent 수를 최소화하고, 데이터 수집용 Agent에는 `model: "sonnet"`을 지정한다.
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                          PARALLEL EXECUTION BLOCK                                                  │
-├──────────────┬──────────────────┬───────────────┬──────────────┬──────────────┬──────────────┬────────────────────┤
-│ TASK GROUP A │  TASK GROUP B    │ TASK GROUP C  │ TASK GROUP D │ TASK GROUP E │ TASK GROUP F │   TASK GROUP G     │
-│ (이날의 기록) │    (일정)        │    (메일)     │   (Slack)    │  (지난 일지) │  (Git 상태)  │   (GitHub PR)      │
-├──────────────┼──────────────────┼───────────────┼──────────────┼──────────────┼──────────────┼────────────────────┤
-│ tasks.       │ tasks.           │ tasks.        │ tasks.       │ tasks.       │ tasks.       │ tasks.             │
-│ on_this_day  │ calendar         │ gmail         │ slack        │ daily_note   │ git_status   │ github_pr          │
-│ = true 시    │ = true 시        │ = true 시     │ = true 시    │ = true 시    │ = true 시    │ = true 시          │
-│ 실행         │ 실행             │ 실행          │ 실행         │ 실행         │ 실행         │ 실행               │
-└──────────────┴──────────────────┴───────────────┴──────────────┴──────────────┴──────────────┴────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        메인 컨텍스트 (직접 실행)                         │
+│  TASK GROUP A (이날의 기록) + TASK GROUP E (지난 일지)                    │
+│  → 로컬 파일 읽기만 하므로 Agent 생성 오버헤드 없이 직접 처리            │
+│  → 파일 탐색은 단일 Bash 호출로 A + E를 동시 수행                       │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────┬──────────────────────────┐
+│   Agent 1 (sonnet)       │   Agent 2 (sonnet)       │
+│  TASK GROUP B + C        │  TASK GROUP F + G        │
+│  (일정 + 메일)           │  (Git 상태 + GitHub PR)  │
+└──────────────────────────┴──────────────────────────┘
 ```
+
+### 실행 방법
+
+1. **메인 컨텍스트**: TASK GROUP A + E 파일 탐색을 **단일 Bash 호출**로 동시 수행
+2. **Agent 병렬 실행**: 나머지 enabled된 그룹을 **하나의 메시지에서 2개 Agent를 동시 호출**
+   - **Agent 1** (`model: "sonnet"`): Calendar + Gmail — 동일 Python 스크립트 기반, 4개 명령을 하나의 Bash `&`로 실행
+   - **Agent 2** (`model: "sonnet"`): Git 상태 + GitHub PR — 동일 CLI 기반, Bash `&`로 병렬 실행
+   - Agent 결과를 취합하여 최종 출력 생성
+
+> ⚠️ **반드시 하나의 메시지에서 2개 Agent를 동시 호출**해야 진정한 병렬 실행이 됨. 순차 호출하면 안 됨.
+> ⚡ 두 Agent 모두 데이터 수집+포맷팅만 수행하므로 `model: "sonnet"` 지정으로 응답 속도를 높인다.
 
 ---
 
@@ -113,20 +129,51 @@ github:
 ### 조회 방법
 
 > ⚠️ Glob tool은 공백 포함 경로(`005 journals/`)에서 오동작하므로 **반드시 Bash로 조회**
-> ⚠️ `find | grep` 파이프는 불안정할 수 있으므로 아래 for 루프 방식을 사용
+> ⚡ TASK GROUP E (지난 일지)의 파일 탐색과 **단일 Bash 호출로 동시 수행**하여 Bash tool 호출을 1회로 줄인다.
 
 ```bash
+VAULT="/Users/casper/pkm/005 journals"
 TODAY_MMDD=$(date '+%m-%d')
 CURRENT_YEAR=$(date '+%Y')
-for dir in "/Users/casper/pkm/005 journals"/*/; do
+TODAY=$(date '+%Y-%m-%d')
+
+# === A: On This Day (과거 같은 날짜) ===
+echo "=== ON_THIS_DAY ==="
+for dir in "$VAULT"/*/; do
   year=$(basename "$dir")
   [ "$year" = "$CURRENT_YEAR" ] && continue
   file="${dir}${year}-${TODAY_MMDD}.md"
   [ -f "$file" ] && echo "$file"
 done | sort
+
+# === E: Latest Daily Note ===
+echo "=== LATEST_DAILY ==="
+LATEST=""
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14; do
+  D=$(date -v-${i}d '+%Y-%m-%d')
+  Y=$(date -v-${i}d '+%Y')
+  [ -f "$VAULT/$Y/$D.md" ] && LATEST="$D" && break
+done
+if [ -n "$LATEST" ]; then
+  DOW=$(date -j -f '%Y-%m-%d' "$LATEST" '+%w')
+  if [ "$DOW" = "0" ] || [ "$DOW" = "6" ]; then
+    COLLECT="$LATEST"
+    for extra in 1 2; do
+      D_PREV=$(date -j -f '%Y-%m-%d' -v-${extra}d "$LATEST" '+%Y-%m-%d')
+      Y_PREV=$(date -j -f '%Y-%m-%d' -v-${extra}d "$LATEST" '+%Y')
+      DOW_PREV=$(date -j -f '%Y-%m-%d' "$D_PREV" '+%w')
+      [ -f "$VAULT/$Y_PREV/$D_PREV.md" ] && COLLECT="$D_PREV $COLLECT"
+      [ "$DOW_PREV" = "5" ] && break
+    done
+    echo "$COLLECT"
+  else
+    echo "$LATEST"
+  fi
+fi
 ```
 
-- 파일 목록 확인 후 각 파일을 `obsidian read path="..."` 로 읽어 요약
+- 출력의 `=== ON_THIS_DAY ===` 이후 줄들이 A의 파일 목록, `=== LATEST_DAILY ===` 이후 줄이 E의 날짜 목록
+- 이 결과를 파싱한 뒤, 모든 파일을 **Read tool 병렬 호출**로 한 번에 읽는다
 - 올해 파일은 제외 (과거 연도만 대상)
 - 파일이 존재하는 연도만 표시
 
@@ -138,25 +185,33 @@ done | sort
 
 ---
 
-## TASK GROUP B: Google Calendar 이번 주 일정 조회
+## TASK GROUP B+C: Google Calendar + Gmail (Agent 1, `model: "sonnet"`)
 
-> **건너뛰기 조건**: `tasks.calendar: false`
-
-work, personal 두 계정을 **동시에** 실행한다.
+> **건너뛰기 조건**: `tasks.calendar: false` AND `tasks.gmail: false` 둘 다 false면 이 Agent 생략
+> ⚡ Calendar과 Gmail은 동일 Python 스크립트 기반이므로 **하나의 Agent에서 단일 Bash 호출**로 4개 명령을 동시 실행한다.
 
 ### 실행 명령
 
-```bash
-# work 계정 — 이번 주(7일) 일정
-cd /Users/casper/.claude/skills/google-calendar-improved && \
-  uv run python scripts/fetch_events.py --account work --days 7
+Calendar과 Gmail의 work/personal 4개 스크립트를 **하나의 Bash에서 `&`로 동시 실행**한다:
 
-# personal 계정 — 이번 주(7일) 일정 (동시 실행)
-cd /Users/casper/.claude/skills/google-calendar-improved && \
-  uv run python scripts/fetch_events.py --account personal --days 7
+```bash
+CAL_DIR="/Users/casper/.claude/skills/google-calendar-improved"
+GMAIL_DIR="/Users/casper/.claude/skills/gmail-improved"
+
+# Calendar + Gmail 4개 동시 실행
+cd "$CAL_DIR" && uv run python scripts/fetch_events.py --account work --days 7 > /tmp/cal_work.txt 2>&1 &
+cd "$CAL_DIR" && uv run python scripts/fetch_events.py --account personal --days 7 > /tmp/cal_personal.txt 2>&1 &
+cd "$GMAIL_DIR" && uv run python scripts/list_messages.py --account work --query "in:inbox newer_than:10d" --max 20 > /tmp/gmail_work.txt 2>&1 &
+cd "$GMAIL_DIR" && uv run python scripts/list_messages.py --account personal --query "in:inbox newer_than:10d" --max 20 > /tmp/gmail_personal.txt 2>&1 &
+wait
+
+echo "=== CAL_WORK ===" && cat /tmp/cal_work.txt
+echo "=== CAL_PERSONAL ===" && cat /tmp/cal_personal.txt
+echo "=== GMAIL_WORK ===" && cat /tmp/gmail_work.txt
+echo "=== GMAIL_PERSONAL ===" && cat /tmp/gmail_personal.txt
 ```
 
-### 요약 기준
+### Calendar 요약 기준
 
 - 날짜별로 그룹핑, 시간순 정렬
 - 계정 구분: 🔵 work, 🟢 personal
@@ -164,27 +219,7 @@ cd /Users/casper/.claude/skills/google-calendar-improved && \
 - 같은 시간대 work/personal 일정이 겹치면 ⚠️ 충돌 표시
 - 일정 없는 날은 생략
 
----
-
-## TASK GROUP C: Gmail 받은편지함 메일 요약
-
-> **건너뛰기 조건**: `tasks.gmail: false`
-
-work, personal 두 계정을 **동시에** 실행한다.
-
-### 실행 명령
-
-```bash
-# work 계정
-cd /Users/casper/.claude/skills/gmail-improved && \
-  uv run python scripts/list_messages.py --account work --query "in:inbox newer_than:10d" --max 20
-
-# personal 계정 (동시 실행)
-cd /Users/casper/.claude/skills/gmail-improved && \
-  uv run python scripts/list_messages.py --account personal --query "in:inbox newer_than:10d" --max 20
-```
-
-### 요약 기준
+### Gmail 요약 기준
 
 - 발신자 / 제목 / 수신 시각을 표 형식으로 정리
 - 중요도가 높아 보이는 메일(공지, 리뷰 요청, 긴급 등)은 ⚠️ 표시
@@ -193,91 +228,14 @@ cd /Users/casper/.claude/skills/gmail-improved && \
 
 ---
 
-## TASK GROUP D: Slack 채널별 읽지 않은 메시지 요약
-
-> **건너뛰기 조건**: `tasks.slack: false`
-
-`/slack` 스킬을 사용하여 Slack의 읽지 않은 메시지를 채널별로 수집·요약한다.
-
-### 실행 방법
-
-`agent-browser`를 통해 기존 Slack 브라우저 세션에 연결한다.
-
-> ⚠️ **Activity 탭 / "More unreads" 버튼은 사용하지 말 것** — 일부 채널만 표시되어 누락 발생
-
-#### 1단계: 연결 및 기준점 설정
-
-```bash
-agent-browser connect 9222
-agent-browser get title  # 현재 채널명 저장 (start_channel)
-```
-
-#### 2단계: ⌥⇧↓ 키로 모든 안 읽은 채널 순회 (최대 30회)
-
-```bash
-# 다음 안 읽은 채널로 이동 (Mac: Alt+Shift+Down)
-agent-browser press "Alt+Shift+ArrowDown"
-agent-browser wait 800
-agent-browser get title         # 현재 채널명 확인
-agent-browser snapshot -i       # 메시지 내용 파악
-agent-browser scroll up 300     # 위쪽 메시지도 확인
-# → 채널명 + 주요 메시지 기록
-# 처음 채널로 돌아오면 종료
-```
-
-#### 3단계: DMs 별도 확인
-
-사이드바에서 DMs 섹션으로 이동하여 굵게 표시된(안 읽은) DM 항목 각각 클릭 후 내용 읽기
-
-### 요약 기준
-
-- 채널명 + 주요 메시지 내용 (핵심 사항 2~3줄 이내)
-- 중요/긴급 사항은 ⚠️ 표시
-- DM은 별도 섹션으로 구분
-- 읽지 않은 메시지가 없으면 "읽지 않은 메시지 없음" 표시
-
----
-
 ## TASK GROUP E: Daily Note 확인
 
 > **건너뛰기 조건**: `tasks.daily_note: false`
+> ⚡ 파일 탐색은 TASK GROUP A의 통합 Bash 스크립트에서 이미 수행됨. `=== LATEST_DAILY ===` 결과를 사용.
 
-오늘을 제외한 가장 최신 daily note를 찾아 읽는다. 주말(토·일)이 포함된 경우 금요일까지 함께 탐색한다.
+오늘을 제외한 가장 최신 daily note를 읽는다. 주말(토·일)이 포함된 경우 금요일까지 함께 읽는다.
 
-### 탐색 방법
-
-```bash
-# 1단계: 오늘을 제외하고 가장 최신 노트 찾기 (최대 14일 이전까지)
-VAULT="/Users/casper/pkm/005 journals"
-TODAY=$(date '+%Y-%m-%d')
-LATEST=""
-for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14; do
-  D=$(date -v-${i}d '+%Y-%m-%d')
-  Y=$(date -v-${i}d '+%Y')
-  [ -f "$VAULT/$Y/$D.md" ] && LATEST="$D" && break
-done
-
-# 2단계: 찾은 노트가 주말(토=6, 일=0)이면 금요일까지 범위 확장
-if [ -n "$LATEST" ]; then
-  DOW=$(date -j -f '%Y-%m-%d' "$LATEST" '+%w')  # 0=일, 6=토
-  if [ "$DOW" = "0" ] || [ "$DOW" = "6" ]; then
-    # 주말이면 해당 주 금요일까지 탐색 (최대 2일 더 앞으로)
-    COLLECT="$LATEST"
-    for extra in 1 2; do
-      D_PREV=$(date -j -f '%Y-%m-%d' -v-${extra}d "$LATEST" '+%Y-%m-%d')
-      Y_PREV=$(date -j -f '%Y-%m-%d' -v-${extra}d "$LATEST" '+%Y')
-      DOW_PREV=$(date -j -f '%Y-%m-%d' "$D_PREV" '+%w')
-      [ -f "$VAULT/$Y_PREV/$D_PREV.md" ] && COLLECT="$D_PREV $COLLECT"
-      [ "$DOW_PREV" = "5" ] && break  # 금요일 도달하면 중단
-    done
-    echo "$COLLECT"
-  else
-    echo "$LATEST"
-  fi
-fi
-```
-
-- 수집된 날짜 목록의 각 파일을 순서대로 읽어 요약
+- 수집된 날짜 목록의 각 파일을 **TASK GROUP A 파일들과 함께 Read tool 병렬 호출**로 읽어 요약
 - 파일이 하나도 없으면 해당 섹션 생략
 - 추출 정보: 완료한 작업, 진행 중인 작업, TODO
 
@@ -289,53 +247,60 @@ fi
 
 ---
 
-## TASK GROUP F: Git 로컬 상태 확인
+## TASK GROUP F+G: Git 상태 + GitHub PR (Agent 3, `model: "sonnet"`)
 
-> **건너뛰기 조건**: `tasks.git_status: false`
+> **건너뛰기 조건**: `tasks.git_status: false` AND `tasks.github_pr: false` 둘 다 false면 이 Agent 생략
+> ⚡ Git 상태와 GitHub PR은 동일 CLI 기반이므로 **하나의 Agent에서 처리**한다.
 
-### F-1. Worktree 목록 조회
+### F: Git 로컬 상태 확인
 
-`config.yaml`의 `git.root` 경로를 기준으로 worktree 목록을 조회한다.
-
-```bash
-# git.root 값을 사용 (예: /Users/casper/Workspace/goomba-hub)
-cd {git.root} && git worktree list
-```
-
-### F-2. 각 Worktree 상태 확인 (F-1 결과 기반, 각각 병렬 실행)
+`config.yaml`의 `git.root` 경로를 기준으로 worktree 목록을 조회한 뒤, 각 worktree 상태를 확인한다.
 
 **제외 대상**: `config.yaml`의 `git.exclude` 목록에 있는 worktree 이름
 
-각 worktree에서 **동시에** 실행:
-
 ```bash
-git branch --show-current
-git status --porcelain
-git log --oneline -5
-git log origin/HEAD..HEAD --oneline 2>/dev/null || echo "(no upstream)"
+# 1단계: worktree 목록 조회
+cd {git.root} && git worktree list
 ```
 
----
-
-## TASK GROUP G: GitHub PR 조회
-
-> **건너뛰기 조건**: `tasks.github_pr: false`
-> **저장소 목록**: `config.yaml`의 `github.repos` 배열 사용. 비어 있으면 이 섹션 생략.
-
-### G-1. 내 PR 목록 조회 (repos 병렬)
-
 ```bash
-gh pr list --author @me --repo {REPO} --state open \
-  --json number,title,reviewDecision,mergeable,statusCheckRollup
+# 2단계: 각 worktree 상태 병렬 확인 (exclude 제거 후)
+for wt in "${WORKTREES[@]}"; do
+  (
+    echo "=== $wt ==="
+    cd "$wt" && \
+    echo "BRANCH: $(git branch --show-current)" && \
+    echo "STATUS:" && git status --porcelain && \
+    echo "LOG:" && git log --oneline -5 && \
+    echo "UNPUSHED:" && (git log origin/HEAD..HEAD --oneline 2>/dev/null || echo "(no upstream)")
+  ) &
+done
+wait
 ```
 
-### G-2. 리뷰 필요 PR 목록 조회 (repos 병렬)
+### G: GitHub PR 조회
+
+**저장소 목록**: `config.yaml`의 `github.repos` 배열 사용. 비어 있으면 이 섹션 생략.
+
+모든 repo를 **하나의 Bash에서 `&`로 병렬 실행**한다:
 
 ```bash
-gh pr list --repo {REPO} --state open --json number,title,author
+# config.yaml의 github.repos 값 사용
+REPOS=("kjk/goomba-hub" "kjk/flutter_epub_viewer" "kjk/flutter_ocr" "kjk/akira_bot")
+
+for repo in "${REPOS[@]}"; do
+  (
+    echo "=== $repo - MY PRS ==="
+    gh pr list --author @me --repo "$repo" --state open \
+      --json number,title,reviewDecision,mergeable,statusCheckRollup 2>&1
+    echo "=== $repo - REVIEW NEEDED ==="
+    gh pr list --repo "$repo" --state open --json number,title,author 2>&1
+  ) &
+done
+wait
 ```
 
-결과에서 내가 작성한 PR 제외 (`author.login != @me`)
+G 결과에서 내가 작성한 PR 제외 (`author.login != @me`)
 
 ---
 
@@ -378,16 +343,6 @@ _(일정 없는 날은 생략, 충돌 시 ⚠️ 표시)_
 | ... | ... | ... |
 
 _(받은편지함 메일이 없으면 "받은편지함 메일 없음" 표시)_
-
-## 💬 Slack 읽지 않은 메시지
-
-### #채널명
-- 주요 내용 요약 (2~3줄 이내)
-
-### DMs
-- **@발신자** — 메시지 요약
-
-_(읽지 않은 메시지가 없으면 "읽지 않은 메시지 없음" 표시)_
 
 ## 지난 일지 요약
 [요약 내용]
