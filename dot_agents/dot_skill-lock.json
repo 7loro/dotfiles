@@ -86,6 +86,15 @@
       "skillFolderHash": "368263b629b1c1af2abd68ff2e45fa40ead82601",
       "installedAt": "2026-03-06T10:14:28.902Z",
       "updatedAt": "2026-03-06T10:14:28.902Z"
+    },
+    "remotion-best-practices": {
+      "source": "remotion-dev/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/remotion-dev/skills.git",
+      "skillPath": "skills/remotion/SKILL.md",
+      "skillFolderHash": "666980630dc910c6b623f3bab13280af47d6995e",
+      "installedAt": "2026-03-17T07:46:20.979Z",
+      "updatedAt": "2026-03-17T07:46:20.979Z"
     }
   },
   "dismissed": {
