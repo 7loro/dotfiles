@@ -182,7 +182,7 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 # Claude
-alias claude='claude --dangerously-skip-permissions'
+alias claude='claude --dangerously-skip-permissions --model="opus[1m]"'
 alias c='claude'
 
 # 업무용 환경변수
