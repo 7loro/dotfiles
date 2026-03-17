@@ -1,7 +1,7 @@
 ---
 name: brief-morning
 description: |
-  아침 업무 시작 루틴: 어제 작업 요약 및 PR 리뷰 목록 확인.
+  아침 업무 시작 루틴: 어제 작업 요약, PR 리뷰 목록 확인, Slack 읽지 않은 메시지 요약.
   트리거: "아침 브리핑", "모닝 브리핑", "morning brief", "업무 시작", "/brief-morning" 등.
   config.yaml이 없으면 사용자에게 설정을 묻고 파일을 생성한 뒤 작업을 진행한다.
 ---
@@ -34,12 +34,13 @@ cat ~/.config/agents/skills/brief-morning/config.yaml
 `AskUserQuestion` tool을 사용해 사용자에게 직접 물어본다. 질문은 **한 번에 모두** 묻는다 (여러 번 나눠서 묻지 않는다):
 
 **질문 1** — 수행할 작업 선택 (multiSelect: true)
-- `daily_note` — 어제 Daily Note 확인
 - `on_this_day` — 이날의 기록 (과거 같은 날짜)
+- `calendar` — Google Calendar 이번 주 일정
+- `gmail` — Gmail 받은편지함 요약
+- `slack` — Slack 채널별 읽지 않은 메시지 요약
+- `daily_note` — 어제 Daily Note 확인
 - `git_status` — Git 로컬 상태 확인
 - `github_pr` — GitHub PR 조회
-- `gmail` — Gmail 받은편지함 요약
-- `calendar` — Google Calendar 이번 주 일정
 
 **질문 2** — `git_status`를 선택한 경우: Git root 경로 입력
 - 예시 옵션: 자주 쓰는 경로 2~3개 + "직접 입력"
@@ -56,12 +57,13 @@ cat ~/.config/agents/skills/brief-morning/config.yaml
 
 ```yaml
 tasks:
-  daily_note: true   # 사용자가 선택한 경우 true, 아니면 false
   on_this_day: true  # 사용자가 선택한 경우 true, 아니면 false
+  calendar: true     # 사용자가 선택한 경우 true, 아니면 false
+  gmail: true        # 사용자가 선택한 경우 true, 아니면 false
+  slack: true        # 사용자가 선택한 경우 true, 아니면 false
+  daily_note: true   # 사용자가 선택한 경우 true, 아니면 false
   git_status: false  # 사용자가 선택한 경우 true, 아니면 false
   github_pr: false   # 사용자가 선택한 경우 true, 아니면 false
-  gmail: true        # 사용자가 선택한 경우 true, 아니면 false
-  calendar: true     # 사용자가 선택한 경우 true, 아니면 false
 
 git:
   root: "/Users/casper/Workspace"  # git_status 선택 시 사용자가 고른 경로, 아니면 빈 문자열
@@ -87,22 +89,156 @@ github:
 **병렬 실행 필수**: enabled된 작업 그룹은 서로 독립적이므로 **반드시 동시에 실행**
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                      PARALLEL EXECUTION BLOCK                                      │
-├──────────────┬───────────────┬──────────────┬──────────────────┬───────────────┬───────────────────┤
-│ TASK GROUP A │ TASK GROUP A' │ TASK GROUP B │  TASK GROUP C    │ TASK GROUP D  │   TASK GROUP E    │
-│ (Daily Note) │ (이날의 기록) │ (Git Status) │ (GitHub PR 조회) │   (Gmail)     │    (Calendar)     │
-├──────────────┼───────────────┼──────────────┼──────────────────┼───────────────┼───────────────────┤
-│ tasks.       │ tasks.        │ tasks.       │ tasks.           │ tasks.        │ tasks.            │
-│ daily_note   │ on_this_day   │ git_status   │ github_pr        │ gmail         │ calendar          │
-│ = true 시    │ = true 시     │ = true 시    │ = true 시        │ = true 시     │ = true 시         │
-│ 실행         │ 실행          │ 실행         │ 실행             │ 실행          │ 실행              │
-└──────────────┴───────────────┴──────────────┴──────────────────┴───────────────┴───────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                          PARALLEL EXECUTION BLOCK                                                  │
+├──────────────┬──────────────────┬───────────────┬──────────────┬──────────────┬──────────────┬────────────────────┤
+│ TASK GROUP A │  TASK GROUP B    │ TASK GROUP C  │ TASK GROUP D │ TASK GROUP E │ TASK GROUP F │   TASK GROUP G     │
+│ (이날의 기록) │    (일정)        │    (메일)     │   (Slack)    │  (지난 일지) │  (Git 상태)  │   (GitHub PR)      │
+├──────────────┼──────────────────┼───────────────┼──────────────┼──────────────┼──────────────┼────────────────────┤
+│ tasks.       │ tasks.           │ tasks.        │ tasks.       │ tasks.       │ tasks.       │ tasks.             │
+│ on_this_day  │ calendar         │ gmail         │ slack        │ daily_note   │ git_status   │ github_pr          │
+│ = true 시    │ = true 시        │ = true 시     │ = true 시    │ = true 시    │ = true 시    │ = true 시          │
+│ 실행         │ 실행             │ 실행          │ 실행         │ 실행         │ 실행         │ 실행               │
+└──────────────┴──────────────────┴───────────────┴──────────────┴──────────────┴──────────────┴────────────────────┘
 ```
 
 ---
 
-## TASK GROUP A: Daily Note 확인
+## TASK GROUP A: 이날의 기록 (On This Day)
+
+> **건너뛰기 조건**: `tasks.on_this_day: false`
+
+오늘과 **같은 월-일(MM-DD)** 의 과거 연도 daily note를 모두 조회한다.
+
+### 조회 방법
+
+> ⚠️ Glob tool은 공백 포함 경로(`005 journals/`)에서 오동작하므로 **반드시 Bash로 조회**
+> ⚠️ `find | grep` 파이프는 불안정할 수 있으므로 아래 for 루프 방식을 사용
+
+```bash
+TODAY_MMDD=$(date '+%m-%d')
+CURRENT_YEAR=$(date '+%Y')
+for dir in "/Users/casper/pkm/005 journals"/*/; do
+  year=$(basename "$dir")
+  [ "$year" = "$CURRENT_YEAR" ] && continue
+  file="${dir}${year}-${TODAY_MMDD}.md"
+  [ -f "$file" ] && echo "$file"
+done | sort
+```
+
+- 파일 목록 확인 후 각 파일을 `obsidian read path="..."` 로 읽어 요약
+- 올해 파일은 제외 (과거 연도만 대상)
+- 파일이 존재하는 연도만 표시
+
+### 요약 기준
+
+- 각 파일에서 핵심 내용을 **1~2줄로 간략 요약**
+- 주요 이벤트, 완료한 작업, 특이사항 위주
+- 내용이 없거나 의미 있는 기록이 없으면 해당 연도 생략
+
+---
+
+## TASK GROUP B: Google Calendar 이번 주 일정 조회
+
+> **건너뛰기 조건**: `tasks.calendar: false`
+
+work, personal 두 계정을 **동시에** 실행한다.
+
+### 실행 명령
+
+```bash
+# work 계정 — 이번 주(7일) 일정
+cd /Users/casper/.claude/skills/google-calendar-improved && \
+  uv run python scripts/fetch_events.py --account work --days 7
+
+# personal 계정 — 이번 주(7일) 일정 (동시 실행)
+cd /Users/casper/.claude/skills/google-calendar-improved && \
+  uv run python scripts/fetch_events.py --account personal --days 7
+```
+
+### 요약 기준
+
+- 날짜별로 그룹핑, 시간순 정렬
+- 계정 구분: 🔵 work, 🟢 personal
+- 오늘 일정은 **굵게** 강조
+- 같은 시간대 work/personal 일정이 겹치면 ⚠️ 충돌 표시
+- 일정 없는 날은 생략
+
+---
+
+## TASK GROUP C: Gmail 받은편지함 메일 요약
+
+> **건너뛰기 조건**: `tasks.gmail: false`
+
+work, personal 두 계정을 **동시에** 실행한다.
+
+### 실행 명령
+
+```bash
+# work 계정
+cd /Users/casper/.claude/skills/gmail-improved && \
+  uv run python scripts/list_messages.py --account work --query "in:inbox newer_than:10d" --max 20
+
+# personal 계정 (동시 실행)
+cd /Users/casper/.claude/skills/gmail-improved && \
+  uv run python scripts/list_messages.py --account personal --query "in:inbox newer_than:10d" --max 20
+```
+
+### 요약 기준
+
+- 발신자 / 제목 / 수신 시각을 표 형식으로 정리
+- 중요도가 높아 보이는 메일(공지, 리뷰 요청, 긴급 등)은 ⚠️ 표시
+- 메일이 없으면 "받은편지함 메일 없음" 표시
+- 메일 본문 내용은 읽지 않음 — 제목과 발신자로만 요약
+
+---
+
+## TASK GROUP D: Slack 채널별 읽지 않은 메시지 요약
+
+> **건너뛰기 조건**: `tasks.slack: false`
+
+`/slack` 스킬을 사용하여 Slack의 읽지 않은 메시지를 채널별로 수집·요약한다.
+
+### 실행 방법
+
+`agent-browser`를 통해 기존 Slack 브라우저 세션에 연결한다.
+
+> ⚠️ **Activity 탭 / "More unreads" 버튼은 사용하지 말 것** — 일부 채널만 표시되어 누락 발생
+
+#### 1단계: 연결 및 기준점 설정
+
+```bash
+agent-browser connect 9222
+agent-browser get title  # 현재 채널명 저장 (start_channel)
+```
+
+#### 2단계: ⌥⇧↓ 키로 모든 안 읽은 채널 순회 (최대 30회)
+
+```bash
+# 다음 안 읽은 채널로 이동 (Mac: Alt+Shift+Down)
+agent-browser press "Alt+Shift+ArrowDown"
+agent-browser wait 800
+agent-browser get title         # 현재 채널명 확인
+agent-browser snapshot -i       # 메시지 내용 파악
+agent-browser scroll up 300     # 위쪽 메시지도 확인
+# → 채널명 + 주요 메시지 기록
+# 처음 채널로 돌아오면 종료
+```
+
+#### 3단계: DMs 별도 확인
+
+사이드바에서 DMs 섹션으로 이동하여 굵게 표시된(안 읽은) DM 항목 각각 클릭 후 내용 읽기
+
+### 요약 기준
+
+- 채널명 + 주요 메시지 내용 (핵심 사항 2~3줄 이내)
+- 중요/긴급 사항은 ⚠️ 표시
+- DM은 별도 섹션으로 구분
+- 읽지 않은 메시지가 없으면 "읽지 않은 메시지 없음" 표시
+
+---
+
+## TASK GROUP E: Daily Note 확인
 
 > **건너뛰기 조건**: `tasks.daily_note: false`
 
@@ -153,100 +289,11 @@ fi
 
 ---
 
-## TASK GROUP A': 이날의 기록 (On This Day)
-
-> **건너뛰기 조건**: `tasks.on_this_day: false`
-
-오늘과 **같은 월-일(MM-DD)** 의 과거 연도 daily note를 모두 조회한다.
-
-### 조회 방법
-
-> ⚠️ Glob tool은 공백 포함 경로(`005 journals/`)에서 오동작하므로 **반드시 Bash로 조회**
-> ⚠️ `find | grep` 파이프는 불안정할 수 있으므로 아래 for 루프 방식을 사용
-
-```bash
-TODAY_MMDD=$(date '+%m-%d')
-CURRENT_YEAR=$(date '+%Y')
-for dir in "/Users/casper/pkm/005 journals"/*/; do
-  year=$(basename "$dir")
-  [ "$year" = "$CURRENT_YEAR" ] && continue
-  file="${dir}${year}-${TODAY_MMDD}.md"
-  [ -f "$file" ] && echo "$file"
-done | sort
-```
-
-- 파일 목록 확인 후 각 파일을 `obsidian read path="..."` 로 읽어 요약
-- 올해 파일은 제외 (과거 연도만 대상)
-- 파일이 존재하는 연도만 표시
-
-### 요약 기준
-
-- 각 파일에서 핵심 내용을 **1~2줄로 간략 요약**
-- 주요 이벤트, 완료한 작업, 특이사항 위주
-- 내용이 없거나 의미 있는 기록이 없으면 해당 연도 생략
-
----
-
-## TASK GROUP D: Gmail 받은편지함 메일 요약
-
-> **건너뛰기 조건**: `tasks.gmail: false`
-
-work, personal 두 계정을 **동시에** 실행한다.
-
-### 실행 명령
-
-```bash
-# work 계정
-cd /Users/casper/.claude/skills/gmail-improved && \
-  uv run python scripts/list_messages.py --account work --query "in:inbox newer_than:10d" --max 20
-
-# personal 계정 (동시 실행)
-cd /Users/casper/.claude/skills/gmail-improved && \
-  uv run python scripts/list_messages.py --account personal --query "in:inbox newer_than:10d" --max 20
-```
-
-### 요약 기준
-
-- 발신자 / 제목 / 수신 시각을 표 형식으로 정리
-- 중요도가 높아 보이는 메일(공지, 리뷰 요청, 긴급 등)은 ⚠️ 표시
-- 메일이 없으면 "받은편지함 메일 없음" 표시
-- 메일 본문 내용은 읽지 않음 — 제목과 발신자로만 요약
-
----
-
-## TASK GROUP E: Google Calendar 이번 주 일정 조회
-
-> **건너뛰기 조건**: `tasks.calendar: false`
-
-work, personal 두 계정을 **동시에** 실행한다.
-
-### 실행 명령
-
-```bash
-# work 계정 — 이번 주(7일) 일정
-cd /Users/casper/.claude/skills/google-calendar-improved && \
-  uv run python scripts/fetch_events.py --account work --days 7
-
-# personal 계정 — 이번 주(7일) 일정 (동시 실행)
-cd /Users/casper/.claude/skills/google-calendar-improved && \
-  uv run python scripts/fetch_events.py --account personal --days 7
-```
-
-### 요약 기준
-
-- 날짜별로 그룹핑, 시간순 정렬
-- 계정 구분: 🔵 work, 🟢 personal
-- 오늘 일정은 **굵게** 강조
-- 같은 시간대 work/personal 일정이 겹치면 ⚠️ 충돌 표시
-- 일정 없는 날은 생략
-
----
-
-## TASK GROUP B: Git 로컬 상태 확인
+## TASK GROUP F: Git 로컬 상태 확인
 
 > **건너뛰기 조건**: `tasks.git_status: false`
 
-### B-1. Worktree 목록 조회
+### F-1. Worktree 목록 조회
 
 `config.yaml`의 `git.root` 경로를 기준으로 worktree 목록을 조회한다.
 
@@ -255,7 +302,7 @@ cd /Users/casper/.claude/skills/google-calendar-improved && \
 cd {git.root} && git worktree list
 ```
 
-### B-2. 각 Worktree 상태 확인 (B-1 결과 기반, 각각 병렬 실행)
+### F-2. 각 Worktree 상태 확인 (F-1 결과 기반, 각각 병렬 실행)
 
 **제외 대상**: `config.yaml`의 `git.exclude` 목록에 있는 worktree 이름
 
@@ -270,19 +317,19 @@ git log origin/HEAD..HEAD --oneline 2>/dev/null || echo "(no upstream)"
 
 ---
 
-## TASK GROUP C: GitHub PR 조회
+## TASK GROUP G: GitHub PR 조회
 
 > **건너뛰기 조건**: `tasks.github_pr: false`
 > **저장소 목록**: `config.yaml`의 `github.repos` 배열 사용. 비어 있으면 이 섹션 생략.
 
-### C-1. 내 PR 목록 조회 (repos 병렬)
+### G-1. 내 PR 목록 조회 (repos 병렬)
 
 ```bash
 gh pr list --author @me --repo {REPO} --state open \
   --json number,title,reviewDecision,mergeable,statusCheckRollup
 ```
 
-### C-2. 리뷰 필요 PR 목록 조회 (repos 병렬)
+### G-2. 리뷰 필요 PR 목록 조회 (repos 병렬)
 
 ```bash
 gh pr list --repo {REPO} --state open --json number,title,author
@@ -307,6 +354,17 @@ enabled된 섹션만 출력하고, disabled된 섹션은 완전히 생략한다.
 
 _(해당 날짜의 기록이 없으면 이 섹션 생략)_
 
+## 🗓️ 일정
+
+### MM/DD (요일) — 오늘
+- [HH:MM-HH:MM] 🔵 일정 제목 (work)
+- [HH:MM-HH:MM] 🟢 일정 제목 (personal)
+
+### MM/DD (요일)
+- [HH:MM-HH:MM] 🔵 일정 제목 (work)
+
+_(일정 없는 날은 생략, 충돌 시 ⚠️ 표시)_
+
 ## 📬 받은편지함 메일 요약
 
 ### 🔵 work (N개)
@@ -321,16 +379,15 @@ _(해당 날짜의 기록이 없으면 이 섹션 생략)_
 
 _(받은편지함 메일이 없으면 "받은편지함 메일 없음" 표시)_
 
-## 🗓️ 일정
+## 💬 Slack 읽지 않은 메시지
 
-### MM/DD (요일) — 오늘
-- [HH:MM-HH:MM] 🔵 일정 제목 (work)
-- [HH:MM-HH:MM] 🟢 일정 제목 (personal)
+### #채널명
+- 주요 내용 요약 (2~3줄 이내)
 
-### MM/DD (요일)
-- [HH:MM-HH:MM] 🔵 일정 제목 (work)
+### DMs
+- **@발신자** — 메시지 요약
 
-_(일정 없는 날은 생략, 충돌 시 ⚠️ 표시)_
+_(읽지 않은 메시지가 없으면 "읽지 않은 메시지 없음" 표시)_
 
 ## 지난 일지 요약
 [요약 내용]

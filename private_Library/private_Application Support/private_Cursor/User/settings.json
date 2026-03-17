@@ -76,7 +76,7 @@
     "window.commandCenter": false,
     "search.seedWithNearestWord": true,
     "search.seedOnFocus": true,
-    "diffEditor.ignoreTrimWhitespace": true,
+    "diffEditor.ignoreTrimWhitespace": false,
     "errorLens.enabledDiagnosticLevels": [
         "error",
         "warning",
