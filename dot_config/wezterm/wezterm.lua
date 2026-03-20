@@ -326,16 +326,6 @@ config.keys = {
   },
   -- 직전 탭으로 전환
   { mods = 'LEADER', key = 'Tab', action = act.ActivateLastTab },
-  -- n번째 탭으로 이동 (Leader + 1~9)
-  { mods = 'LEADER', key = '1', action = act.ActivateTab(0) },
-  { mods = 'LEADER', key = '2', action = act.ActivateTab(1) },
-  { mods = 'LEADER', key = '3', action = act.ActivateTab(2) },
-  { mods = 'LEADER', key = '4', action = act.ActivateTab(3) },
-  { mods = 'LEADER', key = '5', action = act.ActivateTab(4) },
-  { mods = 'LEADER', key = '6', action = act.ActivateTab(5) },
-  { mods = 'LEADER', key = '7', action = act.ActivateTab(6) },
-  { mods = 'LEADER', key = '8', action = act.ActivateTab(7) },
-  { mods = 'LEADER', key = '9', action = act.ActivateTab(8) },
   {
     key = 't',
     mods = "LEADER",
