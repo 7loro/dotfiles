@@ -5,6 +5,7 @@ input=$(cat)
 # 색상 정의
 CYAN='\033[36m'; GREEN='\033[32m'; YELLOW='\033[33m'; RED='\033[31m'
 DIM='\033[2m'; GRAY='\033[90m'; MAGENTA='\033[35m'; RESET='\033[0m'
+BLUE='\033[34m'
 
 # --- 데이터 추출 ---
 MODEL=$(echo "$input" | jq -r '.model.display_name // "?"')
@@ -36,6 +37,66 @@ format_tokens() {
     echo "${t}"
   fi
 }
+
+# --- Usage Limit (Anthropic OAuth API, 30초 캐시) ---
+USAGE_CACHE="/tmp/claude-usage-cache.json"
+USAGE_CACHE_MAX_AGE=30
+
+USAGE_5H="?" ; USAGE_5H_RESET=""
+USAGE_7D="?" ; USAGE_7D_RESET=""
+USAGE_SONNET="?" ; USAGE_SONNET_RESET=""
+
+# 캐시 확인
+if [ -f "$USAGE_CACHE" ]; then
+  usage_cache_age=$(( $(date +%s) - $(stat -f %m "$USAGE_CACHE" 2>/dev/null || echo 0) ))
+else
+  usage_cache_age=999
+fi
+
+if [ "$usage_cache_age" -gt "$USAGE_CACHE_MAX_AGE" ]; then
+  TOKEN=$(security find-generic-password -s "Claude Code-credentials" -w \
+    2>/dev/null | jq -r '.claudeAiOauth.accessToken' 2>/dev/null)
+  if [ -n "$TOKEN" ] && [ "$TOKEN" != "null" ]; then
+    RESP=$(curl -s --max-time 3 -X GET \
+      "https://api.anthropic.com/api/oauth/usage" \
+      -H "Authorization: Bearer $TOKEN" \
+      -H "Accept: application/json" \
+      -H "anthropic-beta: oauth-2025-04-20" 2>/dev/null)
+    if echo "$RESP" | jq -e '.five_hour' > /dev/null 2>&1; then
+      echo "$RESP" > "$USAGE_CACHE"
+    fi
+  fi
+fi
+
+# 리셋 시간을 "Xh Ym" 형식으로 변환하는 함수
+format_reset_time() {
+  local reset_ts="$1"
+  [ -z "$reset_ts" ] || [ "$reset_ts" = "null" ] && echo "" && return
+  local reset_epoch now_epoch diff_s
+  # ISO 8601 (UTC) → epoch (macOS date, -u 플래그로 UTC 해석)
+  local stripped="${reset_ts%%+*}"  # +00:00 제거
+  stripped="${stripped%%.*}"         # .780993 제거
+  reset_epoch=$(date -j -u -f "%Y-%m-%dT%H:%M:%S" "$stripped" "+%s" 2>/dev/null || echo "0")
+  now_epoch=$(date +%s)
+  diff_s=$((reset_epoch - now_epoch))
+  [ "$diff_s" -le 0 ] && echo "now" && return
+  local h=$((diff_s / 3600)) m=$(((diff_s % 3600) / 60))
+  if [ "$h" -gt 0 ]; then
+    echo "${h}h ${m}m"
+  else
+    echo "${m}m"
+  fi
+}
+
+# 캐시에서 읽기
+if [ -f "$USAGE_CACHE" ]; then
+  USAGE_5H=$(jq -r '.five_hour.utilization // "?" | if type == "number" then . | floor | tostring else . end' "$USAGE_CACHE")
+  USAGE_7D=$(jq -r '.seven_day.utilization // "?" | if type == "number" then . | floor | tostring else . end' "$USAGE_CACHE")
+  USAGE_SONNET=$(jq -r '.seven_day_sonnet.utilization // "?" | if type == "number" then . | floor | tostring else . end' "$USAGE_CACHE")
+  USAGE_5H_RESET=$(format_reset_time "$(jq -r '.five_hour.resets_at // empty' "$USAGE_CACHE")")
+  USAGE_7D_RESET=$(format_reset_time "$(jq -r '.seven_day.resets_at // empty' "$USAGE_CACHE")")
+  USAGE_SONNET_RESET=$(format_reset_time "$(jq -r '.seven_day_sonnet.resets_at // empty' "$USAGE_CACHE")")
+fi
 
 # --- Git 정보 (5초 캐시) ---
 CACHE_FILE="/tmp/claude-statusline-git-cache"
@@ -164,7 +225,35 @@ printf " ${DIM}|${RESET} ⏱ %dm %ds" "$MINS" "$SECS"
 printf " ${DIM}|${RESET} 📊 ${GRAY}in:%s out:%s${RESET}" "$IN_K" "$OUT_K"
 printf "\n"
 
-# === 3줄: 💬 마지막 사용자 메시지 ===
+# === 3줄: Usage Limits (세션 5h | 주간 All | 주간 Sonnet) ===
+# 사용률 → 잔여율, 색상 결정 함수
+usage_color() {
+  local used=${1:-0}
+  [ "$used" = "?" ] && printf "%b" "$GRAY" && return
+  local remain=$((100 - used))
+  if [ "$remain" -le 10 ]; then printf "%b" "$RED"
+  elif [ "$remain" -le 30 ]; then printf "%b" "$YELLOW"
+  else printf "%b" "$GREEN"; fi
+}
+usage_remain() {
+  local used=${1:-0}
+  [ "$used" = "?" ] && echo "?" && return
+  echo $((100 - used))
+}
+
+U5R=$(usage_remain "$USAGE_5H")
+U7R=$(usage_remain "$USAGE_7D")
+USR=$(usage_remain "$USAGE_SONNET")
+
+printf "⏳ ${DIM}5h:${RESET} %b%s%%${RESET}" "$(usage_color "$USAGE_5H")" "$U5R"
+[ -n "$USAGE_5H_RESET" ] && printf " ${GRAY}(%s)${RESET}" "$USAGE_5H_RESET"
+printf " ${DIM}|${RESET} ${DIM}All:${RESET} %b%s%%${RESET}" "$(usage_color "$USAGE_7D")" "$U7R"
+[ -n "$USAGE_7D_RESET" ] && printf " ${GRAY}(%s)${RESET}" "$USAGE_7D_RESET"
+printf " ${DIM}|${RESET} ${DIM}Sonnet:${RESET} %b%s%%${RESET}" "$(usage_color "$USAGE_SONNET")" "$USR"
+[ -n "$USAGE_SONNET_RESET" ] && printf " ${GRAY}(%s)${RESET}" "$USAGE_SONNET_RESET"
+printf "\n"
+
+# === 4줄: 💬 마지막 사용자 메시지 ===
 if [ -n "$LAST_MSG" ]; then
   # 터미널 너비에 맞게 자르기 (prefix 💬 + 공백 = 약 4칸)
   TERM_W=$(tput cols 2>/dev/null || echo 80)
