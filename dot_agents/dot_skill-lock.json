@@ -95,6 +95,42 @@
       "skillFolderHash": "666980630dc910c6b623f3bab13280af47d6995e",
       "installedAt": "2026-03-17T07:46:20.979Z",
       "updatedAt": "2026-03-17T07:46:20.979Z"
+    },
+    "supanova-full-output": {
+      "source": "uxjoseph/supanova-design-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uxjoseph/supanova-design-skill.git",
+      "skillPath": "output-skill/SKILL.md",
+      "skillFolderHash": "c8d62cf379d62c6fe95bbc657939b44b280c348e",
+      "installedAt": "2026-03-20T16:03:58.001Z",
+      "updatedAt": "2026-03-20T16:03:58.001Z"
+    },
+    "supanova-redesign-engine": {
+      "source": "uxjoseph/supanova-design-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uxjoseph/supanova-design-skill.git",
+      "skillPath": "redesign-skill/SKILL.md",
+      "skillFolderHash": "431f7c492770fd22eb00664bd6b85ba7efe9ff22",
+      "installedAt": "2026-03-20T16:03:58.013Z",
+      "updatedAt": "2026-03-20T16:03:58.013Z"
+    },
+    "supanova-premium-aesthetic": {
+      "source": "uxjoseph/supanova-design-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uxjoseph/supanova-design-skill.git",
+      "skillPath": "soft-skill/SKILL.md",
+      "skillFolderHash": "415b263a2e58c71f1499cfa61b3380692f847888",
+      "installedAt": "2026-03-20T16:03:58.025Z",
+      "updatedAt": "2026-03-20T16:03:58.025Z"
+    },
+    "supanova-design-engine": {
+      "source": "uxjoseph/supanova-design-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uxjoseph/supanova-design-skill.git",
+      "skillPath": "taste-skill/SKILL.md",
+      "skillFolderHash": "eef138dc00be5e701ceb0753944618999258c0b1",
+      "installedAt": "2026-03-20T16:03:58.036Z",
+      "updatedAt": "2026-03-20T16:03:58.036Z"
     }
   },
   "dismissed": {
