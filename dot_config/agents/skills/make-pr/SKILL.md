@@ -20,17 +20,21 @@ argument-hint: "[PR 제목]"
 
 현재 브랜치가 어디서 분기되었는지 확인하여 base branch를 결정한다.
 
-### 탐지 방법
+### 탐지 알고리즘
 
-1. `git log --oneline --decorate` 로 현재 브랜치의 커밋 히스토리를 확인
-2. 각 커밋에 붙은 branch ref를 역추적하여, 현재 브랜치가 갈라진 지점에 있는 브랜치를 찾는다
-3. 또는 `git merge-base`를 활용하여 로컬 브랜치들과의 공통 조상을 비교한다
+1. **GitHub 기본 브랜치 확인**: `gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'`으로 기본 브랜치를 파악한다 (origin/HEAD는 로컬 캐시이므로 신뢰하지 않는다)
+2. **분기점 탐지**: `git merge-base <candidate> HEAD`로 develop, main, 기타 로컬 브랜치 각각과의 공통 조상을 구한다
+3. **가까운 쪽 선택**: 공통 조상이 HEAD에 더 가까운(더 최근인) 브랜치가 분기 원점이다
+4. **동점 처리**: develop과 main의 merge-base가 동일한 커밋이면, GitHub 기본 브랜치를 우선 선택한다
 
-### 선택 규칙
+### 선택 규칙 (우선순위 순)
 
-- **기본 브랜치(develop/main)에서 직접 분기한 경우**: 해당 기본 브랜치를 base로 사용
-- **다른 feature 브랜치에서 분기한 경우**: 해당 feature 브랜치를 base로 사용 (Stacked PR)
-- **분기 지점을 판별할 수 없는 경우**: 리포지토리 기본 브랜치(develop 또는 main)를 fallback으로 사용
+1. **feature 브랜치에서 분기한 경우**: 해당 feature 브랜치를 base로 사용 (Stacked PR)
+2. **develop에서 분기한 경우**: develop을 base로 사용
+3. **main에서 분기한 경우**: main을 base로 사용
+4. **분기 지점을 판별할 수 없는 경우**: GitHub 기본 브랜치(`gh repo view` 결과)를 fallback으로 사용
+
+> ⚠️ `origin/HEAD`는 로컬 캐시이므로 실제 GitHub 설정과 다를 수 있다. 반드시 `gh repo view`로 확인한다.
 
 ## 3. PR Title & Content
 

@@ -1,6 +1,7 @@
 {
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "KNOWLEDGE_GRAPH_PATH": "~/pkm/003 resources/knowledge-graph"
   },
   "attribution": {
     "commit": "",
@@ -37,6 +38,17 @@
         ]
       }
     ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/knowledge-graph-inject.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
@@ -44,6 +56,11 @@
             "type": "command",
             "command": "python3 ~/.claude/hooks/say-summary.py",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/knowledge-graph-update.py",
+            "timeout": 10
           }
         ]
       }
@@ -56,10 +73,14 @@
   },
   "enabledPlugins": {
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
-    "santaclaude@santa-botari": {{ .is_work }},
+    "santaclaude@santa-botari": true,
     "skill-creator@claude-plugins-official": true,
-    "obsidian@obsidian-skills": true
+    "obsidian@obsidian-skills": true,
+    "backlog@santa-botari": true,
+    "superpowers@claude-plugins-official": true,
+    "obsidian-visual-skills@axton-obsidian-visual-skills": true
   },
+  "effortLevel": "high",
   "plansDirectory": ".claude/plans",
   "skipDangerousModePermissionPrompt": true
 }

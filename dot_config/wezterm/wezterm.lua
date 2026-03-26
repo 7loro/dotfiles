@@ -324,6 +324,39 @@ config.keys = {
     mods = 'LEADER',
     action = wezterm.action.ClearScrollback 'ScrollbackAndViewport',
   },
+  -- 탭 순서 변경 (LEADER + < / >)
+  {
+    key = '<',
+    mods = 'LEADER',
+    action = wezterm.action_callback(function(win, pane)
+      local tab = win:active_tab()
+      local tabs = win:mux_window():tabs_with_info()
+      for i, t in ipairs(tabs) do
+        if t.tab:tab_id() == tab:tab_id() then
+          if i > 1 then
+            win:perform_action(wezterm.action.MoveTab(i - 2), pane)
+          end
+          return
+        end
+      end
+    end),
+  },
+  {
+    key = '>',
+    mods = 'LEADER',
+    action = wezterm.action_callback(function(win, pane)
+      local tab = win:active_tab()
+      local tabs = win:mux_window():tabs_with_info()
+      for i, t in ipairs(tabs) do
+        if t.tab:tab_id() == tab:tab_id() then
+          if i < #tabs then
+            win:perform_action(wezterm.action.MoveTab(i), pane)
+          end
+          return
+        end
+      end
+    end),
+  },
   -- 직전 탭으로 전환
   { mods = 'LEADER', key = 'Tab', action = act.ActivateLastTab },
   {
