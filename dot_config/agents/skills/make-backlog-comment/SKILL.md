@@ -20,7 +20,7 @@ Backlog 이슈에 PR 주소와 변경사항 요약 코멘트를 한국어로 남
 ### 1. Backlog 설정 로드
 
 ```bash
-CONFIG="/Users/casper/.claude/plugins/marketplaces/santa-botari/plugins/backlog/skills/backlog/config.json"
+CONFIG="/Users/casper/.config/santaclaude/backlog/config.json"
 SPACE_KEY=$(jq -r '.spaceKey' "$CONFIG")
 DOMAIN=$(jq -r '.domain' "$CONFIG")
 API_KEY=$(jq -r '.apiKey' "$CONFIG")
@@ -52,13 +52,17 @@ PR: {PR URL}
 - {변경사항 요약 3}
 ```
 
-### 5. Backlog API 호출
+### 5. Backlog API 호출 및 결과 파싱
+
+> **주의**: Backlog API 응답의 `content` 필드에 raw 개행 문자가 포함되어 `jq`와 `python3 json.loads`가 파싱에 실패한다.
+> 응답에서 Comment ID만 필요하므로 `grep -o`로 추출한다.
 
 ```bash
-curl -s -X POST "https://${SPACE_KEY}.${DOMAIN}/api/v2/issues/${ISSUE_KEY}/comments?apiKey=${API_KEY}" \
-  --data-urlencode "content=${COMMENT}"
+RESULT=$(curl -s -X POST "https://${SPACE_KEY}.${DOMAIN}/api/v2/issues/${ISSUE_KEY}/comments?apiKey=${API_KEY}" \
+  --data-urlencode "content=${COMMENT}")
+
+COMMENT_ID=$(echo "$RESULT" | grep -o '"id":[0-9]*' | head -1 | grep -o '[0-9]*')
 ```
 
-### 6. 결과 출력
-
-성공 시 코멘트 ID와 이슈 키를 출력한다.
+- `COMMENT_ID`가 비어있으면 API 호출 실패 — `$RESULT` 원문을 출력하여 에러 원인을 안내한다.
+- 성공 시 코멘트 ID와 이슈 키를 출력한다.

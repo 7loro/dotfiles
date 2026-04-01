@@ -194,16 +194,19 @@ push 실패 시(remote가 앞서 있는 경우) 사용자에게 알리고 판단
 답글 본문에 특수문자나 줄바꿈이 포함될 수 있으므로, 임시 파일 + jq를 통해 안전하게 JSON 인코딩한다:
 
 ```bash
-# 1. 답글 본문을 파일로 작성
-cat > /tmp/pr_reply_body.txt << 'REPLY_EOF'
+# 1. 답글 본문을 임시 파일로 작성 (noclobber 방지를 위해 rm -f 선행)
+REPLY_FILE=$(mktemp /tmp/pr_reply_XXXXXX.txt)
+cat > "$REPLY_FILE" << 'REPLY_EOF'
 반영했습니다.
 - `lib/feature/foo.dart:42`: `foobar` → `fooBar` 변수명 변경
 REPLY_EOF
 
 # 2. JSON 변환 후 API 전송
-jq -n --arg body "$(cat /tmp/pr_reply_body.txt)" '{"body": $body}' \
+jq -n --arg body "$(cat "$REPLY_FILE")" '{"body": $body}' \
   | gh api repos/{owner}/{repo}/pulls/{number}/comments/{comment_id}/replies \
     --method POST --input -
+
+rm -f "$REPLY_FILE"
 ```
 
 ### 완료 보고

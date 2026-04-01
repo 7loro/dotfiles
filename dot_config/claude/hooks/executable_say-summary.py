@@ -438,7 +438,7 @@ def speak_edge_tts(text: str, config: dict) -> tuple[bool, str, str | None]:
 def main() -> None:
     log("=== HOOK 시작 ===")
 
-    # stdin에서 hook 데이터 읽기
+    # stdin에서 hook 데이터 읽기 (fork 전에 읽어야 함)
     try:
         hook_input = json.loads(sys.stdin.read())
     except Exception as e:
@@ -453,6 +453,21 @@ def main() -> None:
     if hook_input.get("stop_hook_active"):
         log("stop_hook_active=True, 건너뜀")
         return
+
+    # 백그라운드 분기: 부모는 즉시 종료하여 훅 대기 해제
+    child_pid = os.fork()
+    if child_pid > 0:
+        log(f"백그라운드 자식 프로세스 생성: PID {child_pid}, 부모 즉시 종료")
+        sys.exit(0)
+
+    # 자식 프로세스: 새 세션에서 나머지 작업 수행
+    os.setsid()
+    # 표준 입출력 분리 (부모 종료 후 파이프 깨짐 방지)
+    devnull = os.open(os.devnull, os.O_RDWR)
+    os.dup2(devnull, 0)
+    os.dup2(devnull, 1)
+    os.dup2(devnull, 2)
+    os.close(devnull)
 
     # 설정 로드
     config = load_config()
