@@ -1,7 +1,8 @@
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "KNOWLEDGE_GRAPH_PATH": "~/pkm/003 resources/knowledge-graph"
+    "KNOWLEDGE_GRAPH_PATH": "~/pkm/003 resources/knowledge-graph",
+    "CLAUDE_CODE_NO_FLICKER": "1"
   },
   "attribution": {
     "commit": "",
@@ -19,8 +20,7 @@
       "Bash(find *)",
       "Read(~/pkm/*)",
       "mcp__pencil"
-    ],
-    "defaultMode": "plan"
+    ]
   },
   "hooks": {
     "PreToolUse": [
@@ -55,12 +55,12 @@
           {
             "type": "command",
             "command": "python3 ~/.claude/hooks/say-summary.py",
-            "timeout": 30
+            "timeout": 5
           },
           {
             "type": "command",
             "command": "python3 ~/.claude/hooks/knowledge-graph-update.py",
-            "timeout": 10
+            "timeout": 15
           }
         ]
       }
@@ -76,11 +76,25 @@
     "santaclaude@santa-botari": true,
     "skill-creator@claude-plugins-official": true,
     "obsidian@obsidian-skills": true,
-    "backlog@santa-botari": true,
     "superpowers@claude-plugins-official": true,
-    "obsidian-visual-skills@axton-obsidian-visual-skills": true
+    "obsidian-visual-skills@axton-obsidian-visual-skills": true,
+    "harness@harness-marketplace": true,
+    "backlog@santa-botari": true
   },
-  "effortLevel": "high",
+  "extraKnownMarketplaces": {
+    "harness-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "revfactory/harness"
+      },
+      "autoUpdate": true
+    }
+  },
+  "language": "Korean",
+  "effortLevel": "xhigh",
   "plansDirectory": ".claude/plans",
-  "skipDangerousModePermissionPrompt": true
+  "autoMemoryDirectory": "~/pkm/003 resources/memory",
+  "autoDreamEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true
 }

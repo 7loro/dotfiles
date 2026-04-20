@@ -66,7 +66,6 @@ gh api repos/{owner}/{repo}/pulls/{number}/comments --paginate
 
 **처리 대상에서 제외:**
 - PR 작성자 본인만의 코멘트 스레드 (자기 메모)
-- 봇 계정(`[bot]` suffix)의 코멘트
 
 **제외하되 재포함하는 경우:**
 - PR 작성자가 이미 답글을 단 스레드는 기본 제외 — **단, 그 답글 이후에 리뷰어가 추가 코멘트를 남겼으면 재포함**
@@ -191,23 +190,28 @@ push 실패 시(remote가 앞서 있는 경우) 사용자에게 알리고 판단
 ### 답글 전송 방법
 
 각 스레드의 **root 코멘트 ID**에 대해 답글을 보낸다.
-답글 본문에 특수문자나 줄바꿈이 포함될 수 있으므로, 임시 파일 + jq를 통해 안전하게 JSON 인코딩한다:
+답글 본문에 특수문자·줄바꿈·backtick 이 포함될 수 있으므로, heredoc 을 변수로 캡처한 뒤 `jq --arg` 로 안전하게 JSON 인코딩한다.
+
+> ⚠️ **임시 파일 + `cat >` 패턴 금지**
+> `mktemp` 는 이미 파일을 생성하므로 zsh 기본 `noclobber` 옵션과 결합하면 `cat > "$FILE"` 가 `file exists` 에러로 막혀 빈 body 가 전송된다. 또한 macOS(BSD) `mktemp` 는 template 이 `X` 로 끝나야 해서 `pr_reply_XXXXXX.txt` 같이 suffix 가 붙으면 치환이 일어나지 않는다. 두 함정을 동시에 피하려면 애초에 **파일을 쓰지 않는 게 정답**이다.
 
 ```bash
-# 1. 답글 본문을 임시 파일로 작성 (noclobber 방지를 위해 rm -f 선행)
-REPLY_FILE=$(mktemp /tmp/pr_reply_XXXXXX.txt)
-cat > "$REPLY_FILE" << 'REPLY_EOF'
+# 1. 답글 본문을 변수에 캡처 (임시 파일 불필요)
+#    heredoc 을 'EOF' 로 quote 하면 내부 $ · backtick · backslash 도 안전
+BODY=$(cat << 'REPLY_EOF'
 반영했습니다.
 - `lib/feature/foo.dart:42`: `foobar` → `fooBar` 변수명 변경
 REPLY_EOF
+)
 
-# 2. JSON 변환 후 API 전송
-jq -n --arg body "$(cat "$REPLY_FILE")" '{"body": $body}' \
+# 2. JSON 변환 후 API 전송 — jq --arg 가 quote/escape 를 처리
+jq -n --arg body "$BODY" '{"body": $body}' \
   | gh api repos/{owner}/{repo}/pulls/{number}/comments/{comment_id}/replies \
     --method POST --input -
-
-rm -f "$REPLY_FILE"
 ```
+
+- 여러 답글을 보낼 때는 각 답글마다 `BODY=$(cat << 'REPLY_EOF' ... REPLY_EOF)` 블록을 새로 쓴다 (변수 덮어쓰기 OK)
+- 답글이 성공했는지는 응답 JSON 의 `.id` 존재 여부로 확인 (`.message` 가 있으면 실패)
 
 ### 완료 보고
 

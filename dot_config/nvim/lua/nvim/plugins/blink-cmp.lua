@@ -6,29 +6,15 @@ vim.pack.add({
 
 -- 네이티브 바이너리 자동 빌드
 local blink_path = vim.fn.stdpath("data") .. "/site/pack/core/opt/blink.cmp"
-local lib_ext = vim.uv.os_uname().sysname == "Darwin" and "dylib" or "so"
-local lib_path = blink_path .. "/target/release/libblink_cmp_fuzzy." .. lib_ext
+local build_path = blink_path .. "/target/release/libblink_cmp_fuzzy.dylib"
 
-if vim.fn.filereadable(lib_path) == 0
-  and vim.fn.filereadable(blink_path .. "/Cargo.toml") == 1
-  and vim.fn.executable("cargo") == 1
-then
-  vim.notify("blink.cmp: Rust fuzzy 바이너리 빌드 중...", vim.log.levels.INFO)
-  vim.fn.jobstart("cd " .. blink_path .. " && cargo build --release 2>&1", {
-    stdout_buffered = true,
-    on_stdout = function(_, data)
-      if data and data[1] ~= "" then
-        vim.schedule(function() vim.notify(table.concat(data, "\n"), vim.log.levels.DEBUG) end)
-      end
-    end,
+if vim.fn.filereadable(build_path) == 0 then
+  vim.notify("blink.cmp 빌드 중...", vim.log.levels.INFO)
+  vim.fn.jobstart("cd " .. blink_path .. " && cargo build --release", {
     on_exit = function(_, code)
-      vim.schedule(function()
-        if code == 0 then
-          vim.notify("blink.cmp: 빌드 완료! Neovim을 재시작하세요.", vim.log.levels.INFO)
-        else
-          vim.notify("blink.cmp: 빌드 실패 (exit " .. code .. "). :messages 확인", vim.log.levels.ERROR)
-        end
-      end)
+      if code == 0 then
+        vim.notify("blink.cmp 빌드 완료! Neovim을 재시작하세요.", vim.log.levels.INFO)
+      end
     end,
   })
 end
@@ -83,10 +69,6 @@ require("blink.cmp").setup({
     list = {
       selection = { preselect = false, auto_insert = false },
     },
-  },
-
-  fuzzy = {
-    implementation = "prefer_rust",
   },
 
   sources = {

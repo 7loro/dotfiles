@@ -670,7 +670,22 @@ def main() -> None:
         log(f"블랙리스트 프로젝트, 건너뜀: {project_name}")
         return
 
-    # nohup으로 백그라운드 실행되므로 직접 실행
+    # stdin은 fork 전에 이미 읽었으므로 안전
+    # 백그라운드 분기: 부모는 즉시 종료하여 훅 대기 해제
+    child_pid = os.fork()
+    if child_pid > 0:
+        log(f"백그라운드 자식 프로세스 생성: PID {child_pid}, 부모 즉시 종료")
+        sys.exit(0)
+
+    # 자식 프로세스: 새 세션에서 나머지 작업 수행
+    os.setsid()
+    # 표준 입출력 분리 (부모 종료 후 파이프 깨짐 방지)
+    devnull = os.open(os.devnull, os.O_RDWR)
+    os.dup2(devnull, 0)
+    os.dup2(devnull, 1)
+    os.dup2(devnull, 2)
+    os.close(devnull)
+
     background_process(transcript_path, cwd, kg_path, project_name)
 
 

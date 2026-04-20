@@ -24,6 +24,14 @@ function load_atuin_binding() {
   bindkey -M vicmd '^r' atuin-search
 }
 zvm_after_init_commands+=(load_atuin_binding)
+
+# WezTerm 탭 생성 시 zsh-vi-mode illegal byte sequence 에러 방지
+# 원본 함수를 래핑하여 regex 에러 stderr 를 무시
+function _patch_zvm_repeat() {
+  functions[_zvm_orig_update_repeat_commands]=$functions[zvm_update_repeat_commands]
+  zvm_update_repeat_commands() { _zvm_orig_update_repeat_commands 2>/dev/null; }
+}
+zvm_after_init_commands+=(_patch_zvm_repeat)
 # ===== Zim 관련 설정 end =====
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -193,3 +201,4 @@ fi
 if [ -f ~/.zsh_profile_personal ]; then
   . ~/.zsh_profile_personal
 fi
+
