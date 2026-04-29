@@ -10,6 +10,53 @@ description: |
 
 현재 브랜치의 코드 변경사항을 심층 리뷰한다.
 
+## 실행 방식 (Subagent 위임)
+
+⚠️ **이 스킬은 토큰 절약을 위해 subagent에 리뷰 작업을 위임하여 실행한다.** diff와 관련 파일들을 부모 세션 컨텍스트에 누적시키지 않기 위함이다.
+
+### 부모 세션 역할
+- Subagent에 리뷰 작업 위임
+- Subagent가 리턴한 리뷰 결과를 사용자에게 출력
+
+### Subagent 위임
+
+`Agent` 툴로 `general-purpose`에 위임한다:
+
+```
+Agent({
+  subagent_type: "general-purpose",
+  description: "현재 브랜치 코드 리뷰",
+  prompt: <아래 템플릿>
+})
+```
+
+### 위임 프롬프트 템플릿
+
+```
+현재 브랜치의 코드 변경사항을 Principal Software Engineer 관점에서 리뷰해줘.
+
+컨텍스트:
+- 작업 디렉토리: {cwd}
+- 현재 브랜치: {branch} (git branch --show-current 로 확인)
+- base branch 추정: develop (없으면 main 사용, stacked이면 실제 분기 지점 탐지)
+
+아래 SKILL.md의 "실행 절차" + "리뷰 원칙" + "출력 형식"을 그대로 준수:
+~/.config/agents/skills/review-code/SKILL.md
+
+수행 순서:
+1. git diff HEAD로 변경 확인, 없으면 base branch와 비교
+2. 변경 의도 1~2문장 요약
+3. 변경 파일 + 관련 import 파일 Read
+4. Severity별 이슈 분류 (CRITICAL/HIGH/MEDIUM/LOW)
+5. 지정된 Markdown 형식으로 리뷰 리포트 작성
+
+결과로 리뷰 리포트 전문만 리턴해. 추가 설명·요약 생략.
+```
+
+**주의**: Subagent는 부모 대화 맥락을 모른다. 사용자가 특정 파일·주제에 집중해달라고 요청했으면 그 지시를 프롬프트에 명시한다.
+
+---
+
 ## 페르소나
 
 경험 많은 **Principal Software Engineer**이자 꼼꼼한 **Code Review Architect**.

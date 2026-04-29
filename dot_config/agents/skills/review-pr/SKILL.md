@@ -13,6 +13,59 @@ GitHub PR을 체크아웃하여 상세 리뷰를 수행한다.
 
 ---
 
+## 실행 방식 (Subagent 위임)
+
+⚠️ **이 스킬은 토큰 절약을 위해 subagent에 리뷰 작업을 위임하여 실행한다.** PR diff와 관련 파일들을 부모 세션 컨텍스트에 누적시키지 않기 위함이다.
+
+### 부모 세션 역할
+- PR 선택 (AskUserQuestion, PR 번호 미지정 시)
+- Subagent 호출·관리 (여러 PR 순차 처리)
+- 리뷰 결과 표시 및 게시 방법 확인 (AskUserQuestion)
+- 최종 게시 명령 실행 (`gh pr review`)
+
+### Subagent 위임 흐름
+
+| 단계 | 담당 | 작업 |
+|------|------|------|
+| PR 선택 | 부모 | PR 번호 주어지지 않으면 `gh pr list` + AskUserQuestion으로 복수 선택 |
+| **리뷰 실행** | **Subagent (general-purpose, PR당 1개)** | worktree 생성 → 이전 리뷰 확인 → diff+파일 읽기 → 리뷰 작성 → `.claude/review-pr/{PR}.md` 저장 → worktree 정리 |
+| 결과 확인 | 부모 | 저장된 리뷰 파일 Read + 사용자에게 출력 |
+| 게시 결정 | 부모 | AskUserQuestion으로 LGTM/Approve/Request Changes/Comment/취소 선택 |
+| 게시 | 부모 | `gh pr review` 실행 |
+
+### 위임 프롬프트 템플릿 (리뷰 실행)
+
+```
+PR #{번호}를 리뷰해줘.
+
+컨텍스트:
+- 작업 디렉토리: {cwd} (프로젝트 루트)
+- PR 번호: {번호}
+- 리뷰 저장 경로: .claude/review-pr/{번호}.md
+- Worktree 경로: /tmp/review-pr-{번호}
+
+아래 SKILL.md의 "리뷰 실행 절차" + "리뷰 규칙" + "리뷰 결과 저장" + "Worktree 정리"를 그대로 수행:
+~/.config/agents/skills/review-pr/SKILL.md
+
+수행 순서:
+1. 이전 리뷰 파일이 있으면 Read
+2. PR 정보 조회 (gh pr view)
+3. Worktree 생성 (/tmp/review-pr-{번호})
+4. Diff 확인 및 관련 파일 분석
+5. 리뷰 작성 후 .claude/review-pr/{번호}.md에 prepend 저장
+6. Worktree 제거 + 로컬 브랜치 삭제
+
+결과로 아래만 리턴:
+- 저장된 리뷰 파일 경로
+- 주요 이슈 요약 (3~5줄)
+- 추천 결정 (Approve / Request Changes / Comment)
+- Worktree 정리 완료 여부
+```
+
+**주의**: 여러 PR 리뷰 시 PR당 1개의 subagent를 순차 호출한다. 병렬 호출 시 worktree 경로 충돌 주의.
+
+---
+
 ## 모드 분기
 
 ### PR 번호가 주어진 경우

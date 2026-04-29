@@ -361,4 +361,8 @@
         "key": "cmd+t",
         "command": "workbench.action.tasks.runTask"
     },
+    {
+        "key": "ctrl+shift+g",
+        "command": "workbench.scm.history.focus"
+    },
 ]

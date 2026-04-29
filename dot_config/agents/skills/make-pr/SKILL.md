@@ -11,6 +11,60 @@ argument-hint: "[PR 제목]"
 
 변경사항 커밋, 브랜치 푸시, 드래프트 PR 생성을 자동화한다.
 
+## 실행 방식 (Subagent 위임)
+
+⚠️ **이 스킬은 토큰 절약을 위해 subagent에 PR 생성 작업을 위임하여 실행한다.** git diff, 커밋 히스토리, PR body 작성, PKM 문서화 등 대량 작업이 부모 세션 컨텍스트에 쌓이는 것을 막기 위함이다.
+
+### 부모 세션 역할
+- Subagent에 PR 생성 작업 위임
+- Subagent가 리턴한 PR URL·제목·본문 요약을 사용자에게 표시
+
+### Subagent 위임
+
+`Agent` 툴로 `general-purpose`에 위임한다. Subagent 내부에서 `Skill` 툴로 `make-commit`·`pkm`을 호출할 수 있다.
+
+```
+Agent({
+  subagent_type: "general-purpose",
+  description: "PR 생성 + PKM 문서화",
+  prompt: <아래 템플릿>
+})
+```
+
+### 위임 프롬프트 템플릿
+
+```
+현재 브랜치에서 PR을 생성해줘.
+
+컨텍스트:
+- 작업 디렉토리: {cwd}
+- 현재 브랜치: {branch}
+- PR 제목 인자($ARGUMENTS): "{arguments 또는 '(없음)'}"
+
+아래 SKILL.md의 섹션 1~7 전체 절차를 순서대로 수행:
+~/.config/agents/skills/make-pr/SKILL.md
+
+주요 단계:
+1. Commit & Push (make-commit 스킬 호출로 커밋 후 푸시)
+2. Base Branch 탐지 (gh repo view + git merge-base)
+3. PR Title & Content 생성 ($ARGUMENTS 있으면 그대로, 없으면 커밋 기반 자동)
+4. pull_request.md 작성 후 gh pr create --draft --body-file
+5. Prompt Journal 추출 (extract_prompts.py, 선택적)
+6. pkm 스킬 호출로 PR 노트 작성 (Prompt Journal 포함)
+7. pull_request.md 삭제
+
+결과로 아래만 리턴:
+- PR URL
+- PR 제목
+- PR 본문 첫 3~5줄 요약
+- PKM 노트 경로
+- 실패한 단계가 있으면 해당 내역
+```
+
+**주의**: Subagent는 부모 대화 맥락을 모른다. 사용자가 PR 제목을 구체적으로 언급했거나, Stacked PR에서 특정 base branch를 지정한 경우 프롬프트에 명시적으로 포함한다.
+
+---
+
 ## 1. Commit & Push
 
 - 미커밋 로컬 변경사항이 있으면 make-commit 스킬로 커밋 생성 (한국어 메시지)

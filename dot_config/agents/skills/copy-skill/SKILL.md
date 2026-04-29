@@ -13,6 +13,83 @@ description: >
 
 GitHub URL의 스킬/플러그인을 분석하고 개선된 버전을 생성한다.
 
+## 실행 방식 (Subagent 위임)
+
+⚠️ **이 스킬은 토큰 절약을 위해 분석·생성 단계를 subagent에 위임하여 실행한다.** 원본 스킬의 전체 파일 내용이 부모 세션 컨텍스트에 쌓이지 않도록 한다.
+
+### 부모 세션 역할
+- URL 수신 및 구조 확인 (단일/멀티 스킬 판별)
+- 멀티 스킬인 경우 AskUserQuestion으로 복사 대상 선택
+- Subagent 호출·결과 중계
+- 분석 보고서 사용자 승인 (AskUserQuestion)
+- 최종 완료 보고
+
+### Subagent 위임 흐름
+
+| 단계 | 담당 | 작업 |
+|------|------|------|
+| Step 1 | 부모 | URL 파싱 + 구조 파악 (SKILL.md 위치로 단일/멀티 판별) |
+| Step 1.5 | 부모 | 멀티 스킬이면 AskUserQuestion으로 복사 대상 선택 |
+| **Step 2~3** | **Subagent A (general-purpose)** | 전체 파일 수집 + 분석 보고서 작성 → 보고서만 리턴 |
+| Step 4 | 부모 | AskUserQuestion으로 보고서 승인 (전체/부분/취소) |
+| **Step 5** | **Subagent B (general-purpose)** | 승인된 개선사항 반영하여 새 스킬 생성 + 패키징 → 생성 경로만 리턴 |
+| 완료 | 부모 | 생성 결과 요약 보고 |
+
+### 위임 프롬프트 템플릿
+
+**Subagent A** (Step 2~3 분석):
+```
+GitHub의 스킬/플러그인을 분석해 개선 보고서를 작성해줘.
+
+대상:
+- owner: {owner}
+- repo: {repo}
+- branch: {branch}
+- path: {path}  (스킬 루트 경로)
+- skill name: {name}
+
+아래 SKILL.md의 Step 2 (전체 파일 수집) + Step 3 (분석 보고서) 절차를 그대로 수행:
+~/.config/agents/skills/copy-skill/SKILL.md
+
+참조:
+- references/analysis-checklist.md
+- references/free-alternatives.md
+
+결과로 "분석 보고서" 마크다운 전문만 리턴해 (수집한 원본 파일 내용은 리턴하지 말고, 보고서에 필요한 요약만 포함).
+```
+
+**Subagent B** (Step 5 생성):
+```
+아래 분석 보고서의 승인된 개선사항을 반영해 새 스킬을 생성해줘.
+
+분석 보고서:
+{사용자가 승인한 보고서 전문 + 부분 수정 사항}
+
+원본 스킬 위치:
+- owner/{repo}/{path}?ref={branch}
+
+아래 SKILL.md의 Step 5 절차 준수:
+~/.config/agents/skills/copy-skill/SKILL.md
+
+수행 순서:
+1. init_skill.py로 초기화
+2. 의존성 제거/대체
+3. 구조 개선 (Progressive Disclosure)
+4. 내용 보강, 한글화, 고도화
+5. 스크립트 동작 검증
+6. package_skill.py로 패키징
+
+결과로 아래만 리턴:
+- 생성된 스킬 경로
+- 주요 변경사항 3~5줄 요약
+- 패키징 성공 여부
+- 실패·경고가 있으면 내역
+```
+
+**주의**: Subagent는 부모 맥락을 모른다. 승인 단계에서 사용자가 "보고서의 2번 항목만 반영, 3번은 제외" 등 세부 지시를 했다면 Subagent B 프롬프트에 명시적으로 포함한다.
+
+---
+
 ## 워크플로우
 
 ```

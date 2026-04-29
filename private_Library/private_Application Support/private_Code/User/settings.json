@@ -221,4 +221,5 @@
     "git-rebase-todo": "gitlens.rebase"
   },
   "workbench.colorTheme": "Catppuccin Mocha",
+  "chat.viewSessions.orientation": "stacked",
 }

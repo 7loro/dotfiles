@@ -14,6 +14,70 @@ PR 리뷰 코멘트를 체계적으로 처리하는 워크플로우.
 
 ---
 
+## 실행 방식 (Subagent 위임)
+
+⚠️ **이 스킬은 토큰 절약을 위해 subagent에 작업을 위임하여 실행한다.** PR 코멘트·코드·diff 등 대량 컨텍스트를 부모 세션에 누적시키지 않기 위함이다.
+
+### 부모 세션 역할
+- 사용자와의 상호작용 (AskUserQuestion — Phase 2 분류 확인)
+- Subagent 호출·결과 중계
+- 최종 완료 보고
+
+### Subagent 위임 흐름
+
+| 단계 | 담당 | 작업 |
+|------|------|------|
+| **Phase 1** | Subagent A (general-purpose) | PR 식별 + 코멘트 수집 + 분류 → 분류 테이블만 리턴 |
+| **Phase 2** | 부모 | 분류 결과에 대한 사용자 확인 (AskUserQuestion) |
+| **Phase 3~5** | Subagent B (general-purpose) | 코드 수정 + 커밋·푸시 + 답글 작성 → 완료 요약만 리턴 |
+
+### 위임 프롬프트 템플릿
+
+**Subagent A 프롬프트** (Phase 1):
+```
+PR #{번호}의 리뷰 코멘트를 수집하고 분류해줘.
+
+컨텍스트:
+- 작업 디렉토리: {cwd}
+- PR 번호 또는 URL: {인자}
+- 현재 브랜치: {branch}
+
+아래 SKILL.md의 Phase 1 전체 절차를 따라 수행해:
+~/.config/agents/skills/resolve-pr-comments/SKILL.md
+
+결과로 아래 분류 테이블만 리턴해 (본문·전체 스레드 내용 생략):
+
+| # | comment_id | 분류 | 파일:라인 | 코멘트 요약 | 대응 방안 |
+
+처리 대상이 없으면 "새로운 리뷰 코멘트 없음"으로 리턴.
+```
+
+**Subagent B 프롬프트** (Phase 3~5):
+```
+PR #{번호}의 리뷰 코멘트 중 아래 "반영" 분류된 항목들을 처리해줘.
+
+반영 대상:
+{Phase 2에서 사용자 확인 완료된 분류 결과 JSON/테이블}
+
+작업:
+1. Phase 3: 각 반영 항목에 대해 코드 수정
+2. Phase 4: 단일 커밋으로 묶어 `review:` 타입 커밋 + 푸시
+3. Phase 5: 각 스레드 root에 답글 전송 (처리 결과 요약)
+
+SKILL.md Phase 3~5 절차 준수:
+~/.config/agents/skills/resolve-pr-comments/SKILL.md
+
+결과로 아래만 리턴:
+- 커밋 SHA
+- 수정 파일 수
+- 답글 전송 성공 수
+- 실패가 있으면 해당 내역
+```
+
+**주의**: Subagent는 부모 대화 맥락을 모른다. PR 번호, 분류 결과 등 필요한 정보를 명시적으로 전달한다.
+
+---
+
 ## Phase 1: PR 및 코멘트 수집
 
 ### 1-1. PR 식별
