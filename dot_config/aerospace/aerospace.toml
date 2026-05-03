@@ -178,7 +178,8 @@ alt-shift-l = ['join-with right', 'mode main']
 [mode.apps.binding]
 # alt-t = ['exec-and-forget open -a /Applications/Warp.app', 'mode main']
 # alt-t = ['exec-and-forget open -a /opt/homebrew/bin/ghostty', 'mode main']
-alt-t = ['exec-and-forget open -a /opt/homebrew/bin/wezterm', 'mode main']
+# alt-t = ['exec-and-forget open -a /opt/homebrew/bin/wezterm', 'mode main']
+alt-t = ['exec-and-forget open -a /Applications/cmux.app/Contents/Resources/bin/cmux', 'mode main']
 # alt-f = ['exec-and-forget open -a /System/Library/CoreServices/Finder.app', 'mode main']
 alt-f = ['exec-and-forget open -a /Applications/ForkLift.app', 'mode main']
 alt-n = ['exec-and-forget open -a /Applications/Obsidian.app', 'mode main']
@@ -194,8 +195,16 @@ alt-h = ['exec-and-forget open -a /Applications/ContentsHub.app', 'mode main']
 # Event listeners
 
 [[on-window-detected]]
+if.app-id = 'com.cmuxterm.app'
+run = 'move-node-to-workspace T'
+
+[[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
 run = 'move-node-to-workspace T'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'layout floating'
 
 ## Chat apps
 
@@ -301,10 +310,6 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'ForkLift'
-run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'com.mitchellh.ghostty'
 run = 'layout floating'
 
 [[on-window-detected]]
