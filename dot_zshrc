@@ -190,7 +190,11 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 # Claude
-alias c='claude --dangerously-skip-permissions --model="opus[1m]"'
+alias c='cmux claude-teams --dangerously-skip-permissions'
+# Codex
+alias co='codex --yolo --search --enable multi_agent'
+# Gemini
+alias g='gemini --yolo'
 
 # 업무용 환경변수
 if [ -f ~/.zsh_profile_work ]; then
