@@ -1,7 +1,6 @@
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "KNOWLEDGE_GRAPH_PATH": "~/pkm/003 resources/knowledge-graph",
     "CLAUDE_CODE_NO_FLICKER": "1"
   },
   "attribution": {
@@ -38,17 +37,6 @@
         ]
       }
     ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/knowledge-graph-inject.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [
@@ -56,11 +44,6 @@
             "type": "command",
             "command": "python3 ~/.claude/hooks/say-summary.py",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "python3 ~/.claude/hooks/knowledge-graph-update.py",
-            "timeout": 15
           }
         ]
       }
@@ -78,14 +61,22 @@
     "obsidian@obsidian-skills": true,
     "superpowers@claude-plugins-official": true,
     "obsidian-visual-skills@axton-obsidian-visual-skills": true,
-    "harness@harness-marketplace": true,
-    "backlog@santa-botari": true
+    "backlog@santa-botari": true,
+    "insane-search@gptaku-plugins": true,
+    "agent-slack@agent-messenger": true
   },
   "extraKnownMarketplaces": {
-    "harness-marketplace": {
+    "gptaku-plugins": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/fivetaku/gptaku_plugins.git"
+      },
+      "autoUpdate": true
+    },
+    "agent-messenger": {
       "source": {
         "source": "github",
-        "repo": "revfactory/harness"
+        "repo": "agent-messenger/agent-messenger"
       },
       "autoUpdate": true
     }
@@ -96,5 +87,8 @@
   "autoMemoryDirectory": "~/pkm/003 resources/memory",
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
+  "editorMode": "vim",
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
