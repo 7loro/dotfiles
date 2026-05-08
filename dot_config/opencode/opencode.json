@@ -28,15 +28,6 @@
         "OBSIDIAN_PORT": "{env:OBSIDIAN_MCP_PORT}"
       }
     },
-    "google_workspace": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "workspace-mcp",
-        "--tools",
-        "slides"
-      ]
-    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",

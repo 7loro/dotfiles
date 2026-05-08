@@ -18,15 +18,6 @@
         "Accept": "application/json, text/event-stream"
       }
     },
-    "google_workspace": {
-      "command": "uvx",
-      "args": [
-        "workspace-mcp",
-        "--tools",
-        "slides",
-        "calendar"
-      ]
-    },
     "mcp-obsidian": {
       "command": "uvx",
       "args": [

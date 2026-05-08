@@ -53,6 +53,14 @@ Agent({
 6. pkm 스킬 호출로 PR 노트 작성 (Prompt Journal 포함)
 7. pull_request.md 삭제
 
+**PR body 작성 시 원칙** (반드시 준수, SKILL.md 의 "Body 작성 원칙" 섹션 참고):
+- 외부 리뷰어가 *코드 안 봐도 의도 파악* 가능하게
+- *왜 / 무엇 / 효과* 우선, *구현 방식 (어떻게)* 는 코드에 위임
+- 영문 jargon (wall-clock, Provider Family 등) → 한국어 풀어쓰기
+- file path / class 명 / 내부 약어 노출 최소화 — *고수준 의도* 만
+- 짧은 문장 + 표/bullet — 한 단락 4-5줄 이상이면 쪼개기
+- 섹션 구조: What does this PR do? → 왜 만들었나 → 핵심 표/리스트 → 화면 → 활용
+
 결과로 아래만 리턴:
 - PR URL
 - PR 제목
@@ -105,6 +113,39 @@ Agent({
 - 변경사항을 한국어로 요약
 - 논리/흐름 변경 시 Mermaid 다이어그램 포함 가능
 
+#### Body 작성 원칙 — 외부 리뷰어가 *코드 안 봐도 이해* 가능하게
+
+PR body 의 본질적 책임은 *코드를 안 읽고도 PR 의 의도/효과 파악 가능* 하게 하는 것이다. 다음 원칙을 준수한다.
+
+**의도 우선**:
+- *왜 만들었나* (배경, 해결하려는 문제) 와 *무엇이 가능해지나* (효과) 를 먼저 명시
+- *어떻게 구현했나* (architecture, algorithm, design pattern) 는 *코드 / 코드 주석* 에 위임. body 에서는 *최소화*
+- 사용자 시나리오 / 활용 흐름 표기 (예: "X 실행 → Y 화면 → Z 확인")
+
+**외부 사람 친화 표현**:
+- 영문 jargon → 한국어 풀어쓰기 또는 한국어 + ()로 부연 설명 (예: `wall-clock` → `벽시계 시간` 또는 `완료 시간`, `Provider Family` → 제거 또는 *taskKey 별 분리* 같이 풀이)
+- file path (`lib/feature/.../foo.dart`), class 명 (`EpubCaptureWebViewController`), 영문 식별자 노출 *최소화* — 코드에서 직접 보이는 정보. body 에는 *고수준 의도* 만.
+- 내부 약어 (e.g. tracer 종류명, 내부 enum 명) 는 *왜 그게 등장하는지* 의 맥락 없으면 제거
+
+**빠르게 훑기 좋은 구조**:
+- 한 섹션이 *4-5줄 이상* 의 단락이면 *bullet 으로 쪼개기*
+- *표* 활용 — 여러 항목의 *공통 형식* (예: stage 별 의미, 옵션 별 비교) 은 표가 가독성 ↑
+- 짧은 문장 — 한 문장에 *한 가지 정보* 만
+- 섹션 구조 추천:
+  - `## What does this PR do?` — 한 문장 핵심 + 3 bullet (가장 위에)
+  - `## 왜 만들었나` (또는 *배경*) — 2-3줄
+  - `## 핵심 표/리스트` — 정보 밀도 높은 곳
+  - `## 화면` (스크린샷이 있을 때) — 보존
+  - `## 활용` — 한 문장 시나리오
+
+**작성 후 self-check**:
+1. 코드를 안 본 사람이 *PR 제목 + body* 만 보고 *왜 / 무엇 / 어떤 효과* 답할 수 있는가?
+2. 영문 jargon 이 *처음 나오는 곳* 에 한국어 풀이 또는 부연 설명이 있는가?
+3. 단락 4-5줄 이상이면 *bullet/표* 로 쪼갤 수 있는가?
+4. file path, class 명, 내부 약어가 *body 에 등장* 하는데 *외부 사람에게 의미 있는가*? (없으면 제거)
+
+> 이 원칙은 *최초 PR 생성 시점부터* 적용한다. PR 생성 후 사용자가 *"너무 장황해", "이게 무슨 의미야?"* 같은 피드백을 주면 위 원칙이 충분히 반영되지 않은 신호이므로, 다음 PR 작성 시 self-check 강화.
+
 ## 4. PR 생성
 
 ### 템플릿 구조
@@ -156,6 +197,25 @@ gh pr create --draft --assignee @me --title "[Title]" --body-file pull_request.m
 > ```bash
 > gh pr edit [number] --body-file pull_request.md
 > ```
+
+### 기존 PR body 수정 시 — 사용자 콘텐츠 보존
+
+이미 생성된 PR 의 body 를 수정 (`gh pr edit`) 할 때는 **단순 덮어쓰기 금지**. 다음 절차를 따른다.
+
+1. 기존 body fetch:
+   ```bash
+   gh pr view [number] --json body --jq '.body' > /tmp/pr_[number]_body.md
+   ```
+2. 기존 body 검토 — 사용자가 *수동으로 추가* 한 콘텐츠 식별:
+   - 스크린샷 (`![...](https://github.com/.../assets/...)` 패턴 — GitHub 첨부 이미지)
+   - 외부 링크, 동영상
+   - PR 템플릿의 체크박스 / 체크된 항목
+   - Dependent PR 링크
+3. 수정 시 위 콘텐츠를 *반드시 그대로 포함* — 적절한 섹션 위치에 배치
+4. `gh pr edit [number] --body-file /tmp/pr_[number]_body.md` 로 갱신
+5. 임시 파일 cleanup
+
+> 사용자가 *PR 화면에서 직접 추가* 한 정보 (특히 스크린샷) 는 *작성자의 의도적 추가* 이므로 *덮어쓰기 = 데이터 손실*. 항상 fetch → 식별 → 보존 → 갱신 순서.
 
 ### Cleanup
 
