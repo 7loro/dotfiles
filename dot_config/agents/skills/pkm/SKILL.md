@@ -294,11 +294,13 @@ PR 내용을 구성한 뒤 obsidian-cli로 생성:
 
 **파일명 규칙**: Backlog 티켓 번호 유무에 따라 분기
 - **티켓 번호를 알고 있는 경우** (PR 제목에 `[CONTENTSHUB-XXXX]` 포함 또는 대화 중 언급):
-  - `CONTENTSHUB-XXXX - {설명}` 형식 사용
+  - `CONTENTSHUB-XXXX - {설명}` 형식 사용 (티켓 번호 자체가 unique 식별자이므로 repo prefix 불필요)
   - 예시: `CONTENTSHUB-1112 - 앱 배포 공증 stage-real 병렬 진행`
 - **티켓 번호를 모르는 경우**:
-  - `PR{번호} - {설명}` 형식 사용
-  - 예시: `PR1748 - appcast PR 머지 시 Goomba-Hub-Appcast-upload 자동 트리거`
+  - `{repo} - PR{번호} - {설명}` 형식 사용 (PR 번호는 repo마다 중복 가능하므로 repo 이름을 prefix로 붙인다)
+  - repo 이름은 `gh pr view --json headRepository --jq '.headRepository.name'`으로 추출 (kebab-case 그대로, 예: `goomba-hub`, `couple-kanban`)
+  - frontmatter의 `repository:` 필드와 동일한 값을 사용해 일관성 유지
+  - 예시: `goomba-hub - PR1748 - appcast PR 머지 시 Goomba-Hub-Appcast-upload 자동 트리거`
 - 공통: PR 번호 앞 `#` 사용 금지, `feat:` / `fix:` 등 type prefix 제거 (태그로 표현)
 - 파일명 특수문자(`/\:*?"<>|#`) → `-`로 대체
 
@@ -308,7 +310,10 @@ CONTENT=$(cat << 'EOF'
 위 PR Work 노트 구조에 맞게 채운 내용
 EOF
 )
+# 티켓 번호가 있는 경우
 obsidian create name="CONTENTSHUB-XXXX - {설명}" path="007 inbox/CONTENTSHUB-XXXX - {설명}.md" content="$CONTENT" silent
+# 티켓 번호가 없는 경우 (repo prefix 필수)
+obsidian create name="{repo} - PR{번호} - {설명}" path="007 inbox/{repo} - PR{번호} - {설명}.md" content="$CONTENT" silent
 ```
 
 ### PR 타입 → 주제 태그 매핑
