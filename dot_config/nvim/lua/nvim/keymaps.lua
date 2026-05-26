@@ -74,7 +74,8 @@ vim.keymap.set('n', '<leader>xL', '<cmd>Trouble loclist toggle<cr>', { desc = 'L
 vim.keymap.set('n', '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', { desc = 'Quickfix List 토글' })
 
 -- ── LazyGit ─────────────────────────────────────────────
-vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = 'LazyGit 열기' })
+-- lazygit_with_focus: lazygit.lua 에 정의. 종료 시 새로 열린 탭으로 자동 점프.
+vim.keymap.set('n', '<leader>lg', function() _G.lazygit_with_focus() end, { desc = 'LazyGit 열기' })
 
 -- ── Markview (마크다운) ─────────────────────────────────
 vim.keymap.set('n', '<leader>mt', '<cmd>Markview toggle<cr>', { desc = '마크다운 미리보기 토글' })
