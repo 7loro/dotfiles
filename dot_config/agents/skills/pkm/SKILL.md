@@ -22,12 +22,12 @@ description: |
 
 ```bash
 # path는 vault root 기준 상대 경로 사용
-obsidian read path="007 inbox/파일명.md"
-obsidian create name="파일명" path="007 inbox/파일명.md" content="..." silent
-obsidian append path="007 inbox/파일명.md" content="추가할 내용"
+obsidian read path="source/note/파일명.md"
+obsidian create name="파일명" path="source/note/파일명.md" content="..." silent
+obsidian append path="source/note/파일명.md" content="추가할 내용"
 
 # Obsidian에 여러 vault가 열려 있는 경우 vault 명시
-obsidian vault="pkm" read path="007 inbox/파일명.md"
+obsidian vault="pkm" read path="source/note/파일명.md"
 ```
 
 **핵심 규칙**:
@@ -50,7 +50,7 @@ tags:
 내용
 EOF
 )
-obsidian create name="파일명" path="007 inbox/파일명.md" content="$CONTENT" silent
+obsidian create name="파일명" path="source/note/파일명.md" content="$CONTENT" silent
 ```
 
 ---
@@ -112,7 +112,7 @@ date '+%Y-%m-%d %H:%M:%S'
 
 1. `frontmatter.md`, `tag.md` 규칙에 맞춰 frontmatter 작성
 2. `writing-guide.md` 구조에 맞춰 본문 작성
-3. 파일 위치: `007 inbox/` (vault 상대 경로)
+3. 파일 위치: `source/note/` (vault 상대 경로)
 4. 파일명: 한글 자연어, 특수문자(`/\:*?"<>|#`) → `-` 대체, 최대 100자
 
 ```bash
@@ -133,7 +133,7 @@ tags:
 내용
 EOF
 )
-obsidian create name="파일명" path="007 inbox/파일명.md" content="$CONTENT" silent
+obsidian create name="파일명" path="source/note/파일명.md" content="$CONTENT" silent
 ```
 
 ---
@@ -168,10 +168,10 @@ obsidian search query="검색어" limit=10
 obsidian search:context query="검색어" limit=10
 
 # 특정 폴더 내 검색
-obsidian search query="검색어" path="003 resources" limit=10
+obsidian search query="검색어" path="source" limit=10
 
 # 폴더 내 전체 파일 목록
-obsidian files folder="007 inbox"
+obsidian files folder="source/note"
 
 # 태그로 검색
 obsidian tag name="태그명" verbose
@@ -186,7 +186,7 @@ obsidian recents
 
 ### 위치
 
-**절대 경로**: `/Users/casper/pkm/005 journals/YYYY/YYYY-MM-DD.md`
+**절대 경로**: `/Users/casper/pkm/source/journal/YYYY-MM-DD.md`
 
 ### 백링크 추가 프로세스
 
@@ -199,7 +199,7 @@ obsidian recents
 2. **저널 파일 읽기**:
    ```bash
    obsidian daily:read         # 당일 (06:00 이후)
-   obsidian read path="005 journals/YYYY/YYYY-MM-DD.md"  # 전날 (새벽 시간대)
+   obsidian read path="source/journal/YYYY-MM-DD.md"  # 전날 (새벽 시간대)
    ```
 
 3. **시간대 섹션에 백링크 삽입** — `obsidian daily:append` / `obsidian append` 사용 금지.
@@ -217,7 +217,7 @@ obsidian recents
    저널 초기 구조
    EOF
    )
-   obsidian create name="YYYY-MM-DD" path="005 journals/YYYY/YYYY-MM-DD.md" content="$CONTENT" silent
+   obsidian create name="YYYY-MM-DD" path="source/journal/YYYY-MM-DD.md" content="$CONTENT" silent
    ```
 
 5. 중복 체크: `Read`로 읽은 내용에 이미 동일 백링크가 있으면 스킵
@@ -311,9 +311,9 @@ CONTENT=$(cat << 'EOF'
 EOF
 )
 # 티켓 번호가 있는 경우
-obsidian create name="CONTENTSHUB-XXXX - {설명}" path="007 inbox/CONTENTSHUB-XXXX - {설명}.md" content="$CONTENT" silent
+obsidian create name="CONTENTSHUB-XXXX - {설명}" path="source/note/CONTENTSHUB-XXXX - {설명}.md" content="$CONTENT" silent
 # 티켓 번호가 없는 경우 (repo prefix 필수)
-obsidian create name="{repo} - PR{번호} - {설명}" path="007 inbox/{repo} - PR{번호} - {설명}.md" content="$CONTENT" silent
+obsidian create name="{repo} - PR{번호} - {설명}" path="source/note/{repo} - PR{번호} - {설명}.md" content="$CONTENT" silent
 ```
 
 ### PR 타입 → 주제 태그 매핑
@@ -342,9 +342,9 @@ obsidian create name="{repo} - PR{번호} - {설명}" path="007 inbox/{repo} - P
 
 ### 영화 노트
 
-**파일 위치**: `003 resources/movies/{제목}.md`
+**파일 위치**: `source/note/{제목}.md`
 
-**중복 확인**: `obsidian search query="제목" path="003 resources/movies" limit=1`로 검색하여 동일 제목 파일이 이미 존재하면 사용자에게 알리고 중단
+**중복 확인**: `obsidian search query="제목" path="source/note" limit=1`로 검색하여 동일 제목 파일이 이미 존재하면 사용자에게 알리고 중단
 
 **Frontmatter**:
 
@@ -353,6 +353,7 @@ obsidian create name="{repo} - PR{번호} - {설명}" path="007 inbox/{repo} - P
 created: YYYY-MM-DD HH:mm:ss
 modified: YYYY-MM-DD HH:mm:ss
 tags:
+  - personal
   - movie
 watch_date:
 status: TO WATCH
@@ -417,7 +418,7 @@ CONTENT=$(cat << 'EOF'
 frontmatter + 본문 내용
 EOF
 )
-obsidian create name="제목" path="003 resources/movies/제목.md" content="$CONTENT" silent
+obsidian create name="제목" path="source/note/제목.md" content="$CONTENT" silent
 ```
 
 **본문 구조**:
@@ -430,9 +431,9 @@ obsidian create name="제목" path="003 resources/movies/제목.md" content="$CO
 
 ### 책 노트
 
-**파일 위치**: `003 resources/books/{제목}.md`
+**파일 위치**: `source/note/{제목}.md`
 
-**중복 확인**: `obsidian search query="제목" path="003 resources/books" limit=1`로 검색하여 동일 제목 파일이 이미 존재하면 사용자에게 알리고 중단
+**중복 확인**: `obsidian search query="제목" path="source/note" limit=1`로 검색하여 동일 제목 파일이 이미 존재하면 사용자에게 알리고 중단
 
 **Frontmatter**:
 
@@ -467,7 +468,7 @@ CONTENT=$(cat << 'EOF'
 frontmatter + 본문 내용
 EOF
 )
-obsidian create name="제목" path="003 resources/books/제목.md" content="$CONTENT" silent
+obsidian create name="제목" path="source/note/제목.md" content="$CONTENT" silent
 ```
 
 **본문 구조**:

@@ -193,8 +193,8 @@ alias .....="cd ../../../.."
 alias c='cmux claude-teams --dangerously-skip-permissions'
 # Codex
 alias co='codex --yolo --search --enable multi_agent'
-# Gemini
-alias g='gemini --yolo'
+# Antigravity
+alias a='agy --dangerously-skip-permissions'
 
 # 업무용 환경변수
 if [ -f ~/.zsh_profile_work ]; then
@@ -205,4 +205,3 @@ fi
 if [ -f ~/.zsh_profile_personal ]; then
   . ~/.zsh_profile_personal
 fi
-

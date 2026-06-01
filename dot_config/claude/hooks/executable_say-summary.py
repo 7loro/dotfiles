@@ -298,6 +298,11 @@ SUMMARY_SYSTEM_PROMPT = (
     "너는 음성 안내 문장을 만드는 역할이야.\n"
     "Claude가 방금 한 작업의 핵심 동작을 자연스러운 한국어 한 문장으로 요약해.\n"
     "\n"
+    "출력 형식(가장 중요, 반드시 지킬 것):\n"
+    "- 오직 요약 문장 한 줄만 출력한다. 그 외 어떤 것도 붙이지 않는다.\n"
+    "- 머리말·설명·분석·근거·마크다운·볼드·따옴표·이모지·줄바꿈 금지.\n"
+    '- "요약하면", "요약을 생성하겠습니다" 같은 도입부 금지. 결과 문장만 단독 출력.\n'
+    "\n"
     "규칙:\n"
     "- 16글자 내외(최대 22글자)\n"
     "- 원문을 그대로 인용하지 말고, 어떤 행위를 했는지 동사 중심으로 요약\n"
@@ -323,7 +328,9 @@ async def _summarize_async(text: str) -> str | None:
         tools=[],
         allowed_tools=[],
         max_turns=1,
-        thinking=ThinkingConfigDisabled(),
+        # TypedDict이므로 빈 호출 시 {}가 되어 SDK가 t["type"] 접근에서 KeyError 발생.
+        # type 필드를 명시해 {"type": "disabled"} 형태로 전달해야 함.
+        thinking=ThinkingConfigDisabled(type="disabled"),
         effort="low",
         env={"SAY_SUMMARY_SKIP": "1"},
     )
@@ -512,8 +519,14 @@ def main() -> None:
         summary = cleaned
     else:
         summary = summarize_with_sdk(cleaned)
+        # 길이 가드: 모델이 출력 형식 지시를 무시하고 머리말·설명을 덧붙여
+        # 장황하게 답하는 경우 방어. 정상 요약은 22자 내외이므로 30자 초과는
+        # 비정상으로 보고 규칙 기반 요약으로 대체(수백 자 verbose 차단).
+        if summary and len(summary) > 30:
+            log(f"SDK 요약이 너무 김({len(summary)}자), 규칙 기반으로 대체: {summary[:40]}...")
+            summary = None
         if not summary:
-            log("SDK 요약 실패, 규칙 기반 요약 사용")
+            log("SDK 요약 실패/과다, 규칙 기반 요약 사용")
             summary = fallback_summary(cleaned)
 
     log(f"최종 요약: {summary}")
