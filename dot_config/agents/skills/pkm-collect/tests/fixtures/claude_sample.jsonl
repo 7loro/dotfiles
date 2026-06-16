@@ -1,0 +1,6 @@
+{"type":"user","userType":"external","timestamp":"2026-06-16T00:30:00.000Z","cwd":"/Users/casper/Workspace/akira-mac","gitBranch":"feat/x","sessionId":"sess-1","message":{"role":"user","content":"<command-name>/clear</command-name>"}}
+{"type":"user","userType":"external","timestamp":"2026-06-16T00:31:00.000Z","cwd":"/Users/casper/Workspace/akira-mac","gitBranch":"feat/x","sessionId":"sess-1","message":{"role":"user","content":"전사 정확도 개선해줘"}}
+{"type":"assistant","timestamp":"2026-06-16T00:32:00.000Z","sessionId":"sess-1","message":{"role":"assistant","content":[{"type":"tool_use","name":"Edit","input":{"file_path":"lib/stt.dart"}}]}}
+{"type":"assistant","timestamp":"2026-06-16T00:33:00.000Z","sessionId":"sess-1","message":{"role":"assistant","content":[{"type":"tool_use","name":"Bash","input":{"command":"git commit -m hello"}}]}}
+{"type":"assistant","timestamp":"2026-06-16T00:34:00.000Z","sessionId":"sess-1","message":{"role":"assistant","content":[{"type":"tool_use","name":"Bash","input":{"command":"gh pr create --fill"}}]}}
+{"type":"user","userType":"external","timestamp":"2026-06-16T00:35:00.000Z","cwd":"/Users/casper/Workspace/akira-mac","sessionId":"sess-1","message":{"role":"user","content":[{"type":"tool_result","content":"https://github.com/o/r/pull/42 created"}]}}

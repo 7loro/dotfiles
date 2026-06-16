@@ -190,7 +190,8 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 # Claude
-alias c='cmux claude-teams --dangerously-skip-permissions'
+# alias c='cmux claude-teams --dangerously-skip-permissions'
+alias c='claude --dangerously-skip-permissions'
 # Codex
 alias co='codex --yolo --search --enable multi_agent'
 # Antigravity

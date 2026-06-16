@@ -18,9 +18,11 @@ tasks:
 # Git 상태 확인 설정 (tasks.git_status: true 일 때만 사용)
 # ─────────────────────────────────────────────
 git:
-  # worktree list를 조회할 기준 저장소 경로
-  root: /Users/casper/Workspace/goomba-hub
-  # 상태 확인에서 제외할 worktree 이름 목록
+  # ~/Workspace 아래에서 최근 recent_days일 내 커밋이 있는 git repo를 자동 탐색해 worktree 상태를 점검한다.
+  # (명시 경로 나열 대신, 최근 작업한 프로젝트를 자동으로 골라냄)
+  workspace: /Users/casper/Workspace
+  recent_days: 30
+  # 점검에서 제외할 repo 디렉토리명 목록
   exclude:
     - goomba-hub-review
 

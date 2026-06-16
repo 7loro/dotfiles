@@ -14,3 +14,5 @@ ready_repos:
   # 사내 코드 리뷰 자동화 봇(tsukkomi[bot])이 ready PR에만 즉시 반응하도록 설계되어 있어
   # draft 단계 없이 바로 review 가능 상태로 올린다.
   - agent-review
+  - santaclaude
+  - piccoma-kr-guide

@@ -42,8 +42,9 @@ cat ~/.config/agents/skills/brief-morning/config.yaml
 - `git_status` — Git 로컬 상태 확인
 - `github_pr` — GitHub PR 조회
 
-**질문 2** — `git_status`를 선택한 경우: Git root 경로 입력
-- 예시 옵션: 자주 쓰는 경로 2~3개 + "직접 입력"
+**질문 2** — `git_status`를 선택한 경우: 작업 베이스 디렉토리 입력 (이 디렉토리 아래 git repo들을 자동 탐색)
+- 예시 옵션: `~/Workspace` 등 자주 쓰는 베이스 경로 2~3개 + "직접 입력"
+- `recent_days`는 기본 30으로 설정 (최근 30일 내 커밋이 있는 repo만 점검)
 
 **질문 3** — `github_pr`를 선택한 경우: PR 조회할 저장소 목록 입력 (쉼표 구분)
 
@@ -65,8 +66,10 @@ tasks:
   github_pr: false   # 사용자가 선택한 경우 true, 아니면 false
 
 git:
-  root: "/Users/casper/Workspace"  # git_status 선택 시 사용자가 고른 경로, 아니면 빈 문자열
-  exclude: []
+  # ~/Workspace 아래에서 최근 recent_days일 내 커밋이 있는 git repo를 자동 탐색해 worktree 상태를 점검
+  workspace: "/Users/casper/Workspace"  # git_status 선택 시 사용자가 고른 베이스 경로, 아니면 빈 문자열
+  recent_days: 30                       # 최근 활동 판단 기준 일수
+  exclude: []                           # 점검에서 제외할 repo 디렉토리명 목록
 
 github:
   repos: []  # github_pr 선택 시 사용자가 입력한 저장소 목록
@@ -254,29 +257,66 @@ echo "=== GMAIL_PERSONAL ===" && cat /tmp/gmail_personal.txt
 
 ### F: Git 로컬 상태 확인
 
-`config.yaml`의 `git.root` 경로를 기준으로 worktree 목록을 조회한 뒤, 각 worktree 상태를 확인한다.
+명시 경로를 나열하는 대신, `config.yaml`의 `git.workspace` 아래에서 **최근 `git.recent_days`일 내 커밋이 있는 git repo를 자동 탐색**한 뒤, 각 repo의 worktree 상태를 확인한다. ("최근 작업한 프로젝트"만 자동으로 골라냄)
 
-**제외 대상**: `config.yaml`의 `git.exclude` 목록에 있는 worktree 이름
+- **탐색 범위**: `git.workspace` 최상위 + 그룹 폴더(`ax/` 등) 한 단계 하위. repo 내부로는 들어가지 않으므로 서브모듈 노이즈가 없다.
+- **활동 신호**: 마지막 커밋 시각(`git log -1 --format=%ct`)이 `recent_days`일 이내.
+- **제외 대상**: `git.exclude` 목록에 있는 repo 디렉토리명.
+- **worktree 펼치기**: 탐색된 각 repo에서 `git worktree list`로 linked worktree까지 모두 점검.
+
+아래 스크립트를 **단일 Bash 호출**로 실행한다 (config 값은 실제 설정으로 치환):
 
 ```bash
-# 1단계: worktree 목록 조회
-cd {git.root} && git worktree list
-```
+# 매칭 없는 글로브를 빈 목록으로 (zsh/bash 공통) — 하위 폴더 없는 디렉토리에서 에러 방지
+setopt null_glob 2>/dev/null; shopt -s nullglob 2>/dev/null
 
-```bash
-# 2단계: 각 worktree 상태 병렬 확인 (exclude 제거 후)
-for wt in "${WORKTREES[@]}"; do
-  (
-    echo "=== $wt ==="
-    cd "$wt" && \
-    echo "BRANCH: $(git branch --show-current)" && \
-    echo "STATUS:" && git status --porcelain && \
-    echo "LOG:" && git log --oneline -5 && \
-    echo "UNPUSHED:" && (git log origin/HEAD..HEAD --oneline 2>/dev/null || echo "(no upstream)")
-  ) &
+WORKSPACE="/Users/casper/Workspace"   # config: git.workspace
+RECENT_DAYS=30                          # config: git.recent_days
+EXCLUDE=()                              # config: git.exclude (repo 디렉토리명, 예: ("goomba-hub-review"))
+
+CUTOFF=$(( $(date +%s) - RECENT_DAYS * 86400 ))
+
+# 1단계: repo 루트 후보 수집 (depth 1: repo면 자기 자신 / 아니면 그룹폴더로 보고 depth 2 하위만)
+CANDIDATES=()
+for d1 in "$WORKSPACE"/*/; do
+  if [ -e "${d1}.git" ]; then
+    CANDIDATES+=("${d1%/}")
+  else
+    for d2 in "$d1"*/; do
+      [ -e "${d2}.git" ] && CANDIDATES+=("${d2%/}")
+    done
+  fi
+done
+
+# 2단계: 최근 커밋 있는 repo만 필터 (exclude 제거)
+RECENT_REPOS=()
+for repo in "${CANDIDATES[@]}"; do
+  name=$(basename "$repo")
+  skip=""
+  for ex in "${EXCLUDE[@]}"; do [ "$name" = "$ex" ] && skip=1; done
+  [ -n "$skip" ] && continue
+  ts=$(git -C "$repo" log -1 --format=%ct 2>/dev/null) || continue
+  [ -n "$ts" ] && [ "$ts" -ge "$CUTOFF" ] && RECENT_REPOS+=("$repo")
+done
+echo "SCANNED_RECENT_REPOS: ${#RECENT_REPOS[@]} (최근 ${RECENT_DAYS}일 내 커밋)"
+
+# 3단계: 각 repo의 worktree를 펼쳐 상태 병렬 확인
+for repo in "${RECENT_REPOS[@]}"; do
+  while IFS= read -r wt; do
+    [ -n "$wt" ] || continue
+    (
+      echo "=== $wt ==="
+      cd "$wt" && \
+      echo "BRANCH: $(git branch --show-current)" && \
+      echo "STATUS:" && git status --porcelain && \
+      echo "UNPUSHED:" && (git log @{u}..HEAD --oneline 2>/dev/null || echo "(no upstream)")
+    ) &
+  done < <(git -C "$repo" worktree list --porcelain | awk '/^worktree /{print $2}')
 done
 wait
 ```
+
+**보고 기준**: 미커밋 변경(STATUS) 또는 미푸시 커밋(UNPUSHED)이 **하나라도 있는 worktree만** 표에 표시한다. 완전히 깨끗한 worktree는 생략하고, 스캔한 repo 개수(`SCANNED_RECENT_REPOS`)만 요약에 적는다. pending이 전혀 없으면 "정리 안 된 로컬 작업 없음"으로 표시.
 
 ### G: GitHub PR 조회
 
@@ -351,8 +391,12 @@ _(받은편지함 메일이 없으면 "받은편지함 메일 없음" 표시)_
 [daily note에서 추출한 TODO 항목]
 
 ## 💻 로컬 작업 현황
+> 최근 N일 내 활동 repo M개 스캔 (~/Workspace 자동 탐색)
+
 | 경로 | 브랜치 | 미커밋 변경 | 미푸시 커밋 |
 |------|--------|-------------|-------------|
+
+_(미커밋·미푸시가 있는 worktree만 표시. 전부 깨끗하면 "정리 안 된 로컬 작업 없음")_
 
 ## 📤 내 PR 현황
 - 총 N개의 열린 PR
